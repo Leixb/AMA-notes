@@ -1,0 +1,309 @@
+%! TEX root = **/000-main.tex
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% LaTeX preamble, load in main.tex with: \input{preamble}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[12pt, oneside]{book}
+\usepackage[a4paper, left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm]{geometry}
+
+% for debugging overfulls
+%\documentclass[draft, 12pt, oneside]{article}
+%\usepackage[showframe, a4paper, left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm]{geometry}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% FONTS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage[T1]{fontenc}
+\usepackage{fontspec}
+\usepackage{microtype}
+
+\setmonofont[Scale=MatchLowercase]{DejaVu Sans Mono}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% LANGUAGE
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{polyglossia}
+\setdefaultlanguage{english}
+\setotherlanguages{spanish,catalan}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% BIBLIOGRAPHY
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage[
+    backend=biber,
+    style=numeric,
+]{biblatex}
+\DeclareNameAlias{default}{family-given}
+
+\addbibresource{biblio.bib}
+
+\usepackage{fvextra}        % Req by minted (must load before csquotes)
+\usepackage{csquotes}       % For bibliography quotations
+\DeclareQuoteAlias{spanish}{catalan}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% COMMON
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{color, xcolor}     % more colors
+
+\usepackage{graphicx}   % graphics
+\graphicspath{{./figures/}}
+
+\usepackage{comment}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% MATHS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{mathtools}  % amsmath + more
+\usepackage{amsthm}     % Theorem enviroment
+\usepackage{amssymb}    % More symbols
+\usepackage{amstext}    % Text inside mathenv
+
+%\usepackage{relsize}    % Bigger math with mathlarger{___}
+%\usepackage{nicefrac}   % nice fractions in one line
+
+%\usepackage{IEEEtrantools} % Complex equation arrays
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% REFERENCES (load order is important)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{imakeidx}
+\usepackage{varioref} % reference far away (1)
+\usepackage[colorlinks = true]{hyperref} % links in references (2)
+\usepackage{cleveref} % smart references (3)
+%hyperref configuration so that it doesn't contrast so much colorlinks,
+\hypersetup{
+   linkcolor={black},
+   citecolor={black},
+   %linkcolor={red!50!black},
+   %citecolor={blue!50!black},
+   urlcolor={blue!80!black}
+}
+
+\usepackage[bottom]{footmisc} % Footnotes at bottom of page
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% FIGURES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\usepackage[export]{adjustbox}  % Adjust table size
+\usepackage{float}               % Force tables and images position (H and H!)
+%\usepackage{wrapfig}            % Wrap images like in HTML
+
+\usepackage[justification=centering]{caption}
+%\usepackage{subcaption}                     % Subfigures
+%\usepackage[framemethod=tikz]{mdframed}     % Custom frames
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% TABLES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\usepackage{colortbl, booktabs} % Better tables
+%\usepackage{tabularx}
+%\usepackage{longtable} % Multiple page table (does not work with tabularx)
+\usepackage{xltabular, colortbl, booktabs} % longtable + tabularx (has bug with booktabs: fix below)
+
+% Split cell in lines and more formating options inside table
+\usepackage{array, multirow, multicol, makecell}
+
+%%%
+% bug fix for booktabs + xltabular incompatibility
+\makeatletter
+\def\@BTrule[#1]{%
+  \ifx\longtable\undefined
+    \let\@BTswitch\@BTnormal
+  \else\ifx\hline\LT@hline
+    \nobreak
+    \let\@BTswitch\@BLTrule
+  \else
+     \let\@BTswitch\@BTnormal
+  \fi\fi
+  \global\@thisrulewidth=#1\relax
+  \ifnum\@thisruleclass=\tw@\vskip\@aboverulesep\else
+  \ifnum\@lastruleclass=\z@\vskip\@aboverulesep\else
+  \ifnum\@lastruleclass=\@ne\vskip\doublerulesep\fi\fi\fi
+  \@BTswitch}
+\makeatother
+%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% SIUNITX
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\usepackage[alsoload=hep]{siunitx}          % SI units and uncertainties
+%\sisetup{locale = FR}                       % Commas and so on for spanish
+%\sisetup{separate-uncertainty=true}
+%\sisetup{
+  %per-mode=fraction,
+  %fraction-function=\nicefrac
+%}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% TIKZ
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\usepackage{tikz}
+%\usetikzlibrary{arrows}
+%\usetikzlibrary{scopes}
+%\usetikzlibrary{babel}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% MINTED
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{minted}
+\definecolor{codeBg}{HTML}{FFFDE7}
+\setminted{
+    %style=pastie,
+    frame=lines,
+    framesep=3mm,
+    linenos,
+    breaklines=true,
+    encoding=utf8,
+    fontsize=\footnotesize,
+    bgcolor=codeBg
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% CUSTOM COMMANDS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% empty whitepage without numbering
+\newcommand{\whitepage}{
+    \clearpage\thispagestyle{empty}\addtocounter{page}{-1} \newpage \clearpage
+}
+
+% Add command before appendix section for page numbering: A-1
+\newcommand{\appendixpagenumbering}{
+    \break
+    \pagenumbering{arabic}
+    \renewcommand{\thepage}{\thesection-\arabic{page}}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% CUSTOM MATH OPERATORS (functions not in italic in math mode)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\DeclareMathOperator{\arcsec}{arcsec}
+%\DeclareMathOperator{\arccot}{arccot}
+%\DeclareMathOperator{\arccsc}{arccsc}
+%\DeclareMathOperator{\cis}{cis}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% MISC
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\usepackage{datetime} % Customize date
+%% \monthyeardate\today gives the date without the day
+%\newdateformat{monthyeardate}{%
+    %\monthname[\THEMONTH], \THEYEAR}
+
+% Set default figure size
+\setkeys{Gin}{width=.9\textwidth, keepaspectratio}
+
+\usepackage{fancyhdr}
+\usepackage{relsize}
+
+% Center figures by default
+\makeatletter
+\g@addto@macro\@floatboxreset\centering
+\makeatother
+
+\usepackage[normalem]{ulem}
+\usepackage{dsfont}
+\usepackage{tikz}
+% \usepackage{tikzexternal}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+\usetikzlibrary{shapes,arrows,positioning,calc}
+
+\usepackage{cancel}
+\usepackage{mathrsfs}
+
+\DeclareMathOperator{\argmin}{argmin}
+\DeclareMathOperator{\argmax}{argmax}
+
+\usepackage{tcolorbox}
+\tcbuselibrary{most}
+
+\theoremstyle{plain}% from `amsthm'
+% \newtheorem{lemma}{Lemma}% from `amsthm'
+% \newtheorem{prop}{Proposition}% from `amsthm'
+
+\theoremstyle{definition}% from `amsthm'
+\newtheorem{defn}{Definition}% from `amsthm'
+
+\theoremstyle{remark}% from `amsthm'
+\newtheorem*{rem}{Remark}% from `amsthm'
+\newtheorem{ex}{Example}% from `amsthm'
+\newtheorem{prob}{Problem}% from `amsthm'
+\newtheorem{ques}{Question}% from `amsthm'
+% \newtheorem*{note}{Note}% from `amsthm'
+\newtheorem*{hint}{Hint}% from `amsthm'
+
+
+\tcbset{%
+    theo/.style={%
+        enhanced,
+        skin=bicolor,
+        colbacklower=#1!2,
+        sharp corners,
+        toprule=0pt, rightrule=0pt, bottomrule=0pt, leftrule=1mm,
+        colback=#1!5, colframe=#1!80!black, coltitle=#1!80!black,
+        fonttitle=\bfseries,
+        detach title, before upper={\tcbtitle\quad},
+        subtitle style={fontupper=\bfseries,toprule=0pt,bottomrule=0pt,colback={#1!10}},
+        parbox=false,
+    },
+    marker/.style={%
+      enhanced,
+      before skip balanced=2mm,after skip balanced=3mm,
+      boxrule=0.4pt,left=5mm,right=2mm,top=1mm,bottom=1mm,
+      colback=#1!50,
+      colframe=#1!20!black,
+      sharp corners,rounded corners=southeast,arc is angular,arc=3mm,
+      underlay={%
+        \path[fill=tcbcolback!80!black] ([yshift=3mm]interior.south east)--++(-0.4,-0.1)--++(0.1,-0.2);
+        \path[draw=tcbcolframe,shorten <=-0.05mm,shorten >=-0.05mm] ([yshift=3mm]interior.south east)--++(-0.4,-0.1)--++(0.1,-0.2);
+        \path[fill=#1!50!black,draw=none] (interior.south west) rectangle node[white]{\Huge\bfseries !} ([xshift=4mm]interior.north west);
+        },
+      % drop fuzzy shadow,
+  },
+}
+
+\newtcbtheorem[number within=chapter]{definition}{Definition}%
+{theo=blue}{def}
+
+\newtcbtheorem[number within=chapter]{theorem}{Theorem}%
+{theo=purple}{th}
+
+\newtcbtheorem[number within=chapter]{prop}{Proposition}%
+{theo=red}{prop}
+
+\newtcbtheorem[number within=chapter]{lemma}{Lemma}%
+{theo=magenta}{lemma}
+
+\newtcbtheorem[number within=chapter]{recap}{Recap}%
+{theo=orange}{rec}
+
+\newtcbtheorem[number within=chapter]{exercise}{Exercise}%
+{theo=yellow,coltitle=black}{exer}
+
+\newtcbtheorem[number within=chapter]{question}{Question}%
+{theo={green!50!black}}{qu}
+
+\newtcbtheorem[number within=chapter]{example}{Example}%
+{theo=black,colback=white}{ex}
+
+\newtcolorbox{marker}[1][]{marker=yellow,#1}
+\newtcolorbox{important}[1][]{marker=red,#1}
+\newtcolorbox{cnote}[1][]{marker=orange,#1}
+\newtcolorbox{note}[1][]{marker=white,#1}
+
