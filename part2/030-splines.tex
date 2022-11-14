@@ -2,8 +2,378 @@
 \chapter{Spline smoothing}
 
 \section{Penalized least squares non-parametric regression}
+
+In the previous chapter we have studied a family of non-parametric
+estimators of $m(x)$, the \emph{local  polynomial estimators}, and
+we have seen that they have good properties.
+
+We now deal with the problem of estimation of $m(x)$ with a different
+approach: We express the estimation problem as
+an \iemph{optimization problem}. This leads
+to a new family of non-parametric regression estimators.
+
+Let's start with the Least Squares (LS) problem:
+\begin{problem}{Least Squares (LS)}{LS}
+    \begin{equation*}
+        \min_{\tilde m : \mathbb{R} \to \mathbb{R}}
+            \sum_{i=1}^n \left(y_i - \tilde m(x_i)\right)^2
+    \end{equation*}
+\end{problem}
+
+Any function $\tilde m$ interpolating the observed data $(x_i, y_i),\,i=1,\ldots,n$
+(that is, verifying that $\tilde m(x_i) = y_i,\,\forall i$) is an optimal
+solution of this LS problem.
+
+But, in general, an interpolating function $\tilde m$ is not
+smooth enough as a function of $x$. If we want an optimal
+solution being a smooth function, we must include in the
+optimization problem a penalty term for the lack of smoothness:
+\begin{problem}{Penalized Least Squares}{PLS}
+    \begin{equation*}
+        \min_{\tilde m \in \mathcal M}
+        \left\{
+            \sum_{i=1}^n 
+            \left(y_i - \tilde m(x_i)\right)^2
+            + \phi(\tilde m)
+        \right\}
+    \end{equation*}
+    where $\mathcal M$ is a class of smooth functions (for instance,
+    having $p$ continuous derivatives) and $\phi : \mathcal M \to \mathbb{R}$ is
+    a functional penalizing the lack of smoothness of $\tilde m$.
+\end{problem}
+
+A common choice when data $x_i$ are in the interval $[a,b] \subseteq \mathbb{R}$ is
+the second order Sobolev space in $[a,b]$:
+\begin{definition}{Second order Sobolev space}{} in $[a, b]$
+    \begin{equation*}
+        W_2^2[a,\,b] = \left\{
+            m : [a,\,b] \to \mathbb{R} \,\middle|\,
+            \int_a^b \left(m(x)\right)^2 \,dx < \infty,\,
+            \exists m''(x),\,
+            \int_a^b \left(m''(x)\right)^2 \,dx < \infty
+            \right\}
+    \end{equation*}
+    \tcbline
+    Then, the penalty function is $\phi(m) = \lambda \int_a^b \left(m''(x)\right)^2 \,dx,\;\lambda > \infty$.
+
+    The penalized least squares problem is then:
+    \begin{equation*}
+        \min_{\tilde m \in W_2^2[a,\,b]}
+        \sum_{i=1}^n \left(y_i - \tilde m(x_i)\right)^2
+        + \lambda \int_a^b \left(\tilde m''(x)\right)^2 \,dx
+    \end{equation*}
+
+    This has a unique solution: a \iemph{cubic spline} with knots at $x_1,\ldots,x_n$
+    (the observed values of the explanatory variable).
+\end{definition}
+
+
 \section{Cubic splines and interpolation}
+
+\begin{definition}{Spline function}{spline}
+
+    The function $s : [a,\,b] \to \mathbb{R}$ is a \iemph{spline function} of
+    degree $p$ with knots $t_1, \ldots, t_k$ when:
+    \begin{itemize}
+        \item $a < t_1 < \ldots < t_k < b$ (we define $t_0 = a$ and $t_{k+1} = b$).
+        \item At each interval $[t_j, t_{j+1}]$, $j=0,\ldots,k$, the function $s$ is
+            a degree $p$ polynomial (or lower).
+        \item $s$ has $(p-1)$ continuous derivatives in $[a,\,b]$. That is,
+            the polynomials defining $s$ in $[t_{j-1}, t_{j}]$ and $[t_j, t_{j+1}]$
+            have a smooth link at $t_j$.
+    \end{itemize}
+\end{definition}
+
+\begin{example}{Cubic spline}{}
+    The most commonly used spline functions are those with degree $p=3$ (\iemph{cubic splines}).
+\end{example}
+
+\begin{definition}{Periodic spline}{}\index{periodic spline}
+    A degree $p$ spline $s: [a,\,b] \to \mathds R$ is said to be \emph{periodic} when
+    $s^{(j)}(a) = s^{(j)}(b)$ for $j=0,\ldots,p-1$.
+\end{definition}
+
+\begin{definition}{Natural spline}{}\index{natural spline}
+    Let $p$ be an odd number, $p = 2I - 1$, with $I \in \mathbb{N}^+$. A degree $p$ spline
+    $s: [a,\,b] \to \mathds R$ is said to be \emph{natural} when
+    $s^{(I+j)}(a) = s^{(I+j)}(b) = 0,\;j=0,\ldots,I-1$.
+    \tcblower
+    So, $s$ must verify $p+1 = 2I$ restrictions.
+\end{definition}
+
+\begin{example}{Natural cubic splines}{}
+    When $p=3$, then $I=2$ and the $2I=4$ restrictions that a natural
+    cubic spline must verify are:
+    \begin{equation*}
+        s''(a) = s''(b) = 0,\quad s'''(a) = s'''(b) = 0
+    \end{equation*}
+    \tcblower
+    Therefore, a natural cubic spline $s$ is linear in $[a,\,t_1]$ and $[t_k,\,b]$
+    and $s''(t_1) = s''(t_k) = 0$.
+\end{example}
+
+\begin{prop}{}{}
+    Let $S[p;a=t_0,t_1,\ldots,t_{k+1}=b]$ be the set of splines of
+    degree $p$ with knots $t_0,\ldots,t_{k}$ defined in $[a,\,b]$.
+    Then, the set $S[p;a=t_0,t_1,\ldots,t_{k+1}=b]$ is a vector space
+    with dimension $p+k+1$.
+\end{prop}
+
+\begin{definition}{Vector Space}{}
+    A \emph{vector space} is a set $V$ with two binary operations:
+    \begin{itemize}
+        \item A binary operation $\oplus : V \times V \to V$ called \emph{addition}
+            such that:
+            \begin{itemize}
+                \item $\forall v \in V,\; v \oplus 0 = v$
+                \item $\forall v,w \in V,\; v \oplus w = w \oplus v$
+                \item $\forall v,w,z \in V,\; (v \oplus w) \oplus z = v \oplus (w \oplus z)$
+            \end{itemize}
+        \item A binary operation $\otimes : \mathbb{R} \times V \to V$ called
+            \emph{scalar multiplication} such that:
+            \begin{itemize}
+                \item $\forall v \in V,\; 1 \otimes v = v$
+                \item $\forall v \in V,\; \forall \alpha,\beta \in \mathbb{R},\;
+                    \alpha \otimes (v \oplus w) = \alpha \otimes v \oplus \alpha \otimes w$
+                \item $\forall v \in V,\; \forall \alpha,\beta \in \mathbb{R},\;
+                    (\alpha + \beta) \otimes v = \alpha \otimes v \oplus \beta \otimes v$
+                \item $\forall v \in V,\; \forall \alpha,\beta \in \mathbb{R},\;
+                    (\alpha \beta) \otimes v = \alpha \otimes (\beta \otimes v)$
+            \end{itemize}
+    \end{itemize}
+\end{definition}
+
+\begin{definition}{Basis of a vector space}{}
+    A \emph{basis} of a vector space $V$ is a set of vectors $\{v_1,\ldots,v_n\}$
+    such that:
+    \begin{itemize}
+        \item $\forall v \in V,\; \exists \alpha_1,\ldots,\alpha_n \in \mathbb{R},\;
+            v = \alpha_1 v_1 + \ldots + \alpha_n v_n$
+        \item $\forall v_1,\ldots,v_n \in V,\; \forall \alpha_1,\ldots,\alpha_n \in \mathbb{R},\;
+            \alpha_1 v_1 + \ldots + \alpha_n v_n = 0 \implies \alpha_1 = \ldots = \alpha_n = 0$
+    \end{itemize}
+\end{definition}
+
+\begin{example}{Basis for cubic splines}{}
+
+    The set of cubic splines $S[3;a=t_0,t_1,\ldots,t_{k+1}=b]$ has dimension
+    $3+k+1 = 4+k$. A basis for this vector space is as follows:
+    \begin{equation*}
+        s_1(x) = 1,\; s_2(x) = x,\; s_3(x) = x^2,\; s_4(x) = x^3,\;
+        s_{j+4}(x) = (x - t_j)^3_+,\; j=1,\ldots,k
+    \end{equation*}
+    where $u_+ = \max\{u,0\}$ is the positive part of $u$.
+    \tcblower
+    \begin{note}
+        This is not the only possible basis for the set of cubic splines.
+        In fact, we will study other bases that are more suitable for numeric manipulation.
+    \end{note}
+\end{example}
+
+\begin{prop}{}{}
+    Let $N[p;\,a=t_0,t_1,\ldots,t_{k+1}=b]$ be the set of natural splines of degree $p$
+    with knots $t_0,\ldots,t_{k}$ defined in $[a,\,b]$. Then, the set $N[p;\,a=t_0,t_1,\ldots,t_{k+1}=b]$
+    is a vector space with dimension $k$.
+\end{prop}
+
+\begin{prop}{}{}
+    Given $(x_i,y_i)\in\mathds R^2,\;i=1,\ldots,n,\,n\geq 2,\,
+    a < x_1 < \cdots < x_n < b$, there is a unique natural spline $s$
+    of degree $p$ with knots $x_i,\,i=1,\ldots,n$ interpolating these
+    data:
+    \begin{equation*}
+        s(x_i) = y_i,\;i=1,\ldots,n
+    \end{equation*}
+\end{prop}
+
+\pagebreak
 \section{Smoothing splines}
+
+Now, we focus on cubic splines.
+
+\begin{prop}{}{}
+    Let $n\geq 2$ and let $s$ be the \iemph{natural cubic spline} interpolating the
+    data $(x_i,y_i)\in\mathds R^2,\;i=1,\ldots,n$ with $a < x_1 < \cdots < x_n < b$.
+    Let $g$ be another function in $\mathcal M = W_2^2[a,b]$ that \emph{also}
+    interpolates the data. Then:
+    \begin{equation*}
+        \int_a^b \left(s''(x)\right)^2\,dx \leq \int_a^b \left(g''(x)\right)^2\,dx
+    \end{equation*}
+    Holds if and only if $g(x) = s(x)\, \forall x \in [a,b]$.
+\end{prop}
+
+\begin{prop}{}{natural-cubic}
+    Let $n \geq 2$ and consider the data set $(x_i,y_i)\in\mathds R^2,\;i=1,\ldots,n$
+    with $a < x_1 < \cdots < x_n < b$. Given a parameter value $\lambda > 0$,
+    the solution to the problem:
+    \begin{equation*}
+        \min_{\tilde m \in W_2^2[a,b]} \Psi(m) = \min_{\tilde m \in W_2^2[a,b]}
+        \left\{
+            \sum_{i=1}^n \left( y_i - \tilde m(x_i)\right)^2
+            + \lambda \int_a^b \left(\tilde m''(x)\right)^2\,dx
+            \right\}
+    \end{equation*}
+    is a \iemph{natural cubic spline} with knots $x_1,\ldots,x_n$.
+    \tcblower
+    \begin{note}
+        This proposition establishes that the optimization problem in an infinite
+        dimensional space, $W_2^2[a,b]$, can be reduced to a finite dimensional
+        space: the set of natural cubic splines with knots $x_1,\ldots,x_n$.
+    \end{note}
+\end{prop}
+
+% TODO: proof to get to this conclusion:
+The spline estimator of $m(x)$ is a \iemph{linear smoother}. Therefore,
+we can apply all we know about linear smoothers:
+\begin{itemize}
+    \item Smoothing parameter choice (LOOCV, GCV).
+    \item Efficient computation of LOOCV is also valid in this context.
+    \item Effective number of parameters.
+    \item Estimation of the residual variance.
+\end{itemize}
+
+\pagebreak
 \section{B-splines}
-\section{Fitting generalized non-parametric regression models with splines}
+
+We now introduce a basis for $S[p;\,a=t_0,t_1,\ldots,t_{k+1}=b]$ that is
+both numerically and computationally convenient.
+
+\begin{definition}{B-splines basis}{} (defined recursively)
+
+    In addition to the $k$ knots $t_1,\ldots,t_k$, we introduce $M$ auxiliary
+    knots:
+    \begin{equation*}
+        \tau_1 \leq \cdots \leq \tau_M \leq t_0,\;
+        t_{k+1} \leq \tau_{k+M+1} \leq \cdots \leq \tau_{k+2M}
+    \end{equation*}
+    And rename the original knots as:
+    \begin{equation*}
+        \tau_{M+j} = t_j,\; j=1,\ldots,k
+    \end{equation*}
+
+    The choice of auxiliary knots is arbitrary, they can be:
+    \begin{equation*}
+        \tau_1=\cdots=\tau_M = t_0,\; \tau_{k+M+1}=\cdots=\tau_{k+2M} = t_{k+1}
+    \end{equation*}
+
+    We define the basis of B-splines of order 1 (degree 0) as:
+    \begin{equation*}
+        B_{j,1} = I_{[\tau_j,\tau_{j+1})},\; j=1,\ldots,k+2M - 1
+    \end{equation*}
+
+    For $m=2,\ldots,M$ the basis of B-splines of order $m$ (degree $m-1$) is:
+    \begin{equation*}
+        B_{j,m} = \frac{x-\tau_j}{\tau_{j+m-1}-\tau_j}B_{j,m-1}
+        + \frac{\tau_{j+m}-x}{\tau_{j+m}-\tau_{j+1}}B_{j+1,m-1}
+    \end{equation*}
+    For $j=1,\ldots,k+2M-m$. The quotients are 0 when the denominator is 0.
+\end{definition}
+
+\begin{example}{Properties of cubic B-splines bases}{}
+    \begin{enumerate}
+        \item $B_{j,4}(x) \geq 0\; \forall x \in [a,b]$
+        \item $B_{j,4}(x) = 0\; \forall x \notin [\tau_j,\tau_{j+4}]$
+        \item If $j \in \{4,\ldots,k+1\},\, B_{j,4}^{(I)}(\tau_{j+4}) = 0,\,I=0,1,2$
+    \end{enumerate}
+    The second property is the responsible of the computational advantages
+    of using bases of B-splines.
+\end{example}
+
+Consider again the PLS problem, optimizing now in the set of cubic splines, written
+as a linear combination of the basis of B-splines:
+\begin{problem}{Cubic B-Splines PLS}{cubic-bspls}
+    \begin{equation*}
+        \min_{\beta \in \mathds R^{n+4}} \Psi(\beta) = \min_{\beta \in \mathds R^{n+4}}
+        \left( Y - \boldsymbol B_{\boldsymbol X} \beta \right)^T
+        \left( Y - \boldsymbol B_{\boldsymbol X} \beta \right)
+        + \lambda \beta^T \boldsymbol D \beta
+    \end{equation*}
+    where $\boldsymbol D$ is the $(n+4)\times(n+4)$ matrix with generic $(i,j)$
+    element $\int_a^b B_i''(x)B_j''(x)\,dx$ and $\boldsymbol B_{\boldsymbol X}$ is
+    the $n \times (n+4)$ matrix with generic $(i,j)$ element $B_j(x_i)$.
+
+    Now the solution is:
+    \begin{equation*}
+        \hat \beta = \left( \boldsymbol B_{\boldsymbol X}^T \boldsymbol B_{\boldsymbol X}
+            + \lambda \boldsymbol D \right)^{-1} \boldsymbol B_{\boldsymbol X}^T Y
+    \end{equation*}
+    \tcblower
+    \begin{note}
+        The matrices $\boldsymbol B_{\boldsymbol X}\boldsymbol B_{\boldsymbol X}^T$ and
+        $\boldsymbol D$ are \emph{band matrices}, with elements $(i,j)$ equal to 0 if
+        $|i-j| > 4$. Therefore, the matrix inversion is computationally efficient
+        (for instance, we can use Cholesky decomposition).
+    \end{note}
+    \begin{note}
+        The optimal cubic spline must be a \emph{natural cubic spline}.
+    \end{note}
+\end{problem}
+
+\begin{definition}{Band matrix}{}
+    A sparse matrix whose non-zero entries are confined to a diagonal band,
+    comprising the main diagonal and zero or more diagonals on either side.
+\end{definition}
+
+\subsection{Regression using B-splines}
+
+When solving the \iemph{penalized least squares} problem, and then looking for
+the best (natural) cubic spline, in practice, it is not necessary to look
+for those having knots at every observed $x_i$. Since the computational
+cost of doing that is prohibitive for large $n$.
+
+It is enough to take a sufficiently large number of $k$ knots. The
+$k$ knots can be evenly spaced or they can be the quantiles
+$(j/(k+1)),\,j=1,\ldots,k$ of the $x_i$'s.
+
+Regarding the choice of $k$, Rupper, Wand and Carroll suggest:
+\begin{equation*}
+    k = \min \left\{
+        35,\, \frac{1}{4} \times \left( \text{Number of different $x_i$'s} \right)
+    \right\}
+\end{equation*}
+
+In R, the function \texttt{smooth.spline} uses by default $O\left(\sqrt[5]n\right)$ when
+$n \geq 50$.
+
+We use PLS to perform regression, as outlined in~\ref{problem:cubic-bspls}. As such we
+have two tuning parameters: $\lambda$ and $k$ that can play the role
+of a \iemph{smoothing parameter}. If we take $\lambda=0$, the number
+of knots $k$ acts as the smoothing parameter. Usually, $k$ is
+fixed and large ($k = O(\sqrt[5]n)$), then $\lambda$ is the
+only smoothing parameter.
+
+\section{Generalized non-parametric regression with splines}
+
+Assume now that the response variable $Y$ has a distribution conditional
+to $X = x$ given by:
+\begin{equation}\label{eq:generalized-non-parametric}
+    Y \mid X=x \sim f(y \mid \theta(x))
+\end{equation}
+where $\theta(x) \in \mathds{R}$ is a \iemph{smooth function} of
+$x$ free constraints.
+
+\begin{problem}{Maximum log-likelihood penalized for lack of smoothness}{}
+    for the model in \cref{eq:generalized-non-parametric} is:
+    \begin{equation*}
+        \max_{\theta \in W_2^2[a,b]} \left \{
+            \sum_{i=1}^n \log f\bigl(y_i \mid \theta(x_i)\bigr)
+            + \lambda \int_a^b \theta''(x)^2\,dx
+            \right \}
+    \end{equation*}
+\end{problem}
+
+Using proposition~\ref{prop:natural-cubic} it can be proved that the optimal
+function $\theta(x)$ is a natural cubic spline with knots at $x_1,\ldots,x_n$.
+
+\begin{note}
+Nevertheless, the solution does not have a closed expression, numerical
+optimization is required.
+\end{note}
+
+A possibility is to use \iemph{Penalized Iteratively Re-weighted Least Squares}
+(P-IRWLS)\index{P-IRWLS}. The idea is to replace the linear fit
+with a spline smoothing.
+
+Another alternative is to fit a GLM using a cubic spline basis matrix as
+regressors. The number of knots $k$ controls the amount of smoothing.
 
