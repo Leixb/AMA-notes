@@ -1,5 +1,215 @@
 %! TEX root = ../000-main.tex
 \chapter{Generalized non-parametric regression model}
+\chaptermark{G NP reg. model}
 
+\section{Introduction}
+Non-parametric version of the Generalized Linear Model (GLM).
+
+\begin{definition}{Generalized Linear Model (GLM)}{GLM}
+A GLM is a model of the form
+\begin{equation}
+y = f(\eta) + \epsilon
+\end{equation}
+where $y$ is a random variable, $\eta$ is a linear predictor, $f$ is a \iemph{link function},
+and $\epsilon$ is a random error term.
+\end{definition}
+
+\pagebreak
+\section{Binary Response}
+
+\subsection{Logistic Regression}
+First, we consider the standard logistic regression model.
+
+\begin{definition}{Logistic Regression}{logistic}
+    A GLM model with a binary response.
+
+    Let $(X, Y)$ be two r.v., where $X$ is continuous and $Y$ is binary. We
+    assume that $(Y \mid X = x) \sim \text{Bernoulli}(p(x))$ and that
+    there exist parameters $\beta_0, \beta_1$ such that:
+    \begin{equation*}
+        \underbrace{\log\left(\frac{p(x)}{1 - p(x)}\right)}_{\text{Logit}(p(x))}
+        = \beta_0 + \beta_1 x \iff
+        \underbrace{\frac{e^{\beta_0 + \beta_1 x}}{1 + e^{\beta_0 + \beta_1 x}} = p(x)}_{\text{Logistic} = p(x)}
+    \end{equation*}
+    \tcblower
+    In logistic regression, the link function is the \iemph{logit function}, because
+    if links the conditional expectation $P(x) = \mathds{E}(Y \mid X = x)$
+    with the linear predictor $\beta_0 + \beta_1 x$.
+\end{definition}
+
+\subsubsection{Estimation of parameters}
+Let $(x_i, y_i)$ be a sample of size $n$ from the population $(X, Y)$ following
+the logistic regression model. The estimation of the parameters $\beta_0, \beta_1$
+is done by maximization of the log-likelihood function:
+\begin{equation*}
+    \ell(\beta_0, \beta_1) = \sum_{i=1}^n \left(y_i \log \left( \frac{p(x_i)}{1 - p(x_i)} \right) + \log\bigl(1 - p(x_i)\bigr) \right)
+\end{equation*}
+
+This maximization is done by numerical methods. The most used algorithm
+(equivalent to the \iemph{Newton-Raphson} method)
+is known as \iemph{iteratively re-weighted least squares} (IRWLS), and
+is also used for fitting other GLM models.
+
+\begin{definition}{Iteratively re-weighted least squares (IRWLS)}{IRWLS}\index{IRWLS}
+    The IRWLS algorithm is an iterative algorithm for fitting GLM models.
+    It is based on the following steps:
+    \begin{enumerate}
+        \item Start with an initial guess for the parameters $\beta_0, \beta_1$.
+        \item Compute the conditional expectation $P(x_i) = \mathds{E}(Y \mid X = x_i)$
+            for each $i$.
+        \item Compute the weights $w_i = P(x_i) \cdot (1 - P(x_i))$.
+        \item Compute the weighted least squares estimator of the parameters
+            $\beta_0, \beta_1$.
+        \item Repeat steps 2 to 4 until convergence.
+    \end{enumerate}
+\end{definition}
+
+\subsection{Non-parametric Binary Regression}
+We now consider the non-parametric version of the logistic regression model.
+
+\begin{definition}{Non-parametric binary regression}{npbinereg} 
+    Non-parametric version of the logistic regression model (def~\ref{def:logistic}).
+
+    The bivariate r.v. $(X, Y)$ has a joint distribution such that
+    $(Y \mid X = x) \sim \text{Bernoulli}(p(x))$, with:
+    \begin{equation*}
+        \log\left(
+            \frac{p(x)}{1 - p(x)} = \theta(x)
+        \right)
+    \end{equation*}
+    where $\theta(x)$ is a smooth function of $x$.
+
+    Equivalently,
+    \begin{equation*}
+        p(x) = \frac{e^{\theta(x)}}{1 + e^{\theta(x)}}
+    \end{equation*}
+
+    \tcblower
+
+    The logit link ($\log\left(\frac{p}{1 - p}\right)$) is also used in this context.
+
+    The function $\theta(x)$ is \iemph{free of constraints}, while $p(x) \in [0, 1]$.
+
+    $p(x) = \mathds{E}(Y \mid X = x)$ is the regression function.
+\end{definition}
+
+
+\pagebreak
 \section{Generalized non-parametric regression model}
+\sectionmark{G NP reg. model}
+Let's now consider the general case, for any response variable.
+
+\begin{definition}{Generalized non-parametric regression model}{}
+
+    The bivariate r.v. $(X, Y)$ has a joint distribution such that:
+    \begin{equation*}
+        (Y \mid X = x) \sim f(y;\; m(x),\, \psi)
+    \end{equation*}
+    where $m(x) = \mathds{E}(Y \mid X = x)$ is a smooth function of $x$,
+    possibly subject to certain constraints (non-negativity, boundedness, etc.)
+    and $\psi$ represents other parameters (e.g. variance) not depending on $x$.
+
+    There exists an invertible link function $g$ such that:
+    \begin{equation*}
+        \theta(x) = g(m(x)), \quad m(x) = g^{-1}(\theta(x))
+    \end{equation*}
+    where $\theta(x)$ is a smooth function of $x$ free of constraints.
+
+    \tcblower
+
+    Alternatively, we can write:
+    \begin{equation*}
+        (Y \mid X = x) \sim f_2(y;\; \theta(x),\, \psi) = f(y;\; g^{-1}(\theta(x)),\, \psi)
+    \end{equation*}
+
+\end{definition}
+
+\pagebreak
 \section{Estimation by maximum local likelihood}
+
+Let's focus on the non-parametric binary response model (def~\ref{def:npbinereg}).
+We have $n$ data observed for this model, $(x_i, y_i)$, $i = 1, \ldots, n$,
+and the goal is to estimate $p(t) = \mathds{E}(Y \mid X = t)$ for $t \in \mathbb{R}$
+for a generic value $t \in \mathds{R}$.
+
+Given that $\theta(x)$ is a smooth function, a first order
+Taylor expansion of $\theta(x)$ around $t$ gives that for $x$ close to $t$:
+\begin{equation*}
+    \theta(x) \approx \theta(t) + \theta'(t) (x - t)
+\end{equation*}
+
+Then in a neighborhood of $t$, the standard logistic model is approximately
+valid:
+\begin{equation*}
+    \theta(x) \approx \beta_0^t + \beta_1^t (x - t)
+\end{equation*}
+
+We can now fit this logistic model by \iemph{maximum local likelihood}.
+The contribution to the log-likelihood function of each observation is:
+\begin{equation*}
+    y_i\log\left(
+        \frac{p_i^t}{1 - p_i^t}
+    \right) + \log\left(1 - p_i^t\right)
+\end{equation*}
+where
+\begin{equation*}
+    p_i^t = \frac{e^{\beta_0^t + \beta_1^t x_i }}{1 + e^{\beta_0^t + \beta_1^t x_i }}
+    \approx p(x_i)
+\end{equation*}
+
+The closer $x_i$ is to $t$, the better is the approximation $p_i^t \approx p(x_i)$.
+
+Adding up all the data contributions, weighted by the distance:
+$w_i^t \propto K((t - x_i)/h)$, where $K$ is a kernel function and $h$ is a bandwidth,
+we get the following log-likelihood function:
+\begin{equation*}
+    \ell(\beta_0^t, \beta_1^t) = \sum_{i = 1}^n w_i^t y_i\log\left(
+        \frac{p_i^t}{1 - p_i^t}
+    \right) + \log\left(1 - p_i^t\right)
+\end{equation*}
+
+\subsubsection{Maximizing the local log-likelihood}
+We use a \iemph{weighted} version of the IRWLS algorithm (def~\ref{def:IRWLS}),
+at each iteration, we multiply the usual weights $p_i^s(1 - p_i^s)$ by the
+kernel weights $w_i^t$.
+
+\pagebreak
+\section{Bandwidth selection}
+We present two possibilities (there are other alternatives):
+\begin{itemize}
+    \item Minimizing in $h$ the probability of miss-classification of a new observation
+    \item Maximizing in $h$ the expected log-likelihood of a new observation
+\end{itemize}
+In both cases, the quantities must be estimated, which can be done by cross-validation.
+
+\begin{definition}{Probability of miss-classification}{} of a new observation
+    by LOOCV:
+
+    This probability is estimated by:
+    \begin{equation*}
+        p_\text{CV}(h) = \frac{1}{n} \sum_{i = 1}^n \mathds{1}_{\{y_i \neq \hat{y}_i^{(-i)}\}}
+    \end{equation*}
+    where $\hat{y}_i^{(-i)} = \mathds{1}_{\{\hat{p}_i^{(-i)} \geq 1/2\}}$ and
+    $p_i^{(-i)} = \hat p_h^{(-i)}(x_i)$ is the estimation of
+    $p(x_i) = P(Y = 1 \mid X = x_i)$ when using $h$ as bandwidth and all the observations
+    except the $i$-th one.
+\end{definition}
+
+\begin{definition}{Expected log-likelihood}{} of a new observation by LOOCV:
+
+    The cross-validation estimation of the expected log-likelihood of
+    a new observation when using $h$ as bandwidth is:
+    \begin{align*}
+        \ell_\text{CV}(h) &= \frac{1}{n} \sum_{i = 1}^n \log\left(
+            \widehat{P}_h^{(-i)}(Y = y_i \mid X = x_i)
+        \right) \\
+                          &= \frac{1}{n} \sum_{i = 1}^n \log\left(
+                              y_i \log\left(
+                                  \frac{{p}_i^{(-i)}}{1 - {p}_i^{(-i)}}
+                              \right) + \log\left(1 - {p}_i^{(-i)}\right)
+                          \right)
+    \end{align*}
+    where ${p}_i^{(-i)} = \hat p_h^{(-i)}(x_i)$ is the estimation of
+    $p(x_i) = P(Y = 1 \mid X = x_i)$ when using $h$ as bandwidth and all the observations
+    except the $i$-th one.
+\end{definition}
