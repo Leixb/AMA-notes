@@ -1,5 +1,145 @@
 %! TEX root = ../000-main.tex
 \chapter{Introduction to Functional Data Analysis (FDA)}
+\chaptermark{FDA Intro.}
 
 \section{An overview of FDA}
+
+Observing and saving complete functions as the result of random
+experiments is possible by the development of real-time
+measurement instruments and data storage resources.
+
+\begin{example}{}{}
+	For patients involved in a clinical trial, the blood pressure
+	is monitored in continuous-time during 24 hours
+\end{example}
+
+\begin{definition}{Functional data}{}
+	Samples where a whole function is observed at each sampling unit
+	are referred to as \iemph{Functional Data}.
+	\tcblower
+	Random functions are \iemph{Statistical atoms} in this case.
+\end{definition}
+
+\begin{figure}[H]
+	\begin{tikzpicture}[
+			every node/.style={rectangle, draw,rounded corners,inner sep=10pt},
+		]
+		\node (u) {Univariate};
+		\node[right=of u] (m) {Multivariate};
+		\node[right=of m] (f) {Functional};
+		\draw[->,thick] (u) -- (m);
+		\draw[->,thick] (m) -- (f);
+	\end{tikzpicture}
+	\caption{Evolution of Statistical Analysis}
+\end{figure}
+
+Functional data analysis (FDA) deals with the statistical description
+and modeling of samples of \iemph{random functions}.
+
+Functional data can also be obtained from standard random samples,
+by the application of non-parametric curve estimation methods:
+\begin{itemize}
+	\item Non-parametric density estimation.
+	\item Non-parametric regression.
+	\item Non-parametric version of the GLM.
+\end{itemize}
+
+Kernel estimators, local polynomial regression, local likelihood,
+spline smoothing and interpolations \dots
+
+Many standard statistical techniques have been extended to
+functional data:
+\begin{itemize}
+	\item \textbf{Exploratory data analysis} (location and scale measures, \dots).
+	\item \textbf{Regression models} (lm, glm, non-parametric, \dots).
+	\item \textbf{Multivariate Analysis} (PCA, MDS, Clustering, Depth measures, \dots).
+	\item \textbf{Hypothesis testing}.
+	\item \textbf{Time Series}, \textbf{Spatial Statistics}, \dots
+\end{itemize}
+
+Others methods are specific for this kind of data because they
+exploit the nature of functions:
+\begin{itemize}
+	\item \textbf{Principal differential analysis} is a kind of principal component
+	      analysis made on the derivatives of the observed functions,
+	\item \textbf{Registration} is a pre-process step where a change of variable is done
+	      in each observed function in order to make them as similar as
+	      possible.
+\end{itemize}
+
+\paragraph{Software}
+In R, the \texttt{fda} package provides a set of tools for functional data analysis.
+There is also \texttt{fda.usc} among others.
+
 \section{Concepts of Functional Analysis useful in FDA}
+
+\begin{definition}{Spatial dependence}
+	When dealing with spatial data, the \iemph{spatial dependence} is
+	the correlation between the values of a variable at two different
+	locations in space.
+\end{definition}
+
+\section{Formal definition of functional data}
+
+\begin{definition}{functional random variable}{frv}
+	A random variable $\boldsymbol{\mathcal X}$ taking values in an infinite dimensional space (or
+	functional space)
+\end{definition}
+
+\begin{definition}{functional data}{fd}
+	An observation $\mathcal X$ of $\boldsymbol{\mathcal X}$ is called \iemph{functional data}.
+	\tcblower
+
+	Likewise a \iemph{functional data set} $\mathcal X_1,\ldots,\mathcal X_n$ is a collection of $n$
+	observations of functional variables $\boldsymbol{\mathcal X_1}, \ldots, \boldsymbol{\mathcal X_n}$
+	identically distributed as $\boldsymbol{\mathcal X}$.
+\end{definition}
+
+Let $T = [a,\,b] \subseteq \mathds R$, usually we work with functional data that are
+elements of $L^2(T)$, the space of square integrable functions on $T$:
+\begin{equation*}
+	L^2(T) = \left\{ f : T \to \mathds R \,\middle|\, \int_a^b f^2(t) \,dt < \infty \right\}.
+\end{equation*}
+
+Smoothness of $\mathcal X$ as a function of $t \in T = [a,\, b]$ is implicitly assumed.
+
+\begin{definition*}{Hilbert Space}{HS}
+	A Hilbert space is a vector space endowed with an inner product.
+\end{definition*}
+
+\begin{definition}{Separable Hilbert Space}{}
+	A separable Hilbert space is a Hilbert space that is separable as a metric space. That is,
+	an infinite generalization of the usual Euclidean spaces in $\mathds R^p,\,p\in\mathds N^+$.
+	\tcblower
+	\begin{note}
+		$L^2(T)$ is a separable Hilbert space with the inner product:
+		\begin{equation*}
+			\langle f, g \rangle = \int_T f(t) g(t) \,dt.
+		\end{equation*}
+	\end{note}
+\end{definition}
+
+\pagebreak
+\subsection{Functional data and random processes}
+
+\begin{definition}{Random process}{rp} (or \iemph{stochastic process})\index{random process}
+	indexed by $T = [a,\,b] \subseteq \mathds R$
+	is a random variable $\boldsymbol{\mathcal X}$ taking values in:
+	\begin{equation*}
+		L^2(T) = \left\{ f : T \to \mathds R \,\middle|\, \int_a^b f^2(t) \,dt < \infty \right\}.
+	\end{equation*}
+    \tcblower
+
+    This is the same $L^2(T)$ as the one usually used for functional data.
+\end{definition}
+
+\begin{question*}{What is the difference between a functional data and a random process?}
+
+	In random process analysis it is usually assumed that we can observe
+    only \emph{one} realization of the process, while in functional data analysis
+	it is always assumed that independent observations from the random
+	process are available.
+\end{question*}
+
+% \section{Concepts of Functional Analysis useful in FDA}
+
