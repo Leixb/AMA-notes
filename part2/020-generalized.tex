@@ -203,11 +203,10 @@ In both cases, the quantities must be estimated, which can be done by cross-vali
         \ell_\text{CV}(h) &= \frac{1}{n} \sum_{i = 1}^n \log\left(
             \widehat{P}_h^{(-i)}(Y = y_i \mid X = x_i)
         \right) \\
-                          &= \frac{1}{n} \sum_{i = 1}^n \log\left(
+                          &= \frac{1}{n} \sum_{i = 1}^n 
                               y_i \log\left(
                                   \frac{{p}_i^{(-i)}}{1 - {p}_i^{(-i)}}
                               \right) + \log\left(1 - {p}_i^{(-i)}\right)
-                          \right)
     \end{align*}
     where ${p}_i^{(-i)} = \hat p_h^{(-i)}(x_i)$ is the estimation of
     $p(x_i) = P(Y = 1 \mid X = x_i)$ when using $h$ as bandwidth and all the observations
