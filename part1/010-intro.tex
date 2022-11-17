@@ -618,13 +618,7 @@ when using an uniform kernel on $\mathds{R}^p$ and bandwidth of $\varepsilon$.
     
 \end{definition}
 
-\subsubsection{DBSCAN Algorithm}
-
-\begin{marker}
-There are two hyperparameters in DBSCAN: $\varepsilon$ and $\text{minPts}$.
-\end{marker}
-
-\begin{figure}[H]
+\begin{algorithm}{DBSCAN}{}
     \begin{algorithmic}[1]
     \Procedure{DBSCAN}{$\varepsilon$, minPts}
         \State Mark each point $\boldsymbol{x}_i$ as either core, border or noise
@@ -640,7 +634,11 @@ There are two hyperparameters in DBSCAN: $\varepsilon$ and $\text{minPts}$.
         \EndWhile
     \EndProcedure
 \end{algorithmic}
-\end{figure}
+\tcblower
+\begin{marker}
+There are two hyperparameters in DBSCAN: $\varepsilon$ and $\text{minPts}$.
+\end{marker}
+\end{algorithm}
 
 \begin{figure}[H]
     \includegraphics[width=0.6\textwidth]{../figures/dbscan_eps_minpts}

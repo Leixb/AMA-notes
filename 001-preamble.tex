@@ -283,6 +283,9 @@
 \newtcbtheorem[number within=chapter]{definition}{Definition}%
 {theo=blue}{def}
 
+\newtcbtheorem[number within=chapter]{algorithm}{Algorithm}%
+{theo=cyan,coltitle={cyan!60!black}}{alg}
+
 \newtcbtheorem[number within=chapter]{theorem}{Theorem}%
 {theo=purple}{th}
 
@@ -299,15 +302,18 @@
 {theo=yellow,coltitle=black}{exer}
 
 \newtcbtheorem[number within=chapter]{question}{Question}%
-{theo={green!50!black}}{qu}
+{theo={green!60!black}}{qu}
 
 \newtcbtheorem[number within=chapter]{problem}{Problem}%
-{theo={green!50!black}}{problem}
+{theo=teal}{problem}
 
 \newtcbtheorem[number within=chapter]{example}{Example}%
 {theo=black,colback=white}{ex}
 
-\newtcolorbox{marker}[1][]{marker=yellow,#1}
+\newtcbtheorem[number within=chapter]{remark}{Remark}%
+{theo=blue,colback=white}{ex}
+
+\newtcolorbox{marker}[1][]{marker={yellow!50!white},#1}
 \newtcolorbox{important}[1][]{marker=red,#1}
 \newtcolorbox{cnote}[1][]{marker=orange,#1}
 \newtcolorbox{note}[1][]{marker=white,#1}

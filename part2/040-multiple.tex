@@ -255,7 +255,7 @@ where:
 This reasoning leads to the \emph{backfitting} algorithm to estimate
 the additive model.
 
-\begin{definition}{Backfitting algorithm}{backfitting}
+\begin{algorithm}{Backfitting algorithm}{backfitting}
     \begin{enumerate}
         \item Estimate $\alpha$ using the sample mean of $y_i$: $\hat \alpha = \frac{1}{n} \sum_{i=1}^n y_i$.
         \item Take an arbitrary function $\hat g_k = g_k^0$ as initial estimate of function $g_k$,
@@ -271,7 +271,7 @@ the additive model.
             \end{enumerate}
         \item Repeat step 3 until convergence.
     \end{enumerate}
-\end{definition}
+\end{algorithm}
 
 \subsubsection{Basis functions}
 

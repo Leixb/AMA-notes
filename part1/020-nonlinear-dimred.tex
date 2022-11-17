@@ -13,24 +13,24 @@ We observe $n$ independent objects $\mathcal{O}_i,\;i=1,\ldots,n$ from a given p
 
 In general, they belong to a large-dimensional (or even infinite-dimensional) space $\Omega$.
 
-\begin{definition}{Dimensionality reduction problem}{}
-	We want to find a low dimensional configuration $\boldsymbol{Y}$, that is an
-	$n \times q$ matrix, where $q < n$ such that each of its rows $\boldsymbol{y}_i$ can
-	be identified with the observed object $\mathcal{O}_i$ in some way:
-	\begin{itemize}
-		\item An application $\rho: \mathbb{R}^q \to \Omega$ such that
-		      $\rho(\boldsymbol{y}_i) \approxeq \mathcal{O}_i,\quad i=1,\ldots,n$.
-		\item We can define a distance between $\boldsymbol{y}_i$ and $\boldsymbol{y}_j$,
-		      such that the distance between $\mathcal{O}_i$ and $\mathcal{O}_j$ is close
-		      to the dissimilarity between the observed objects $\mathcal{O}_i$ and
-		      $\mathcal{O}_j,\; \forall i,j \in \{1,\ldots,n\}$.
-		\item \ldots
-	\end{itemize}
-	\begin{note}
-		When dimensionality reduction is for visualization purposes, $q = 2$ is
-		usually chosen.
-	\end{note}
-\end{definition}
+\begin{problem}{Dimensionality reduction problem}{}
+We want to find a low dimensional configuration $\boldsymbol{Y}$, that is an
+$n \times q$ matrix, where $q < n$ such that each of its rows $\boldsymbol{y}_i$ can
+be identified with the observed object $\mathcal{O}_i$ in some way:
+\begin{itemize}
+	\item An application $\rho: \mathbb{R}^q \to \Omega$ such that
+	      $\rho(\boldsymbol{y}_i) \approxeq \mathcal{O}_i,\quad i=1,\ldots,n$.
+	\item We can define a distance between $\boldsymbol{y}_i$ and $\boldsymbol{y}_j$,
+	      such that the distance between $\mathcal{O}_i$ and $\mathcal{O}_j$ is close
+	      to the dissimilarity between the observed objects $\mathcal{O}_i$ and
+	      $\mathcal{O}_j,\; \forall i,j \in \{1,\ldots,n\}$.
+	\item \ldots
+\end{itemize}
+\begin{note}
+	When dimensionality reduction is for visualization purposes, $q = 2$ is
+	usually chosen.
+\end{note}
+\end{problem}
 
 \subsection{Two types of information from the observed objects}
 We consider two different ways of extracting information from the observed objects:
@@ -711,16 +711,17 @@ There is the function \texttt{lmds} from package \texttt{stops} in R-forge.
 ISOmetric feature MAPping (ISOMAP) is a non-linear dimensionality reduction
 method that is based on the idea of \emph{geodesic distances}.
 
-\subsection{Algorithm}
-\begin{algorithmic}[1]
-	\Procedure{ISOMAP}{$D_{\mathcal X}$} \Comment{$D_{\mathcal X}$ is the matrix of observed Euclidean distances}
-	\State Identify neighbourhood relations ($\varepsilon$ or $k$) and define the
-	corresponding graph $G^\varepsilon$.
-	\State Compute shortest paths in $G^\varepsilon: D_{G,\varepsilon}$.
-	\State Do MDS on $D_{G,\varepsilon}$.
-	\State \Return Configuration in a low-dimensional space $\mathcal{\tilde{Y}}$.
-	\EndProcedure
-\end{algorithmic}
+\begin{algorithm}{ISOMAP}{ISOMAP}
+	\begin{algorithmic}[1]
+		\Procedure{ISOMAP}{$D_{\mathcal X}$} \Comment{$D_{\mathcal X}$ is the matrix of observed Euclidean distances}
+		\State Identify neighbourhood relations ($\varepsilon$ or $k$) and define the
+		corresponding graph $G^\varepsilon$.
+		\State Compute shortest paths in $G^\varepsilon: D_{G,\varepsilon}$.
+		\State Do MDS on $D_{G,\varepsilon}$.
+		\State \Return Configuration in a low-dimensional space $\mathcal{\tilde{Y}}$.
+		\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
 
 \begin{figure}[H]
 	\includegraphics{isomap}
@@ -861,9 +862,9 @@ range from 5 to 50.
 In order to improve the gradient descent, we can use a modified cost function
 that is symmetric:
 \begin{align*}
-    q_{ij} &= \frac{\exp(-\lVert \boldsymbol y_i - \boldsymbol y_j \rVert^2)}{\sum_{k \neq i} \exp(-\lVert \boldsymbol y_k - \boldsymbol y_i \rVert^2)} \\
-    p_{ij} &= \frac{p_{i \mid j} + p_{j \mid i}}{2n} \\
-    C(\boldsymbol Y) &=
+	q_{ij}           & = \frac{\exp(-\lVert \boldsymbol y_i - \boldsymbol y_j \rVert^2)}{\sum_{k \neq i} \exp(-\lVert \boldsymbol y_k - \boldsymbol y_i \rVert^2)} \\
+	p_{ij}           & = \frac{p_{i \mid j} + p_{j \mid i}}{2n}                                                                                                    \\
+	C(\boldsymbol Y) & =
 	\mathlarger{\sum_{i=1}^n} \sum_{j=1}^n p_{ij} \log \frac{p_{ij}}{q_{ij}}
 \end{align*}
 
@@ -893,12 +894,12 @@ To solve this problem, we need to use t-SNE instead.
 The main change in t-SNE with respect to SNE is the way the joint
 probabilities $q_{i \mid j}$ for $i \neq j$ are computed:
 \begin{equation*}
-    q_{i \mid j} = \frac
-    {
-        (1 + \lVert \boldsymbol y_i - \boldsymbol y_j \rVert^2)^{-1}
-    }{
-        \sum_{k \neq i} (1 + \lVert \boldsymbol y_k - \boldsymbol y_i \rVert^2)^{-1}
-    }
+	q_{i \mid j} = \frac
+	{
+		(1 + \lVert \boldsymbol y_i - \boldsymbol y_j \rVert^2)^{-1}
+	}{
+		\sum_{k \neq i} (1 + \lVert \boldsymbol y_k - \boldsymbol y_i \rVert^2)^{-1}
+	}
 \end{equation*}
 That is, a Student's t-distribution with 1 degree of freedom (A Cauchy distribution)
 is used to transform the distances in the low dimensionality.
@@ -907,8 +908,8 @@ Additionally, t-SNE uses the symmetric version of the cost function.
 
 \subsubsection{Software}
 \begin{itemize}
-    \item \texttt{tsne} fully implemented in R.
-    \item \texttt{Rtsne} R interface to the a C++ implementation of t-SNE.
+	\item \texttt{tsne} fully implemented in R.
+	\item \texttt{Rtsne} R interface to the a C++ implementation of t-SNE.
 \end{itemize}
 
 % \section{t-Stochastic Neighbor Embedding}
