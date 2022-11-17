@@ -1,0 +1,135 @@
+\pagestyle{empty}
+
+\makeatletter
+\begin{tikzpicture}[
+		remember picture,
+		overlay,
+		important line/.style={thick,BrickRed!15,thick},
+		dashed line/.style={dashed,BrickRed!15,thick},
+		leftNode/.style={circle,minimum width=.5ex, fill=BrickRed!15,draw},
+		rightNode/.style={rectangle,minimum width=.5ex, fill=BrickRed!15,thick,draw},
+	]
+	%%%%%%%%%%%%%%%%%%%% Background %%%%%%%%%%%%%%%%%%%%%%%%
+    \begin{scope}[blend mode=hard light]
+	\fill[BrickRed] (current page.south west) rectangle (current page.north east);
+
+    \node[anchor=north,inner sep=0pt] at ($(current page.north)-(0,1)$) {
+        \includegraphics[width=0.9\textwidth,
+        ]{logo-white}
+    };
+    \end{scope}
+
+	\pgfmathsetseed{1234}
+	\begin{axis}[
+			at={(current page.south west)},
+			width=\paperwidth,
+			height=\paperheight,
+            xmin=-100,xmax=50,
+            clip=false,
+            ymin=-50,ymax=200,
+            ticks=none,
+            axis lines=none,
+		]
+		\pgfmathsetmacro{\sep}{20};
+		\pgfmathsetmacro{\xorig}{120};
+		\pgfmathsetmacro{\rot}{-60};
+
+		\begin{scope}[rotate around={\rot:(0,0)}]
+			\draw[dashed line] (-300, -\sep) -- (300, -\sep);
+			\draw[dashed line] (-300, \sep) -- (300, \sep);
+			\draw[important line] (-300, 0) -- (300, 0);
+
+            \node[leftNode,label={[BrickRed!3]:$x_1$},name=x1] at (-20, \sep) {};
+			\node[rightNode,label={[BrickRed!3]$x_2$},name=x2] at (-22, -\sep) {};
+
+			\node[leftNode,label={[BrickRed!3]$x_3$},name=x3] at (-10, -\sep*3/2) {};
+			\node[leftNode,label={[BrickRed!3]$x_5$},name=x5] at (-27, -\sep/3) {};
+
+			\node[rightNode,label={[BrickRed!3]$x_4$},name=x4] at (10, -\sep*2/3) {};
+
+			\coordinate (origin) at (0, 0);
+			\coordinate (left) at (0, \sep);
+			\coordinate (right) at (0, -\sep);
+
+			\coordinate (x3l) at (x3 |- left);
+			\coordinate (x4r) at (x4 |- right);
+			\coordinate (x5l) at (x5 |- left);
+
+			\begin{scope}[color=BrickRed!10]
+				\draw (x3) -- (x3l) {};
+				\draw (x4) -- (x4r) {};
+				\draw (x5) -- (x5l) {};
+				\node[anchor=north] at ($(x3)!0.5!(x3l)$) {$\xi_3$};
+				\node[anchor=north] at ($(x4)!0.5!(x4r)$) {$\xi_4$};
+				\node[anchor=north] at ($(x5)!0.5!(x5l)$) {$\xi_5$};
+			\end{scope}
+
+			\draw[<->,BrickRed!5,line width=2pt] (-44,\sep) -- (-44,-\sep);
+			\node[BrickRed!9,anchor=south,rotate=\rot+90] at (-44.25,0) {margin\;\; = $\frac{2}{\lVert \omega \rVert}$};
+
+			\pgfplotsinvokeforeach{0.00,0.1,...,1.00}{
+				\node [leftNode] at (rand*40-20,\sep+rnd*40) {};
+				\node [rightNode] at (rand*40,-\sep-rnd*40) {};
+			}
+
+            \coordinate (p1) at (-70, \sep);
+            \coordinate (p0) at (-70, 0);
+            \coordinate (p-1) at (-70, -\sep);
+
+		\end{scope}
+		\node[BrickRed!5,anchor=south east,rotate=\rot] at (p1) {$\omega^T x + b = 1$};
+		\node[BrickRed!5,anchor=south east,rotate=\rot] at (p0) {$\pi:\,\omega^T x + b = 0$};
+		\node[BrickRed!5,anchor=south east,rotate=\rot] at (p-1) {$\omega^T x + b = -1$};
+	\end{axis}
+
+	% \foreach \i in {2.5,...,22}
+	% {
+	%     \node[rounded corners,BrickRed!60,draw,regular polygon,regular polygon sides=7, minimum size=\i cm,ultra thick] at ($(current page.west)+(2.5,-5)$) {} ;
+	% }
+
+	% %%%%%%%%%%%%%%%%%%%% Background Polygon %%%%%%%%%%%%%%%%%%%%
+	% \foreach \i in {0.5,...,22}
+	% {
+	% \node[rounded corners,BrickRed!60,draw,regular polygon,regular polygon sides=7, minimum size=\i cm,ultra thick] at ($(current page.north west)+(2.5,0)$) {} ;
+	% }
+
+	% \foreach \i in {0.5,...,22}
+	% {
+	% \node[rounded corners,BrickRed!90,draw,regular polygon,regular polygon sides=7, minimum size=\i cm,ultra thick] at ($(current page.north east)+(0,-9.5)$) {} ;
+	% }
+
+
+	% \foreach \i in {21,...,6}
+	% {
+	% \node[BrickRed!85,rounded corners,draw,regular polygon,regular polygon sides=7, minimum size=\i cm,ultra thick] at ($(current page.south east)+(-0.2,-0.45)$) {} ;
+	% }
+
+
+	%%%%%%%%%%%%%%%%%%%% Title of the Report %%%%%%%%%%%%%%%%%%%%
+	\node[left,BrickRed!5,minimum width=0.725*\paperwidth,minimum height=3cm, rounded corners,align=center] at ($(current page.north east)+(0,-6.0)$)
+	{
+    {\fontsize{25}{30} \selectfont \bfseries Advanced}
+	};
+	\node[left,BrickRed!5,minimum width=0.725*\paperwidth,minimum height=3cm, rounded corners,align=center] at ($(current page.north east)+(0,-7.5)$)
+	{
+    {\fontsize{25}{30} \selectfont \bfseries Multivariate Analysis}
+	};
+
+	%%%%%%%%%%%%%%%%%%%% Subtitle %%%%%%%%%%%%%%%%%%%%
+	\node[left,BrickRed!10,minimum width=0.725*\paperwidth,minimum height=2cm, rounded corners] at ($(current page.north east)+(0,-9)$)
+	{
+		{\huge \textit{Lecture Notes}}
+	};
+
+	%%%%%%%%%%%%%%%%%%%% Author Name %%%%%%%%%%%%%%%%%%%%
+	\node[left,BrickRed!5,minimum width=0.725*\paperwidth,minimum height=2cm, rounded corners] at ($(current page.north east)+(0,-11)$)
+	{
+		{\Large \textsc{\@author}}
+	};
+
+	%%%%%%%%%%%%%%%%%%%% Year %%%%%%%%%%%%%%%%%%%%
+\node[rounded corners,fill=BrickRed!70,text =BrickRed!5,regular polygon,regular polygon sides=6, minimum size=2.5 cm,inner sep=0,ultra thick,align=center] at ($(current page.west)+(2.5,-5)$) {\LARGE \bfseries 2022};
+
+
+\end{tikzpicture}
+\makeatother

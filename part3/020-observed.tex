@@ -272,7 +272,9 @@ consists of finding a function (the model parameter is a whole function)
 
 The estimation problem has an expression of this kind:
 \begin{problem}{}{}
-    \min_{f:[a,\,b] \to \mathds R} T(f; \mathcal X_1,\ldots,\mathcal X_n)
+    \begin{equation*}
+        \min_{f:[a,\,b] \to \mathds R} T(f; \mathcal X_1,\ldots,\mathcal X_n)
+    \end{equation*}
 \end{problem}
 
 This is an infinite-dimensional problem (very difficult) and moreover,
@@ -284,16 +286,18 @@ a finite subset of a basis of functions.
 
 Then the problem becomes a finite-dimensional optimization problem.
 
-In addition to that, a regularization term is added to teh objective function
+In addition to that, a regularization term is added to the objective function
 in order to have a smooth solution
 
 Let $f(t) = \sum_{k=1}^K \beta_k B_k(t),\,t\in [a,\,b]$
 The coefficients $\beta_k$ are chosen as the solution of the problem:
 \begin{problem}{}{}
-    \min_{\beta_1,\ldots,\beta_K} T(f; \mathcal X_1,\ldots,\mathcal X_n)
-    + \lambda_T \int_{a}^{b} \left(
-        L(f)(t)
-    \right)^2\, dt
+    \begin{equation*}
+        \min_{\beta_1,\ldots,\beta_K} T(f; \mathcal X_1,\ldots,\mathcal X_n)
+        + \lambda_T \int_{a}^{b} \left(
+            L(f)(t)
+        \right)^2\, dt
+    \end{equation*}
 \end{problem}
 where $\lambda_T$ is a \iemph{smoothing parameter}.
 
