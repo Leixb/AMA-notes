@@ -21,6 +21,18 @@ where $m_i$ is the number of samples. If $m_i$ is large enough,
 the maximum difference between two consecutive samples
 $\max_j\left\{t_{ij} - t_{i(j+1)}\right\}$ is small.
 
+\begin{recap}{}{}
+    \begin{itemize}
+        \item In practice a functional data $\mathcal X$ is not fully observed.
+            It is impossible to observe $\mathcal X(t)$ for all $t\in T$.
+        \item Only a finite amount of values $\mathcal X(t_j)$ can be observed
+            and registered, $t_j \in [A,\,B],\,j\in\mathds N$.
+
+        \item The set of observed values is called the \emph{sample grid}.
+        \item Moreover, the observation process can be affected by an observational noise.
+    \end{itemize}
+\end{recap}
+
 This presents 4 scenarios, as depicted in \cref{fig:observed-fd-scenarios}:
 \begin{figure}[H]
 	\includegraphics{observed-fd-scenarios}
@@ -50,7 +62,7 @@ This presents 4 scenarios, as depicted in \cref{fig:observed-fd-scenarios}:
 	\end{equation*}
 	\tcblower
 	\begin{note}
-		Ordering in the $m$ dimensions of the data is \emph{curcial},
+		Ordering in the $m$ dimensions of the data is \emph{crucial},
 		because it allows us to talk about \iemph{close dimensions}%
 		\footnote{Close dimensions are more correlated than \iemph{distant dimensions}.}%
 		.
@@ -84,7 +96,7 @@ This presents 4 scenarios, as depicted in \cref{fig:observed-fd-scenarios}:
 \subsubsection{Common evenly spaced dense design}
 Common evenly spaced (or not) dense design with no noisy data:
 \begin{equation*}
-    x_{ij} = \mathcal X_i(t_j),\quad j=1,\ldots,m,\quad i=1,\ldots,n
+	x_{ij} = \mathcal X_i(t_j),\quad j=1,\ldots,m,\quad i=1,\ldots,n
 \end{equation*}
 already have a good representation as a $n\times m$ matrix
 $\boldsymbol X = \left(x_{ij}\right)_{n\times m}$.
@@ -95,7 +107,7 @@ approximated using this matrix representation.
 
 \subsubsection{Other situations}
 For functional data with noisy data and/or sparse design, \iemph{smoothing
-methods} allows us to obtain a smooth estimation of the
+	methods} allows us to obtain a smooth estimation of the
 underlying functional data with a common evenly spaced dense design. This
 estimations can then be represented as a matrix.
 
@@ -106,28 +118,189 @@ The inner product $\langle f, g\rangle = \int_T f(t)g(t)\,dt$ induces
 a norm $\|f\| = \sqrt{\langle f, f\rangle}$ and a distance
 between two functions $d(f, g)$:
 \begin{equation*}
-    d(f, g) = \lVert f - g \rVert = \sqrt{\langle f - g, f - g\rangle}
+	d(f, g) = \lVert f - g \rVert = \sqrt{\langle f - g, f - g\rangle}
 \end{equation*}
 
 \begin{prop*}{}
-    Any separable Hilbert space admits a countable orthonormal basis.
+	Any separable Hilbert space admits a countable orthonormal basis.
 \end{prop*}
 
-\begin{definition}{Countable Orthonormal basis}{}
-    A countable family $B = \{\phi_k\}_{k\in\mathds N},\,\phi_k\in H$ of functions
-    that satisfies:
-    \begin{alignat*}{2}
-        \langle \phi_k, \phi_j\rangle &= 0, \quad &\forall& k,j \in \mathds N, k\neq j
-        \tag{orthogonality} \\
-        \lVert \phi_k \rVert &= 1 \quad& \forall& k \in \mathds N \tag{Normalization} \\
-        \tag{Completeness}
-    \end{alignat*}
+\begin{definition}{Countable Orthonormal basis}{}\index{countable orthonormal basis}\index{basis}
+
+	A countable family $B = \{\phi_k\}_{k\in\mathds N},\, \phi_k\in{}H$ of functions
+	that satisfies:
+	\begin{alignat*}{2}
+		\langle \phi_k, \phi_j\rangle        & = 0, \quad                                              & \forall & k,j \in \mathds N,\; k\neq j
+		\tag{Orthogonality}                                                                                                                            \\
+		\lVert \phi_k \rVert                 & = 1 \quad                                               & \forall & k \in \mathds N \tag{Normalization} \\[1em]
+		\span\span\forall f\in L^2(T)\quad \exists \{c_k^f\}_{k\in\mathds N} \subset \mathds R \text{ s.t.}                                            \\
+		\lim_{K\to\infty} \left\lVert
+		f - \sum_{k=1}^{K} c_k^f \phi_k
+		\right\rVert                         & = 0                                                                                                     \\
+		\span\span\text{In fact, } c_k^f = \langle f,\, \phi_k\rangle                                                                                  \\
+		f = \sum_{k=1}^{\infty} c_k^f \phi_k & = \sum_{k=1}^{\infty} \langle f,\, \phi_k\rangle \phi_k
+		\tag{Completeness}
+	\end{alignat*}
+	\tcblower
+	\begin{note}
+		If $B$ satisfies only the last condition (\iemph{completeness}),
+        it is called a basis of $L^2(T)$. (But it is not an \iemph{orthonormal basis})
+	\end{note}
 \end{definition}
 
-\subsubsection{Finite basis}
+\subsubsection{Finite basis-expansions for representing functional data}
+
+For the orthonormal basis, when $K$ goes to infinity:
+\begin{equation*}
+    \lim_{K\to\infty} \left\lVert
+    f - \sum_{k=1}^{K} c_k^f \phi_k
+    \right\rVert \downarrow 0
+\end{equation*}
+
+Then the $K$-dimensional approximations (\iemph{finite basis-expansions})
+\begin{equation*}
+    f \approx = \sum_{k=1}^{K} \langle f,\, \phi_k\rangle \phi_k
+\end{equation*}
+are increasingly good approximations of $f$ as $K$ increases.
+
+\begin{marker}
+    Finite expansions in a given basis are a standard way to represent functional
+    data.
+\end{marker}
 
 \subsubsection{Fourier basis}
 
+A very convenient (before the computer age) example of
+basis for the functional space $L^2(T),\,T=[a,\,b]$ is the \iemph{Fourier basis}:
+
+\begin{definition}{Fourier Basis}{}\index{Fourier basis}
+    Basis which elements are sine and cosine functions with
+    increasing frequencies:
+    \begin{align*}
+        \text{Let } \omega = \frac{2\pi}{b-a}& \\
+        B = \{&
+            1/\sqrt{b-a},\\
+              &\sqrt{2/(b-a)}\cos(\omega t),\,
+            \sqrt{2/(b-a)}\sin(\omega t),\\
+              &\ldots \\
+              &\sqrt{2/(b-a)}\cos(\omega k t),\,
+            \sqrt{2/(b-a)}\sin(\omega k t),\ldots\,
+        \}
+    \end{align*}
+    \begin{note}
+        \textbf{Inconvenient:} The representation of a function $f$ in $B$ is
+        \emph{always} a periodic function in $T = [a,\,b]$, even if $f$ is not.
+    \end{note}
+    \begin{note}
+        \iemph{B-spline bases} Are a non-orthogonal basis which are a
+        good alternative to the Fourier basis. They consist of
+        piecewise polynomials 
+    \end{note}
+\end{definition}
+
+\section{Regularization in FDA}
+
+\begin{definition}{Regularization}{}\index{regularization}
+    Penalization of a function for \iemph{lack of smoothness}.
+\end{definition}
+
+In FDA, regularization is required in two different problems:
+\begin{itemize}
+    \item Transforming observed non-smooth data to functional smooth data.
+    \item Estimating smooth functional parameters in functional models.
+\end{itemize}
+
+\subsection{Transforming observed data into functional smooth data}
+
+Observed data:
+\begin{equation*}
+    x_{ij} = \mathcal X_i(t_j) + \varepsilon_{ij},\, j = 1,\ldots, m, i = 1,\ldots, n
+\end{equation*}
+$t_{j+1} - t_j = \delta = (t_m - t_1)/(m)$ with $m$ large.
+
+$\varepsilon_{ij}$ are independent zero-mean random variables
+(possibly with a common variance or even identically distributed).
+
+Desired objects: $\mathcal X_i(t),\,t\in T = [a,\,b],\, i = 1,\ldots, n$.
+
+More precisely, we want to have a computer valid representation of
+$\mathcal X_i(t)$. One of:
+\begin{itemize}
+    \item \textbf{Matrix representation}
+    \item \textbf{Basis-expansion representation}
+\end{itemize}
+
+Assume that a basis representation if desired using $\{\phi_k\}_{k=1,\ldots,K}$.
+
+Let $\hat{\mathcal X}_i(t) = \sum_{k=1}^K c_{k}^{\mathcal X_i} \phi_k(t),\,t \in [a,\,b]$
+
+The coefficients $c_1,\ldots,c_K$ are chosen as the solution of the problem:
+
+\begin{problem}{}{}
+    \begin{equation*}
+        \min_{c_1,\ldots,c_K} 
+        \sum_{j=1}^{n_j} \left(
+            x_{ij} - \hat{\mathcal X}_i(t_{ij})
+        \right)^2
+        + \lambda
+        \int_{a}^{b} \left(
+            L(\mathcal X_i)(t)
+        \right)^2\, dt
+    \end{equation*}
+    where $L$ is a \iemph{linear differential operator} (e.g. a derivative):
+    $L(f) = \sum_{h=1}^H a_h f^{(h)}$.
+\end{problem}
+
+Penalization $L(f) = f^{(2)}$ is called \emph{second-order smoothing} and
+is used to avoid \emph{oscillations} in the approximations (bumpy functions),
+since:
+\begin{equation*}
+    \int_{a}^{b} \left(
+        f^{(2)}(t)
+    \right)^2\, dt
+\end{equation*}
+is a measure of the \iemph{total curvature} of the function $f$.
+
+\begin{note}
+    This penalization is associated with cubic splines bases (as we will show later).
+\end{note}
+
+\subsubsection{Estimating functional parameters}
+
+In most cases, estimating a (regression) model for functional data
+consists of finding a function (the model parameter is a whole function)
+
+The estimation problem has an expression of this kind:
+\begin{problem}{}{}
+    \min_{f:[a,\,b] \to \mathds R} T(f; \mathcal X_1,\ldots,\mathcal X_n)
+\end{problem}
+
+This is an infinite-dimensional problem (very difficult) and moreover,
+there is no guarantee that the estimated functional parameter is a smooth 
+function.
+
+A feasible option is to look for the best parameter belonging to the space of functions spanned by
+a finite subset of a basis of functions.
+
+Then the problem becomes a finite-dimensional optimization problem.
+
+In addition to that, a regularization term is added to teh objective function
+in order to have a smooth solution
+
+Let $f(t) = \sum_{k=1}^K \beta_k B_k(t),\,t\in [a,\,b]$
+The coefficients $\beta_k$ are chosen as the solution of the problem:
+\begin{problem}{}{}
+    \min_{\beta_1,\ldots,\beta_K} T(f; \mathcal X_1,\ldots,\mathcal X_n)
+    + \lambda_T \int_{a}^{b} \left(
+        L(f)(t)
+    \right)^2\, dt
+\end{problem}
+where $\lambda_T$ is a \iemph{smoothing parameter}.
+
+\begin{note}
+When estimating functional parameters, finite basis expansion is
+the functional representation of choice.
+\end{note}
 
 % \section{Developments in bases of functions}
 % \section{Smoothing: Kernel, Local Polynomials, Splines}
