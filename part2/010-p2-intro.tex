@@ -121,7 +121,7 @@ of $m$ at $t$:
 
 \subsubsection{Particular case: Nadaraya-Watson estimator}
 \begin{definition}{Nadaraya-Watson estimator}{}
-	When the degree of the locally fitted polynomial is $q=0$ (i.e. a constant),
+	When the degree of the locally fitted polynomial is \emph{$q=0$} (i.e. a constant),
 	the resulting non-parametric estimator is called \iemph{Nadaraya-Watson estimator}
 	or \iemph{kernel estimator}:
 	\begin{equation*}
@@ -132,10 +132,15 @@ of $m$ at $t$:
 		} = \sum_{i=1}^n w(t, x_i) y_i
 	\end{equation*}
 	\tcblower
+
 	This was proposed before local polynomial estimators.
+
+	\begin{note}
+		\paragraph{Observe:} $\hat m_K(t)$ is a \iemph{moving weighted average}.
+	\end{note}
+
 \end{definition}
 
-Observe that $\hat m_K(t)$ is a moving weighted average.
 
 \begin{prop}{Every local polynomial estimator is itself a weighted average}{}
 	\begin{equation*}
@@ -261,19 +266,55 @@ An estimator of $\sigma^2$ in non-parametric estimation is:
 \subsection{Kernel functions}
 
 \begin{definition}{Kernel functions}{}
-    Density functions with zero mean.
-    \tcblower
-    We can also rescale them so that they have zero mean and
-    variance 1. Then we call them \iemph{rescaled kernels}.
+	Density functions with zero mean.
+	\tcblower
+	We can also rescale them so that they have zero mean and
+	variance 1. Then we call them \iemph{rescaled kernels}.
 \end{definition}
 
 \begin{figure}[H]
-	\includegraphics{kernel_examples}
+	% \includegraphics{kernel_examples}
+	\begin{tikzpicture}
+		\begin{groupplot}[group style={
+						group size=3 by 2,
+						xlabels at=edge bottom,
+						ylabels at=edge left,
+                        vertical sep=4em,
+					},
+				width = .3\textwidth,
+				ymin=-0.1, ymax=1.1,
+				xlabel=$x$, ylabel=$K(x)$,
+                every axis plot/.append style={mark=none, line width=2pt},
+                samples=50,
+                domain=-1:1,
+                xmin=-1.2, xmax=1.2
+			]
+            \nextgroupplot[title={\bfseries Epanechnikov ($K^*$)}]
+			\addplot[ color=blue] {3/4*(1-x^2)*((x>=-1)*(x<=1))};
+
+			\nextgroupplot[title={\bfseries Biweight}]
+			\addplot[ color=red] {15/16*(1-x^2)^2*((x>=-1)*(x<=1))};
+
+			\nextgroupplot[title={\bfseries Triweight}]
+			\addplot[ color=green!70!black] {35/32*(1-x^2)^3*((x>=-1)*(x<=1))};
+
+			\nextgroupplot[title={\bfseries Gaussian},xmin=-3.7, xmax=3.7]
+			\addplot[domain=-3:3, color=orange] {1/sqrt(2*pi)*exp(-x^2/2)*2};
+
+			\nextgroupplot[title={\bfseries Triangular}]
+            \draw[line width=2pt, color=black] (-1,0) -- (0,1) -- (1,0);
+
+			\nextgroupplot[title={\bfseries Uniform}]
+            \draw[line width=2pt, color=gray] (-1,0.5) -- (1,0.5);
+            \draw[line width=2pt, color=gray,dashed] (-1,0) -- (-1,0.5);
+            \draw[line width=2pt, color=gray,dashed] (1,0) -- (1,0.5);
+		\end{groupplot}
+	\end{tikzpicture}
 	\caption{Examples of Kernel functions used in non-parametric estimation}
 \end{figure}
 
 \begin{table}[H]
-    \caption{Examples of Kernel functions used in non-parametric estimation}
+	\caption{Examples of Kernel functions used in non-parametric estimation}
 	\begin{tabular}{lccl}
 		\toprule
 		Kernel ($K$)         & Expression                                & Variance & Efficiency \\
@@ -297,35 +338,35 @@ a non-parametric estimate $\hat m(t)$ as estimator of the unknown
 value $m(t)$ at a given point $t$.
 
 \begin{definition}{Bias}{Bias}
-    Let $m(t)$ be the true value of the regression function at $t$.
-    The \iemph{bias} of a non-parametric estimator $\hat m(t)$ is:
-    \begin{equation*}
-        \text{Bias}_{m(t)}(\hat m(t)) = \mathbb E[\hat m(t)] - m(t)
-    \end{equation*}
+	Let $m(t)$ be the true value of the regression function at $t$.
+	The \iemph{bias} of a non-parametric estimator $\hat m(t)$ is:
+	\begin{equation*}
+		\text{Bias}_{m(t)}(\hat m(t)) = \mathbb E[\hat m(t)] - m(t)
+	\end{equation*}
 \end{definition}
 
 \begin{definition}{Variance}{Variance}
-    The \iemph{variance} of a non-parametric estimator $\hat m(t)$ is:
-    \begin{equation*}
-        \text{Var}_{m(t)}(\hat m(t)) = \mathbb E\bigl[(\hat m(t) - \mathbb E[\hat m(t)])^2\bigr]
-    \end{equation*}
+	The \iemph{variance} of a non-parametric estimator $\hat m(t)$ is:
+	\begin{equation*}
+		\text{Var}_{m(t)}(\hat m(t)) = \mathbb E\bigl[(\hat m(t) - \mathbb E[\hat m(t)])^2\bigr]
+	\end{equation*}
 \end{definition}
 
 \begin{definition}{Mean Squared Error (MSE)}{MSE}
-    The \iemph{mean squared error} of a non-parametric estimator $\hat m(t)$ is:
-    \begin{equation*}
-        \text{MSE}_{m(t)}(\hat m(t)) = \mathbb E\bigl[(\hat m(t) - m(t))^2\bigr]
-        = \text{Bias}_{m(t)}(\hat m(t))^2 + \text{Var}_{m(t)}(\hat m(t))
-    \end{equation*}
+	The \iemph{mean squared error} of a non-parametric estimator $\hat m(t)$ is:
+	\begin{equation*}
+		\text{MSE}_{m(t)}(\hat m(t)) = \mathbb E\bigl[(\hat m(t) - m(t))^2\bigr]
+		= \text{Bias}_{m(t)}(\hat m(t))^2 + \text{Var}_{m(t)}(\hat m(t))
+	\end{equation*}
 \end{definition}
 
 \begin{question}{Local properties}{}
-    \begin{itemize}
-        \item Is $\hat m (t)$ an unbiased estimator of $m(t)$? ($\text{Bias}_{m(t)}(\hat m(t)) = 0$)
-        \item Is $\lim_{n\to\infty}\text{Var}_{m(t)}(\hat m(t)) = 0$?
-        \item Is $\hat m (t)$ a consistent estimator of $m(t)$? Does $\hat m (t)$ converge to $m(t)$?
-        \item Is $\lim_{n\to\infty}\text{MSE}_{m(t)}(\hat m(t)) = 0$?
-    \end{itemize}
+	\begin{itemize}
+		\item Is $\hat m (t)$ an unbiased estimator of $m(t)$? ($\text{Bias}_{m(t)}(\hat m(t)) = 0$)
+		\item Is $\lim_{n\to\infty}\text{Var}_{m(t)}(\hat m(t)) = 0$?
+		\item Is $\hat m (t)$ a consistent estimator of $m(t)$? Does $\hat m (t)$ converge to $m(t)$?
+		\item Is $\lim_{n\to\infty}\text{MSE}_{m(t)}(\hat m(t)) = 0$?
+	\end{itemize}
 \end{question}
 
 \subsubsection{Global Properties}
@@ -335,77 +376,77 @@ as an estimator of $m(t)$ for all $t \in [a, b]$, where $[a, b]$ is the
 interval where the explanatory variable $x$ takes its values.
 
 \begin{question}{Global properties}{}
-    Does the estimated function $\hat m$ converge to the unknown function $m$
-    in some sense appropriate for functions?
-    \tcblower
-    One common way for measuring the distance between $\hat m$ and $m$ is
-    the \emph{Integrated Mean Squared Error} (IMSE):
-    \begin{equation*}
-        \lim_{n\to\infty} \text{IMSE}_{m}(\hat m) = 0?
-    \end{equation*}
+	Does the estimated function $\hat m$ converge to the unknown function $m$
+	in some sense appropriate for functions?
+	\tcblower
+	One common way for measuring the distance between $\hat m$ and $m$ is
+	the \emph{Integrated Mean Squared Error} (IMSE):
+	\begin{equation*}
+		\lim_{n\to\infty} \text{IMSE}_{m}(\hat m) = 0?
+	\end{equation*}
 \end{question}
 
 \begin{definition}{Integrated Mean Squared Error (IMSE)}{IMSE}
-    \begin{align*}
-        \text{IMSE}_{m}(\hat m) &= \int_a^b \text{MSE}_{m(t)}(\hat m(t)) \, dt
-                = \int_a^b \mathds{E}\bigl[(\hat m(t) - m(t))^2\bigr] \, dt \\
-                                &= \int_a^b \text{Bias}_{m(t)}(\hat m(t))^2 \, dt +
-                                   \int_a^b \text{Var}_{m(t)}(\hat m(t)) \, dt
-    \end{align*}
+	\begin{align*}
+		\text{IMSE}_{m}(\hat m) & = \int_a^b \text{MSE}_{m(t)}(\hat m(t)) \, dt
+		= \int_a^b \mathds{E}\bigl[(\hat m(t) - m(t))^2\bigr] \, dt                  \\
+		                        & = \int_a^b \text{Bias}_{m(t)}(\hat m(t))^2 \, dt +
+		\int_a^b \text{Var}_{m(t)}(\hat m(t)) \, dt
+	\end{align*}
 \end{definition}
 
 \begin{theorem}{Bias and Variance of $\hat m_0(t)$ and $\hat m_1(t)$}{}
-    Consider the non-parametric regression model:
-    \begin{equation*}
-        Y_i = m(X_i) + \varepsilon_i, \quad i = 1, \ldots, n
-    \end{equation*}
-    where $\varepsilon_1, \ldots, \varepsilon_n$ are independent r.v. with
-    $\text{Var}(\varepsilon_i) = \sigma^2(x_i)$; $X_1, \ldots, X_n$ are
-    independent r.v. with density $f$ and $P(a \leq X_i \leq b) = 1$ for some
-    $a, b \in \mathbb R$. Assume the following regularity conditions:
-    \begin{enumerate}
-        \item $f(t) > 0\quad\forall t$.
-        \item $f(t),\, m''(t)$ and $\sigma^2(t)$ are continuous in the neighborhood of $t$.
-        \item $K$ is symmetric with support on $[-1, 1]$, $\int_R K(u) \, du = 1$ and
-            $\int_{-1}^1 K(u) \, du = 0$.
-        \item $t \in (a, b)$.
-        \item $h \to 0$ and $n\cdot h \to \infty$ when $n \to \infty$.
-    \end{enumerate}
-    \tcbline
-    In this context, the following statements hold:
-    \begin{enumerate}
-        \item The \iemph{Nadaraya-Watson estimator} and the \iemph{local linear estimator}
-            both have the variance:
-            \begin{equation*}
-                \frac{\sigma^2(t)}{nhf(t)} \int_{-1}^1 K^2(u) \, du + o\left(\frac{1}{nh}\right)
-            \end{equation*}
-        \item The \emph{Nadaraya-Watson estimator} has bias:
-            \begin{equation*}
-                \left(
-                    \frac{m'(t)f'(t)}{f(t)} + \frac{m''(t)}{2}
-                \right)h^2
-                \int_{-1}^1 u^2K(u) \, du + o\left(h^2\right)
-            \end{equation*}
-        \item The \emph{local linear estimator} has bias:
-            \begin{equation*}
-                    \frac{m''(t)}{2} h^2
-                \int_{-1}^1 u^2K(u) \, du + o\left(h^2\right)
-            \end{equation*}
-        \item The $\text{MSE}_{m(t)}(\hat m(t))$ is $O(h^4) + O(1/(nh))$ for both estimators.
-            Then, both converge to $m(t)$ in quadratic mean and in probability.
-    \end{enumerate}
+	Consider the non-parametric regression model:
+	\begin{equation*}
+		Y_i = m(X_i) + \varepsilon_i, \quad i = 1, \ldots, n
+	\end{equation*}
+	where $\varepsilon_1, \ldots, \varepsilon_n$ are independent r.v. with
+	$\text{Var}(\varepsilon_i) = \sigma^2(x_i)$; $X_1, \ldots, X_n$ are
+	independent r.v. with density $f$ and $P(a \leq X_i \leq b) = 1$ for some
+	$a, b \in \mathbb R$. Assume the following regularity conditions:
+	\begin{enumerate}
+		\item $f(t) > 0\quad\forall t$.
+		\item $f(t),\, m''(t)$ and $\sigma^2(t)$ are continuous in the neighborhood of $t$.
+		\item $K$ is symmetric with support on $[-1, 1]$, $\int_R K(u) \, du = 1$ and
+		      $\int_{-1}^1 K(u) \, du = 0$.
+		\item $t \in (a, b)$.
+		\item $h \to 0$ and $n\cdot h \to \infty$ when $n \to \infty$.
+	\end{enumerate}
+	\tcbline
+	In this context, the following statements hold:
+	\begin{enumerate}
+		\item The \iemph{Nadaraya-Watson estimator} and the \iemph{local linear estimator}
+		      both have the variance:
+		      \begin{equation*}
+			      \frac{\sigma^2(t)}{nhf(t)} \int_{-1}^1 K^2(u) \, du + o\left(\frac{1}{nh}\right)
+		      \end{equation*}
+		\item The \emph{Nadaraya-Watson estimator} has bias:
+		      \begin{equation*}
+			      \left(
+			      \frac{m'(t)f'(t)}{f(t)} + \frac{m''(t)}{2}
+			      \right)h^2
+			      \int_{-1}^1 u^2K(u) \, du + o\left(h^2\right)
+		      \end{equation*}
+		\item The \emph{local linear estimator} has bias:
+		      \begin{equation*}
+			      \frac{m''(t)}{2} h^2
+			      \int_{-1}^1 u^2K(u) \, du + o\left(h^2\right)
+		      \end{equation*}
+		\item The $\text{MSE}_{m(t)}(\hat m(t))$ is $O(h^4) + O(1/(nh))$ for both estimators.
+		      Then, both converge to $m(t)$ in quadratic mean and in probability.
+	\end{enumerate}
 \end{theorem}
 
 \subsubsection{Bias-Variance Tradeoff}
 \begin{definition}{Asymptotic Mean Squared Error (AMSE)}{AMSE}\index{AMSE}\index{asymptotic mean squared error}
-    Is the main part of the MSE (ignoring the infinitesimal terms).
+	Is the main part of the MSE (ignoring the infinitesimal terms).
 \end{definition}
 
 Let us consider the AMSE for the local linear estimator:
 \begin{equation*}
-    \text{AMSE}(h) = \underbrace{\frac{(m''(t))^2}{4}h^4 \left( \int_{-1}^1 u^2 K(u)\, du \right)^2}_{\text{bias}^2}
-        + 
-            \underbrace{\frac{\sigma^2(t)}{nhf(t)} \int_{-1}^1 K^2(u) \, du}_{\text{variance}}
+	\text{AMSE}(h) = \underbrace{\frac{(m''(t))^2}{4}h^4 \left( \int_{-1}^1 u^2 K(u)\, du \right)^2}_{\text{bias}^2}
+	+
+	\underbrace{\frac{\sigma^2(t)}{nhf(t)} \int_{-1}^1 K^2(u) \, du}_{\text{variance}}
 \end{equation*}
 
 The first term, the squared bias, increases with $h$.
@@ -413,12 +454,12 @@ The first term, the squared bias, increases with $h$.
 The second term, the variance, decreases with $h$.
 
 \begin{note}
-The optimal value $h_{\text{AMSE}}$ represents the compromise between bias and variance.
+	The optimal value $h_{\text{AMSE}}$ represents the compromise between bias and variance.
 \end{note}
 
 \begin{figure}[H]
-    \includegraphics{effect_hq}
-    \caption{Effect of bandwidth $h$ and degree $q$ on a single sample.}
+	\includegraphics{effect_hq}
+	\caption{Effect of bandwidth $h$ and degree $q$ on a single sample.}
 \end{figure}
 
 \subsection{Choosing the Smoothing Parameter (Bandwidth)}
@@ -426,28 +467,28 @@ The choice of the smoothing parameter $h$ is a crucial step in the appearance
 and properties of the regression function estimator.
 
 \begin{description}
-    \item[Estimation]
-The bandwidth controls the \iemph{Bias-Variance Tradeoff}. With a small bandwidth,
-the estimator is highly variable and has small bias. With a large bandwidth, the
-opposite happens.
-\item[Prediction of New Observations] The smoothing parameter $h$ controls the
-    balance between fitting the observed data well and the ability to predict
-    new observations.
+	\item[Estimation]
+		The bandwidth controls the \iemph{Bias-Variance Tradeoff}. With a small bandwidth,
+		the estimator is highly variable and has small bias. With a large bandwidth, the
+		opposite happens.
+	\item[Prediction of New Observations] The smoothing parameter $h$ controls the
+		balance between fitting the observed data well and the ability to predict
+		new observations.
 
-    Small values of $h$ give more flexibility, but the prediction errors
-    will be higher (\iemph{overfitting}).
+		Small values of $h$ give more flexibility, but the prediction errors
+		will be higher (\iemph{overfitting}).
 
-    If $h$ is too large, there is \iemph{underfitting}, as it may happen with
-    global parametric models. In this case, both the errors in the observed data
-    and the prediction will be high.
+		If $h$ is too large, there is \iemph{underfitting}, as it may happen with
+		global parametric models. In this case, both the errors in the observed data
+		and the prediction will be high.
 \end{description}
 
 \paragraph{Criteria for Choosing the Smoothing Parameter}
 There are several sensible criteria for choosing the smoothing parameter. We can
 categorize them in two groups:
 \begin{enumerate}
-    \item \emph{Estimation quality} based methods (statistical perspective).
-    \item \emph{Prediction error} based methods (machine learning perspective).
+	\item \emph{Estimation quality} based methods (statistical perspective).
+	\item \emph{Prediction error} based methods (machine learning perspective).
 \end{enumerate}
 
 \subsubsection{Estimation based criteria}
@@ -455,70 +496,70 @@ categorize them in two groups:
 \paragraph{Integrated Mean Squared Error (IMSE)} We can minimize the
 IMSE (\ref{def:IMSE}) to choose the bandwidth $h$ as shown in~\cref{fig:IMSE}.
 \begin{figure}[H]
-    \includegraphics{IMSE}
-    \caption{IMSE for different values of $h$.}%
-    \label{fig:IMSE}
+	\includegraphics{IMSE}
+	\caption{IMSE for different values of $h$.}%
+	\label{fig:IMSE}
 \end{figure}
 
 \begin{definition}{Mean Integrated Squared Error (MISE)}{MISE}\index{MISE}\index{mean integrated squared error}
-    \begin{equation*}
-        \text{MISE}(\hat m) = \mathds{E}_{\boldsymbol Z} \left[
-            \int_a^b \left( m(t) - \hat m(t) \right)^2 f(t) \, dt
-        \right] =
-        \mathds{E}_{\boldsymbol Z} \left[
-            \mathds{E}_T \left\{
-                \left( m(T) - \hat m(T) \right)^2 \mid \boldsymbol Z
-            \right\}
-        \right]
-    \end{equation*}
-    where $\boldsymbol Z = \{(x_i,\, Y_i) \mid i = 1,\ldots,n\}$ is the sample
-    used to estimate $\hat m$ and $T$ is a r.v. independent from $\boldsymbol Z$
-    with the same distribution that generates the independent variable values $x_i$.
-    \tcblower
-    \begin{note}
-        It coincides with IMSE by \iemph{Fubini's Theorem}.
-    \end{note}
+	\begin{equation*}
+		\text{MISE}(\hat m) = \mathds{E}_{\boldsymbol Z} \left[
+			\int_a^b \left( m(t) - \hat m(t) \right)^2 f(t) \, dt
+			\right] =
+		\mathds{E}_{\boldsymbol Z} \left[
+			\mathds{E}_T \left\{
+			\left( m(T) - \hat m(T) \right)^2 \mid \boldsymbol Z
+			\right\}
+			\right]
+	\end{equation*}
+	where $\boldsymbol Z = \{(x_i,\, Y_i) \mid i = 1,\ldots,n\}$ is the sample
+	used to estimate $\hat m$ and $T$ is a r.v. independent from $\boldsymbol Z$
+	with the same distribution that generates the independent variable values $x_i$.
+	\tcblower
+	\begin{note}
+		It coincides with IMSE by \iemph{Fubini's Theorem}.
+	\end{note}
 \end{definition}
 
 \subsubsection{Prediction based criteria}
 \begin{definition}{Predictive Mean Squared Error (PMSE)}{PMSE}\index{PMSE}\index{predictive mean squared error}
-    Is the expected squared error made when predicting $Y = m(t) + \varepsilon$ by $\hat m(t)$.
-    Where $t$ is an observation of the r.v. $T$, distributed as the observed explanatory variable.
+	Is the expected squared error made when predicting $Y = m(t) + \varepsilon$ by $\hat m(t)$.
+	Where $t$ is an observation of the r.v. $T$, distributed as the observed explanatory variable.
 
-    When $T$ and $\varepsilon$ are independent from the sample $\boldsymbol Z$, then:
-    \begin{align*}
-        \text{PMSE}(\hat m) &= \mathds{E}_{\boldsymbol Z,(T,Y)} \left[
-                \left(Y - \hat m(T)\right)^2
-        \right]
-        = \mathds{E}_{\boldsymbol Z,T,\varepsilon} \left[
-                \left(\hat m(T) - m(T) - \varepsilon\right)^2
-        \right] \\
-        & = \mathds{E}_{\boldsymbol Z,T} \left[
-                \left(\hat m(T) - m(T)\right)^2
-            \right] + \mathds{E}_\varepsilon\left[\varepsilon^2\right]
-            = \text{MISE}(\hat m) + \sigma^2
-    \end{align*}
-    \tcblower
-    \begin{note}
-        MISE and PMSE are equivalent when $T$ and $\varepsilon$ are independent from $\boldsymbol Z$.
-    \end{note}
+	When $T$ and $\varepsilon$ are independent from the sample $\boldsymbol Z$, then:
+	\begin{align*}
+		\text{PMSE}(\hat m) & = \mathds{E}_{\boldsymbol Z,(T,Y)} \left[
+			\left(Y - \hat m(T)\right)^2
+			\right]
+		= \mathds{E}_{\boldsymbol Z,T,\varepsilon} \left[
+			\left(\hat m(T) - m(T) - \varepsilon\right)^2
+		\right]                                                         \\
+		                    & = \mathds{E}_{\boldsymbol Z,T} \left[
+			\left(\hat m(T) - m(T)\right)^2
+			\right] + \mathds{E}_\varepsilon\left[\varepsilon^2\right]
+		= \text{MISE}(\hat m) + \sigma^2
+	\end{align*}
+	\tcblower
+	\begin{note}
+		MISE and PMSE are equivalent when $T$ and $\varepsilon$ are independent from $\boldsymbol Z$.
+	\end{note}
 \end{definition}
 
 \begin{marker}
-    Unfortunately, both IMSE, MISE and PMSE are \emph{unfeasible} to compute
-    because they require the knowledge of the \emph{true} regression function
-    $m$ (which is unknown in practice).
+	Unfortunately, both IMSE, MISE and PMSE are \emph{unfeasible} to compute
+	because they require the knowledge of the \emph{true} regression function
+	$m$ (which is unknown in practice).
 \end{marker}
 
 \begin{definition}{Residual Sum of Squares (RSS)}{RSS}\index{RSS}\index{residual sum of squares}
-Is an \emph{optimistic} estimation of PMSE:
-    \begin{equation*}
-        \text{RSS}(\hat m) = \frac{1}{n} \sum_{i=1}^n \left( Y_i - \hat m(x_i) \right)^2
-    \end{equation*}
-    \tcblower
-    \begin{note}
-        Also known as the \iemph{error in the training sample}
-    \end{note}
+	Is an \emph{optimistic} estimation of PMSE:
+	\begin{equation*}
+		\text{RSS}(\hat m) = \frac{1}{n} \sum_{i=1}^n \left( Y_i - \hat m(x_i) \right)^2
+	\end{equation*}
+	\tcblower
+	\begin{note}
+		Also known as the \iemph{error in the training sample}
+	\end{note}
 \end{definition}
 
 Only the RSS is feasible to compute, but it is not a good estimator of PMSE
@@ -528,91 +569,91 @@ since it is \emph{optimistically} biased.
 As we have seen, the proposed criteria are not feasible to compute. We have several
 alternatives based in a train, test (and validation) split of the data.
 \begin{itemize}
-    \item Minimizing the average squared prediction error in a validation set.
-    \item Leave-one-out cross-validation.
-    \item K-fold cross-validation.
-    \item Generalized cross-validation (Only for linear estimators)
+	\item Minimizing the average squared prediction error in a validation set.
+	\item Leave-one-out cross-validation.
+	\item K-fold cross-validation.
+	\item Generalized cross-validation (Only for linear estimators)
 \end{itemize}
 
 \begin{definition}{Validation set}{}
-    When the available data is large enough, we can randomly split it into
-    3 sets:
-    \begin{enumerate}
-        \item \iemph{Training set}: Used to fit the model.
-        \item \iemph{Validation set}: Used for model selection and parameter tuning.
-        \item \iemph{Test set}: Used to evaluate the generalization of the final model.
-    \end{enumerate}
+	When the available data is large enough, we can randomly split it into
+	3 sets:
+	\begin{enumerate}
+		\item \iemph{Training set}: Used to fit the model.
+		\item \iemph{Validation set}: Used for model selection and parameter tuning.
+		\item \iemph{Test set}: Used to evaluate the generalization of the final model.
+	\end{enumerate}
 \end{definition}
 
 \begin{definition}{$\text{PMSE}_\text{Val}$}{PMSEVal}
-We can choose the bandwidth $h_\text{Val}$ by minimizing the
-Predictive Mean Squared Error in the validation set:
-\begin{equation*}
-    \text{PMSE}_\text{Val}(h) = \frac{1}{n_V} \sum_{i=1}^{n_V} \left( Y_i^V - \hat m(x_i^V) \right)^2
-\end{equation*}
-where $(x_i^V, Y_i^V),\,i=1,\ldots,n_V$ are the observations of the validation set and
-$\hat m$ is the estimator with bandwidth $h$ using the training set.
+	We can choose the bandwidth $h_\text{Val}$ by minimizing the
+	Predictive Mean Squared Error in the validation set:
+	\begin{equation*}
+		\text{PMSE}_\text{Val}(h) = \frac{1}{n_V} \sum_{i=1}^{n_V} \left( Y_i^V - \hat m(x_i^V) \right)^2
+	\end{equation*}
+	where $(x_i^V, Y_i^V),\,i=1,\ldots,n_V$ are the observations of the validation set and
+	$\hat m$ is the estimator with bandwidth $h$ using the training set.
 \end{definition}
 
 \begin{definition}{Leave-one-out cross-validation (LOOCV)}{LOOCV}
-    \begin{enumerate}
-        \item For each observation $(x_i, Y_i)$ of the training set, we fit the model
-        using the remaining observations.
-        \item We compute the squared prediction error for the observation $(x_i, Y_i)$
-        using the fitted model.
-        \item We average the squared prediction errors.
-    \end{enumerate}
-    \begin{equation*}
-        \text{PMSE}_\text{LOOCV}(h) = \frac{1}{n} \sum_{i=1}^n \left( Y_i - \hat m_h(x_i) \right)^2
-    \end{equation*}
-    \tcblower
-    \begin{note}
-        LOOCV is a good alternative when the number of observations is small and we cannot
-        afford to split the data into 3 sets.
-    \end{note}
-    \begin{note}
-        LOOCV is a special case of K-fold cross-validation with $K=n$.
-    \end{note}
-    \begin{note}
-        $\text{PMSE}_\text{LOOCV}(h)$ is an approximately unbiased estimator of $\text{PMSE}(h)$,
-        but has a high variance.
-    \end{note}
+	\begin{enumerate}
+		\item For each observation $(x_i, Y_i)$ of the training set, we fit the model
+		      using the remaining observations.
+		\item We compute the squared prediction error for the observation $(x_i, Y_i)$
+		      using the fitted model.
+		\item We average the squared prediction errors.
+	\end{enumerate}
+	\begin{equation*}
+		\text{PMSE}_\text{LOOCV}(h) = \frac{1}{n} \sum_{i=1}^n \left( Y_i - \hat m_h(x_i) \right)^2
+	\end{equation*}
+	\tcblower
+	\begin{note}
+		LOOCV is a good alternative when the number of observations is small and we cannot
+		afford to split the data into 3 sets.
+	\end{note}
+	\begin{note}
+		LOOCV is a special case of K-fold cross-validation with $K=n$.
+	\end{note}
+	\begin{note}
+		$\text{PMSE}_\text{LOOCV}(h)$ is an approximately unbiased estimator of $\text{PMSE}(h)$,
+		but has a high variance.
+	\end{note}
 \end{definition}
 
 \begin{definition}{$K$-fold cross-validation}{}
-Instead of taking one observation, we split the training set into $K$ subsets
-and remove whole subsets at each iteration.
+	Instead of taking one observation, we split the training set into $K$ subsets
+	and remove whole subsets at each iteration.
 
-\tcblower
-\begin{note}
-    $K$-fold cross-validation has lower variance than LOOCV, but larger bias.
-\end{note}
-Usually we use $K=5$ or $K=10$.
+	\tcblower
+	\begin{note}
+		$K$-fold cross-validation has lower variance than LOOCV, but larger bias.
+	\end{note}
+	Usually we use $K=5$ or $K=10$.
 \end{definition}
 
 \begin{definition}{Generalized cross-validation (GCV)}{GCV}
-    For linear smoothers, a modification can be done in the measure
-    of $\text{PMSE}_\text{CV}$.
+	For linear smoothers, a modification can be done in the measure
+	of $\text{PMSE}_\text{CV}$.
 
-    It consists in replacing the values of $s_{ii}$ coming
-    from the diagonal of $S$ in the definition of
-    $\text{PMSE}_\text{CV}$ by their average value $\nu/n$:
-    \begin{equation*}
-        \text{PMSE}_\text{GCV}(h) = \frac{1}{n} \sum_{i=1}^n \left(
-            \frac{y_i - \hat y_i}{1 - \nu/n}
-    \right)^2
-    \end{equation*}
-    Where $\nu = \text{Trace}(S) = \sum_{i=1}^n s_{ii}$ is the number of effective
-    parameters (prop.~\ref{prop:effective-parameters}).
+	It consists in replacing the values of $s_{ii}$ coming
+	from the diagonal of $S$ in the definition of
+	$\text{PMSE}_\text{CV}$ by their average value $\nu/n$:
+	\begin{equation*}
+		\text{PMSE}_\text{GCV}(h) = \frac{1}{n} \sum_{i=1}^n \left(
+		\frac{y_i - \hat y_i}{1 - \nu/n}
+		\right)^2
+	\end{equation*}
+	Where $\nu = \text{Trace}(S) = \sum_{i=1}^n s_{ii}$ is the number of effective
+	parameters (prop.~\ref{prop:effective-parameters}).
 
-    We can further simplify the expression to:
-    \begin{equation*}
-        \boxed{
-        \text{PMSE}_\text{GCV}(h) = \frac{n\hat\sigma_\varepsilon^2}{n - \nu}
-        }
-    \end{equation*}
-    where $\hat\sigma_\varepsilon^2 = \frac{1}{n-\nu}\sum^n_{i=1}\left(y_i - \hat y_i\right)^2$
-    estimates the residual variance.
+	We can further simplify the expression to:
+	\begin{equation*}
+		\boxed{
+			\text{PMSE}_\text{GCV}(h) = \frac{n\hat\sigma_\varepsilon^2}{n - \nu}
+		}
+	\end{equation*}
+	where $\hat\sigma_\varepsilon^2 = \frac{1}{n-\nu}\sum^n_{i=1}\left(y_i - \hat y_i\right)^2$
+	estimates the residual variance.
 \end{definition}
 
 \subsection{Choosing the degree of the local polynomial}
@@ -621,13 +662,13 @@ local polynomial is \emph{much less} important
 than the choice of the bandwidth. We can follow the following
 recommendations:
 \begin{itemize}
-    \item The larger the $q$, the better asymptotic properties in bias,
-        but in general its recommended to use $q = r+1$ where $r$ is the
-        order of the derivative of $m$ that is estimated.
-    \item It is preferable to use \emph{odd} degree.
-    \item To decide between cubic or linear, we take into account the
-        expression of the local linear estimator bias. Bias is high
-        in intervals where the function has high curvature ($m''$).
-        If we suspect that the regression function $m$ could be very
-        bumpy, it would be better to use $q=3$.
+	\item The larger the $q$, the better asymptotic properties in bias,
+	      but in general its recommended to use $q = r+1$ where $r$ is the
+	      order of the derivative of $m$ that is estimated.
+	\item It is preferable to use \emph{odd} degree.
+	\item To decide between cubic or linear, we take into account the
+	      expression of the local linear estimator bias. Bias is high
+	      in intervals where the function has high curvature ($m''$).
+	      If we suspect that the regression function $m$ could be very
+	      bumpy, it would be better to use $q=3$.
 \end{itemize}

@@ -82,11 +82,11 @@ the second order Sobolev space in $[a,b]$:
             the polynomials defining $s$ in $[t_{j-1}, t_{j}]$ and $[t_j, t_{j+1}]$
             have a smooth link at $t_j$.
     \end{itemize}
+    \tcblower
+    \begin{note}{Cubic spline}{}
+        The most commonly used spline functions are those with degree $p=3$ (\iemph{cubic splines}).
+    \end{note}
 \end{definition}
-
-\begin{example}{Cubic spline}{}
-    The most commonly used spline functions are those with degree $p=3$ (\iemph{cubic splines}).
-\end{example}
 
 \begin{definition}{Periodic spline}{}\index{periodic spline}
     A degree $p$ spline $s: [a,\,b] \to \mathds R$ is said to be \emph{periodic} when
@@ -166,7 +166,7 @@ the second order Sobolev space in $[a,b]$:
     \tcblower
     \begin{note}
         This is not the only possible basis for the set of cubic splines.
-        In fact, we will study other bases that are more suitable for numeric manipulation.
+        In fact, we will study \emph{other bases} that are \emph{more suitable} for numeric manipulation.
     \end{note}
 \end{example}
 
@@ -217,8 +217,8 @@ Now, we focus on cubic splines.
     \tcblower
     \begin{note}
         This proposition establishes that the optimization problem in an infinite
-        dimensional space, $W_2^2[a,b]$, can be reduced to a finite dimensional
-        space: the set of natural cubic splines with knots $x_1,\ldots,x_n$.
+        dimensional space, $W_2^2[a,b]$, can be \emph{reduced to a finite dimensional
+        space}: the set of natural cubic splines with knots $x_1,\ldots,x_n$.
     \end{note}
 \end{prop}
 

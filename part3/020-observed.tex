@@ -309,3 +309,50 @@ the functional representation of choice.
 % \section{Developments in bases of functions}
 % \section{Smoothing: Kernel, Local Polynomials, Splines}
 % \section{Registration and transformations of functional data}
+
+\section[Registration of functional data]{Registration of functional data (or time warping)}
+
+Variability among functional data:
+\begin{itemize}
+    \item \textbf{Variability in amplitude} (values of the functions)
+    \item \textbf{Variability in phase} (argument of the functions)
+\end{itemize}
+
+\begin{example}{Variability in amplitude}{} Human growth functions
+
+    Every person has its own biological clock, that does not always coincide 
+    with what the calendar marks. Some children get the growth
+    spurt before another.
+\end{example}
+
+\begin{example}{Variability in phase}{} Temperature data
+
+    In some areas winters arrive earlier than in others. Some years the summer is ahead and
+    others are late.
+\end{example}
+
+\begin{definition}{Warping functions}{}\index{warping functions}
+    increasing functions with $h_i(a) = a$ and $h_i(b) = b$ that are
+    able to synchronize functions so that they do not
+    present \iemph{phase variability}.
+\end{definition}
+
+\begin{definition}{Registration}{}\index{registration}
+    (or \emph{time warping})
+
+    Any technique to estimate the warping functions $h_i$ with the aim of \emph{reducing
+    the variability in phase} among functions.
+
+    \tcblower
+    \begin{itemize}
+        \item Shifting the argument of each function by a different quantity.
+        \item Aligning several \emph{key points} (or \emph{marks}) at all the functions.
+        \item Looking for generic warping functions $h_i$ in a non-parametric way, trying to
+            minimize a global measure of variability in phase among the functions.
+    \end{itemize}
+\end{definition}
+
+\begin{figure}[H]
+    \includegraphics{male_growth_alignment}
+    \caption{Registration of growth curves}
+\end{figure}

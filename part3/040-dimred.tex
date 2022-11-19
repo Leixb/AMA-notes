@@ -1,5 +1,368 @@
 %! TEX root = ../000-main.tex
 \chapter{Dimensionality reduction}
 
-\section{Functional Principal Components}
-\section{Multidimensional Scaling}
+\section{Introduction}
+We observe $n$ functions $\chi_1,\, \dots,\, \chi_n$. In general,
+they belong to an infinite-dimensional functional space:
+$\{f: T \to \mathds R\},\,T = [a, b]$.
+\begin{problem}{Dimensionality reduction}{}(in FDA)
+
+Looking for a low dimensional configuration $X$
+(an $n \times q$ matrix, $n < q$, with rows $x_i,\,i=1,\dots,n$) such that
+and an application $\rho$ from $\mathds R^q$ to the functional space such
+that $\rho(x_i)$ is close (in some sense) to the observed $\chi_i$ for all $i$.
+
+\tcblower
+
+Functional principal component analysis (\emph{FPCA}) and
+Multidimensional scaling (\emph{MDS}) are two examples of dimensionality reduction methods.
+
+% \tcbline
+
+\begin{note}
+	Usually, for visualization purposes, $q=2$ or $q=3$.
+\end{note}
+\end{problem}
+
+\pagebreak
+\section{Functional Principal Component Analysis (FPCA)}
+
+Consider the random function $\boldsymbol \chi : \mathcal T = [a, b] \to \mathds R$,
+with $\mathds E [\boldsymbol \chi] = \mu(t),\, \forall t \in \mathcal T$ and
+$\mathds E \left[ \int_a^b \left( \boldsymbol \chi(t) - \mu(t) \right)^2 \right] < \infty$.
+
+\begin{problem}{FPCA}{FPCA}
+Find orthonormal non-random functions $u_1,\, \dots,\, u_K$ from $\mathcal T$ to $\mathds R$,
+minimizing:
+\begin{equation*}
+	\min_{u_1,\, \dots,\, u_K} \mathds E \left[
+		\left\lVert
+		\boldsymbol \chi - \mu - \sum_{j=1}^K \left\langle
+		\boldsymbol \chi - \mu, u_j
+		\right\rangle u_j
+		\right\rVert^2
+		\right]
+\end{equation*}
+\end{problem}
+
+\begin{definition}{Low dimensional representation of $\boldsymbol \chi$}{}
+	\begin{equation*}
+		\boldsymbol \chi \approx \mu + \sum_{j=1}^K \left\langle
+		\boldsymbol \chi - \mu, u_j
+		\right\rangle u_j = \mu + \sum_{j=1}^K Z_j u_j
+	\end{equation*}
+
+	Once the functions $u_1,\, \dots,\, u_K$ have been determined, $\boldsymbol \chi(t),\,t\in[a,\,b]$
+	is represented by the vector $Z = (Z_1,\, \dots,\, Z_K),\, Z_j = \left\langle
+		\boldsymbol \chi - \mu, u_j
+		\right\rangle$.
+\end{definition}
+
+\begin{definition}{Covariance Operator}{}
+
+	Let $C(t,\,u) = \text{Cov} \left( \boldsymbol \chi(t),\, \boldsymbol \chi(u) \right)$ be
+	the \iemph{covariance function} of $\boldsymbol \chi$.
+
+	Associated to $C(t,\,u)$ is the \iemph{covariance operator} $C$:
+	\begin{alignat*}{2}
+		\Gamma : L^2(\mathcal T) & \to L^2(\mathcal T) &             &                                                   \\
+		f                        & \mapsto \Gamma(f) : & \mathcal  T & \to \mathds R                                     \\
+		                         &                     & t           & \mapsto \Gamma(f)(t) = \int_T C(t,\,u) f(u) \, du
+	\end{alignat*}
+
+	Let $\lambda_j,\,\psi_j$ be the eigenvalues and eigenfunctions of the
+	covariance operator $\Gamma$:
+	\begin{equation*}
+		\Gamma(\psi_j) = \lambda_j \psi_j,\,j \geq 1
+	\end{equation*}
+\end{definition}
+
+\subsection{FPCA and Karhunen-Loève expansion}
+
+\begin{definition}{Karhunen-Loève expansion}{}
+
+	Assuming $\mathds E \left[ \int_a^b \left( \boldsymbol \chi(t) - \mu(t) \right)^2 \right]
+		= \mathds E \left[ \left\lVert \boldsymbol \chi - \mu \right\rVert^2 \right] < \infty$,
+	the random function $\boldsymbol \chi(t)$ can be expanded as:
+	\begin{equation*}
+		\boldsymbol \chi(t) = \mu(t) + \sum_{j=1}^\infty Z_j\psi_j(t)
+	\end{equation*}
+	known as the \iemph{Karhunen-Loève expansion} of $\boldsymbol \chi$, where:
+	\begin{equation*}
+		Z_j = \left\langle \boldsymbol \chi - \mu,\, \psi_j \right\rangle,\,j \geq 1
+	\end{equation*}
+	is a sequence of random variables with \emph{mean zero} (${\mathds E[Z_j] = 0}$)
+	and variance $\lambda_j$ (${\mathds E[Z_j^2] = \lambda_j}$)
+	that are \emph{uncorrelated} (${\mathds E[Z_j Z_h] = 0},\,j \neq h$).
+
+	\tcblower
+
+	\begin{note}
+		When the random function $\boldsymbol \chi$ is a Gaussian, then $Z_j$ are
+		independent Gaussian random variables.
+		\tcbline
+		Moreover: $\mathds E \left[ \int_a^b \left( \boldsymbol \chi(t) - \mu(t) \right)^2 \right]
+			= \mathds E \left[ \left\lVert \boldsymbol \chi - \mu \right\rVert^2 \right]
+			= \sum_{j=1}^\infty \lambda_j$.
+	\end{note}
+\end{definition}
+
+\begin{prop}{}{}
+	Assuming $\lambda_j > \lambda_{j+1},\,\forall j \geq 1$ and fixing an integer $K$,
+    the orthonormal basis $u_1,\, \dots,\, u_K$ solving the FPCA problem (\ref{problem:FPCA}) is
+	formed by the first $K$ eigenfunctions $\psi_1,\, \dots,\, \psi_K$ of the covariance
+	operator $\Gamma$. And the minimum is $\sum_{j\geq K+1} \lambda_j$.
+
+    \tcblower
+
+	\begin{marker}
+		That is, the \emph{Karhunen-Loève expansion} of $\boldsymbol \chi - \mu$,
+		truncated at the first $K$ terms gives the \emph{best $K$-dimensional approximation}
+		to $\boldsymbol \chi - \mu$ in the sense of the mean square error.
+	\end{marker}
+\end{prop}
+
+\subsection{Sampling version of FPCA}
+
+The sampling (or empirical) version of the previous
+results is obtained when replacing the covariance function of $\boldsymbol \chi$
+by the \emph{empirical covariance function}.
+
+\begin{definition}{Empirical covariance function}{}
+
+    Let $\chi_1,\, \dots,\, \chi_n$ be $n$ iid random functions on $L^2(\mathcal T)$
+    having the same distribution as $\boldsymbol \chi$. The \emph{empirical covariance function}
+    is:
+    \begin{equation*}
+        \hat C(t,\,u) = \frac{1}{n} \sum_{i=1}^n \left(
+            \chi_i(t) - \hat \chi(t)
+        \right)\cdot \left(
+            \chi_i(u) - \hat \chi(u)
+        \right)
+    \end{equation*}
+    forall $t,\,u \in \mathcal T = [a,\,b]$ where $\hat \chi$ is the \emph{sample mean function}:
+    \begin{equation*}
+        \hat \chi(t) = \frac{1}{n} \sum_{i=1}^n \chi_i(t)
+    \end{equation*}
+
+    \tcblower
+
+    In practice, the eigensystem of the operator with kernel $\hat C(t,\,u)$ is
+    obtained by \emph{matrix diagonalization}:
+    \begin{equation*}
+        \chi_i(t) \approx \hat \chi(t) + \sum_{j=1}^K \hat Z_{ij} \hat \psi_j(t),\,t \in \mathcal T,\,i=1,\, \dots,\, n
+    \end{equation*}
+
+\end{definition}
+
+\subsection{Interpreting principal functions}
+\begin{itemize}
+    \item \emph{Mean function}: $\bar \chi$ represents what is common to all the data.
+    \item \emph{Centered functions}: $\chi_i - \bar \chi$ account for individual differences.
+    \item \emph{Principal functions}: summarize what is common in the way individuals are
+        diverse. They represent the \emph{main variation modes} of the observed functions
+        around the mean function.
+    \item Graphical representation:
+        \begin{itemize}
+            \item PC k vs PC j scores.
+            \item Mean function \textpm PC j (times a constant). The standard.
+            \item Curves with \emph{Median and extreme scores in PC j}
+                (alternative graphic proposed by Jones and Rice (1992)).
+        \end{itemize}
+\end{itemize}
+
+\subsubsection{Numerical computation of sampling FPCA}
+
+\begin{algorithm}{Numerical computation of sampling FPCA}{}
+    proposed by Kneip and Utikal 2001
+
+    Let us assume that a set of $n$ independent copies of $\boldsymbol \chi$ have
+    been observed in a common fine grid in $T$:
+    \begin{equation*}
+        \chi_i(t_h),\,h=1,\, \dots,\, H,\,i=1,\, \dots,\, n
+    \end{equation*}
+
+    Let $\chi_i^c(t_h)$ be the centered observations.
+
+    Let $M$ be the $n \times n$ matrix with element ($i,\,j$) equal to
+    \begin{equation*}
+        \left\langle \chi_i^c,\, \chi_j^c \right\rangle = \int_a^b \chi_i^c(t) \chi_j^c(t) \,dt
+    \end{equation*}
+
+    The eigenvalues of $M$, say $\hat\lambda_r,\,r=1,\, \dots,\, n$ coincide with
+    the non-null eigenvalues of the sampling covariance operator $\hat C$ with
+    kernel $\hat c(t,\,u)$.
+
+    Let $(p_{1i},\, \dots,\, p_{ni})$ be the $i$-th eigenvectors of $M$. Then
+    the $r$-th eigenfunction of the sampling covariance operator $\hat C$ is
+    \begin{equation*}
+        \hat e_r(t) = \hat \lambda_r \sum_{i=1}^n p_{ri} \chi_i^c(t)
+    \end{equation*}
+
+    In practice, matrix $M$ is not computable.
+
+    Let $\hat M$ be the $n \times n$ matrix whose elements
+    are numerical approximations of those of $M$:
+    \begin{equation*}
+        \hat M_{ij} = \sum_{h=2}^H \frac{\chi_i^c(t_h) \chi_j^c(t_h) + \chi_i^c(t_{h-1}) \chi_j^c(t_{h-1})}{2}
+            (t_h - t_{h-1})
+            \approx \int_a^b \chi_i^c(t) \chi_j^c(t) \,dt = M_{ij}
+    \end{equation*}
+
+    The eigensystem of $\hat M$ is used for approximating that of the sampling covariance operator $\hat C$.
+\end{algorithm}
+
+\begin{algorithm}{Numerical computation of sampling FPCA}{}Using B-spline basis
+    (Ramsey and Silverman 2005)
+
+    Let $B_1(t),\, \dots,\, B_K(t)$ basis and express $\chi_i^c(t)$ as a linear combination of
+    this basis:
+    \begin{equation*}
+        \hat \chi_i^c(t) \approx \sum_{k=1}^K \alpha_{ik} B_k(t),\,t \in T \implies
+            \hat\chi_i^c \approx \alpha_i^T B
+    \end{equation*}
+    where $\alpha_i = (\alpha_{i1},\, \dots,\, \alpha_{iK})^T$ and $B = (B_1,\, \dots,\, B_K)$.
+
+    Then
+    \begin{equation*}
+        \hat c(t,\,u) \approx \frac{1}{n} \sum_{i=1}^n \left(
+            \alpha_i^T B(t) B(u)^T \alpha_i
+        \right)
+    \end{equation*}
+
+    For a generic $f \in L^2(T)$, let $\beta^T B\approx f$ be the expression of $f$
+    in the B-spline basis. Then:
+    \begin{equation*}
+        \lVert f \rVert^2 = \beta^T \Phi \beta \quad
+        \Phi_{hl} = \mathlarger{\int_a^b} \int_a^b B_h(t) B_l(u) \,du \,dt
+    \end{equation*}
+
+    It can be proven that the first eigenfunction is also the solution of:
+    \begin{equation*}
+        \max_{f:\lVert f \rVert = 1} \widehat{\text{Var}} \left( \langle \boldsymbol \chi,\, f \rangle \right)
+    \end{equation*}
+
+    \begin{align*}
+        \widehat{\text{Var}} \left( \langle \boldsymbol \chi,\, f \rangle \right)
+        &= \langle\hat C(f),\, f \rangle
+        = \mathlarger{\int_a^b} \left( \int_a^b \hat c(t,\,u) f(u) \,du \right)f(t) \,dt \\
+        &\approx \mathlarger{\int_a^b} \left( \int_a^b \frac{1}{n} \sum_{i=1}^n \left(
+            \alpha_i^T B(t) B(u)^T \alpha_i
+        \right) \beta^T B(u) \,du \right) B(t)^T \beta \,dt \\
+        &= \beta^T \left(\mathlarger{ \int_a^b }
+        \int_a^b B(u) \left(
+            \frac{1}{n} \sum_{i=1}^n \alpha_i^T B(t) B(u)^T \alpha_i
+        \right) B(t)^T \,du \,dt \right) \beta \\
+        &= \beta^T \hat \Psi \beta
+    \end{align*}
+    Then, $\max_{f:\lVert f \rVert = 1} \widehat{\text{Var}} \left( \langle \boldsymbol \chi,\, f \rangle \right)$
+    is almost equivalent to:
+    \begin{equation*}
+        \max_{\beta\in\mathds R^K : \beta^T\Phi\beta = 1} \beta^T \hat \Psi \beta
+        \iff
+        \max_{\beta\in\mathds R^K : \left( \Phi^{1/2}\beta \right)^T \left( \Phi^{1/2}\beta \right) = 1}
+            \left( \Phi^{1/2}\beta \right)^T
+            \left( \Phi^{-1/2} \hat \Psi \Phi^{-1/2} \right)
+            \left( \Phi^{1/2}\beta \right)
+    \end{equation*}
+    and the problem reduces to the \emph{diagonalization of $\Phi^{-1/2} \hat \Psi \Phi^{-1/2}$}.
+\end{algorithm}
+
+\begin{definition}{Sparse functional data}{}
+
+    The observations are
+    \begin{equation*}
+        \chi_i(t_{ij}),\, h=1,\, \dots,\, m_i,\, i=1,\, \dots,\, n
+    \end{equation*}
+    where $m_i$ is the number of observations of the $i$-th individual.
+    \begin{itemize}
+        \item The number of observations $m_i$ for individual $i$ is small.
+        \item Different individuals have different number of observations.
+        \item The points $t_{ij}$ are not necessarily the same for all individuals.
+    \end{itemize}
+
+    Implemented in function \emph{\texttt{PACE} Principal Analysis by Conditional
+    Expectation} in the R library \emph{fdapace}.
+\end{definition}
+
+\section{Multidimensional Scaling for functional data}
+
+\begin{recap}{MDS}{}
+MDS is a dimensionality reduction technique based on \emph{inter-individuals distances}.
+
+Let $d_{ij} \geq 0$ be the dissimilarity between individuals $i$ and $j$.
+
+It is assumed that $d_{ij} = d_{ji}$ and $d_{ii} = 0$.
+
+We look for a $n \times q$ matrix $X\, (q \leq n)$ such that
+the Euclidean distance between individuals $i$ and $j$ rows of $X$ is
+as close as possible to $d_{ij}$.
+
+$X$ can be chosen with orthogonal columns.
+
+The columns of $X$ are called \emph{principal coordinates}.
+
+\tcbline
+Relation between PCA and MDS:
+\begin{itemize}
+    \item Let $X$ be a $n \times q$ data matrix.
+    \item $d_{ji}$ be the Euclidean distance between rows $i$ and $j$ of $X$.
+    \item Then $\tilde X_q\;(q \leq p)$ coincides with the matrix of the first
+        $q$ principal coordinates of $X$.
+\end{itemize}
+\end{recap}
+
+\begin{definition}{Functional MDS}{}
+    %
+    % Distance: $d(x,\,y) = 0 \iff x = y$ and $d(x,\,y) \leq d(x,\,z) + d(z,\,y)$.
+    % Semi-metric: $d(x,\,x) = 0$ and $d(x,\,y) \leq d(x,\,z) + d(z,\,y)$.
+    %
+    When working with functions, \emph{semi-metrics} (def~\ref{def:metric}) are used (i.e. two
+    functions that are different in only one point are essentially the same)
+\end{definition}
+
+\begin{example}{Semi-metrics in $F = \{\chi : [a,\,b] \to \mathds R\}$}{}
+    the set of functions defined on $T = [a,\,b]$:
+
+    $L2$-distance between derivatives:
+    \begin{equation*}
+        d_r^{deriv}(\chi,\,\gamma) = \sqrt{
+            \int_a^b \left(
+                \chi^{(r)}(t) - \gamma^{(r)}(t)
+            \right)^2 \,dt
+        }
+    \end{equation*}
+
+    $L2$-distance in the first $q$ functional principal components:
+    \begin{equation*}
+        d_q^{PCA}(\chi,\,\gamma) = \sqrt{
+            \sum_{i=1}^q \left(
+                \psi_k^\chi - \psi_k^\gamma
+            \right)^2
+        } = \sqrt{
+            \sum_{i=1}^q \left(
+                \int_a^b \left[
+                    \chi(t) - \gamma(t)
+                \right] e_k(t) \,dt
+            \right)^2
+        }
+    \end{equation*}
+\end{example}
+
+\section{Dimensionality reduction when data are density functions}
+
+A particular case of functional data is the case of \iemph{density functions}.
+
+The functional space is:
+\begin{equation*}
+    \mathcal F(I) = \{
+        f : I \to \mathds R \mid f(x) \geq 0,\, \int_I f(x) \,dx = 1
+    \}
+\end{equation*}
+where $I = [a,\,b] \subseteq \mathds R$.
+
+Density functions share some features with \iemph{compositional data}
+($D$-dimensional, non-negative data with constant sum).
+Densities are in fact infinite dimensional compositional data.
+
+% TODO

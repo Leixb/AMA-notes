@@ -1,6 +1,197 @@
 %! TEX root = ../000-main.tex
 \chapter{Exploratory analysis of functional data}
 
-\section{Location and dispersion statistics}
+\section{Introduction}
+\begin{question}{What are we interested in?}{}
+	\begin{itemize}
+		\item \emph{Mean function}.
+		\item \emph{Variation}.
+		\item \emph{Covariation} between different values of the argument,
+		      or between two different functional data.
+		\item \emph{Depth measures} and \emph{outlier} detection.
+	\end{itemize}
+\end{question}
+
+\subsection{Main parameters of a functional random variable}
+
+\newcommand{\X}{{\boldsymbol{\chi}}}
+\newcommand{\Y}{{\boldsymbol{\gamma}}}
+Given two \emph{functional random variables} $\X$ and $\Y$:
+\begin{align*}
+	\mu(t)        & = \mathds E(\X(t)) \tag{Mean function}                                                                                                       \\
+	\sigma^2(t)   & = \text{Var}(\X(t)) = \mathds E\left[
+		\X(t)^2
+	\right] - \mu(t)^2 \tag{Variance function}                                                                                                                   \\
+	\sigma(t,\,u) & = c(t,\,u) = \mathds E\left[
+		\X(t)\,\Y(u)
+	\right] - \mu(t)\,\mu(u) \tag{Covariance function}                                                                                                           \\
+	r(t,\,u)      & = \text{Cor}(\X(t),\,\X(u)) =
+	\frac{\text{Cov}(\X(t),\,\X(u))}{\sqrt{\text{Var}(\X(t))\,\text{Var}(\X(u))}}
+	\tag{Correlation function}                                                                                                                                   \\
+	C_c(t,\,u)    & = \text{Cov}(\X(t),\,\Y(u)) = \mathds E\left[ \X(t)\,\Y(u) \right] - \mu_\X(t)\,\mu_\Y(u) \tag{Cross-covariance function}                    \\
+	r_c(t,\,u)    & = \text{Cor}(\X(t),\,\Y(u)) = \frac{\text{Cov}(\X(t),\,\Y(u))}{\sqrt{\text{Var}(\X(t))\,\text{Var}(\Y(u))}} \tag{Cross-correlation function}
+\end{align*}
+
+\section{Descriptive Analysis}
+
+Given a functional data set $\X = (\chi_1,\, \gamma_1),\, \dots,\, (\chi_n,\, \gamma_n)$, iid
+from $(\X,\,\Y)$, the \emph{natural estimators} of their main parameters are:
+
+\begin{definition}{Mean}{}
+	\begin{equation*}
+		\bar \chi (t) = \frac{1}{n} \sum_{i=1}^n \chi_i(t) \tag{mean}
+	\end{equation*}
+\end{definition}
+\begin{definition}{Variance}{}
+	\begin{equation*}
+		\hat \sigma^2(t) = \frac{1}{n-1} \sum_{i=1}^n \left( \chi_i(t) - \bar \chi(t) \right)^2 \tag{variance}
+	\end{equation*}
+\end{definition}
+\begin{definition}{Covariance}{}
+	\begin{equation*}
+		\hat c(t,\,u) = \frac{1}{n-1} \sum_{i=1}^n \left( \chi_i(t) - \bar \chi(t) \right) \left( \gamma_i(u) - \bar \gamma(u) \right) \tag{covariance}
+	\end{equation*}
+\end{definition}
+\begin{definition}{Correlation}{}
+	\begin{equation*}
+		\hat r(t,\,u) = \frac{\hat c(t,\,u)}{\sqrt{\hat \sigma^2(t)\,\hat \sigma^2(u)}} \tag{correlation}
+	\end{equation*}
+\end{definition}
+\begin{definition}{Cross-covariance}{}
+	\begin{equation*}
+		\hat C_c(t,\,u) = \frac{1}{n-1} \sum_{i=1}^n \left( \chi_i(t) - \bar \chi(t) \right) \left( \gamma_i(u) - \bar \gamma(u) \right) \tag{cross-covariance}
+	\end{equation*}
+\end{definition}
+\begin{definition}{Cross-correlation}{}
+	\begin{equation*}
+		\hat r_c(t,\,u) = \frac{\hat C_c(t,\,u)}{\sqrt{\hat \sigma_\chi^2(t)\,\hat \sigma_\gamma^2(u)}} \tag{cross-correlation}
+	\end{equation*}
+\end{definition}
+
+
+% \section{Location and dispersion statistics}
+\pagebreak
 \section{Depth measurements}
-\section{Outliers detection}
+
+\begin{definition}{Data Depth}{}
+    a measure of how deep a data point is in the sample.
+
+    They allow for centrality measures alternative to the mean, trying
+    to generalize the median and the trimmed-mean
+    of a univariate dataset.
+
+    \tcblower
+
+    \begin{note}
+        In univariate data, the \emph{median} would typically be the deepest point
+        of a cloud of points.
+    \end{note}
+\end{definition}
+
+\subsection{Depth measure for univariate data}
+
+\begin{definition}{Median depth}{}
+
+Given a univariate data set $x_1,\, \dots,\, x_n$, let
+\begin{equation*}
+    F_n(x) = \frac{\#\{x_i: x_i \leq x\}}{n} \tag{Empirical distribution function}
+\end{equation*}
+be the empirical distribution function of the data set. A \emph{depth measure} can
+be defined as:
+\begin{equation*}
+    D(x_i) = \min\left\{ F_n(x_i),\, 1 - F_n(x_i) \right\} \tag{depth measure}
+\end{equation*}
+\end{definition}
+
+\subsection{Depth measurements for multivariate data}
+
+Different depth notions have been proposed for multivariate data:
+\begin{itemize}
+    \item Tukey (halfspace) depth, Simplical depth, convex hull peeling depth, etc.
+\end{itemize}
+
+\subsection{Depth measures for functional data}
+
+\begin{definition}{Functional Depth}{}
+    How deep a functional data is in the functional data set.
+
+    Different functional depth notions have been proposed:
+    \begin{itemize}
+        \item Integration over the argument of univariate depth measures.
+        \item Extensions of multivariate depths.
+        \item Modal depth.
+    \end{itemize}
+    \tcblower
+    Depth measures are useful to define \emph{robust location} and \emph{dispersion} measures,
+    as well as \emph{classification} and \emph{outlier detection}.
+\end{definition}
+
+\subsubsection{Functional Depths based on univariate depth measures}
+
+\begin{definition}{Fraiman-Muñiz Integrated Functional Depth}{}
+
+Let $\chi_1,\, \dots,\, \chi_n$ be a functional data set defined over
+$T = [a,\,b]$.
+
+For a fixed $t \in T$, $\chi_1(t),\, \dots,\, \chi_n(t)$ is a univariate sample,
+and associated to it there is a univariate depth measure $D(x)$
+
+Let $D(\chi_i(t))$ be univariate depth measure of $\chi_i$ at $t$.
+The \emph{Fraiman-Muñiz} (FM) integrated functional depth measure of
+$\chi_i$ is defined as:
+\begin{equation*}
+    D(\chi_i) = \int_a^b D(\chi_i(t)) \, dt \tag{FM depth}
+\end{equation*}
+\tcblower
+\begin{note}
+    Other alternative univariate depth measures can be used to define \iemph{integrated depths},
+    apart from $D(x) = \min\left\{ F_n(x),\, 1 - F_n(x) \right\}$.
+\end{note}
+\begin{note}
+    In addition to integrated depths, there are other ways to define functional depths.
+\end{note}
+\end{definition}
+
+\subsubsection{Modal Depth}
+
+\begin{question*}{
+    Given a functional data $x_i$, how densely surrounded is it by other data in the 
+    functional data set?
+}
+\end{question*}
+
+\begin{definition}{Functional Modal Depth}{} the functional data most densely
+    surrounded by other data points.
+
+    Given a metric or a semi-metric $d(\cdot,\cdot)$ between functions, for
+    fixed $h > 0$, the \iemph{$h$-depth} is defined as:
+    \begin{equation*}
+        D_h(x_i) = \sum_{j\neq i} \frac{1}{h} K\left( \frac{d(x_i,\,x_j)}{h} \right) \tag{$h$-depth}
+    \end{equation*}
+    where $K$ is a \emph{kernel function}%
+    \footnote{a unimodal symmetric univariate density function}, typically the
+    standard normal density.
+    \tcblower
+    The \emph{tuning parameter} $h$ is selected by default as the 15\%-quantile of
+    the distances between the data points $d(x_j,\,x_k),\;j\neq k$.
+\end{definition}
+
+\subsection{From functional depth to descriptive tools}
+
+\begin{definition}{Functional Descriptive Tools}{}
+    \begin{itemize}
+        \item \textbf{Median}: the deepest function.
+        \item \textbf{$\alpha$-trimmed mean}: the mean of the
+            $(1-\alpha)\times n$ deepest functional data.
+        \item \textbf{$\alpha$-trimmed variance}: the variance of the
+            $(1-\alpha)\times n$ deepest functional data.
+        \item \textbf{Outlier detection}: The least deep functional observations
+            could be considered as outliers.
+    \end{itemize}
+    \begin{note}
+        Functional outliers can appear when \emph{studying derivatives}, even if they are deep among
+        the observed functions (with no derivatives).
+    \end{note}
+\end{definition}
+
+% \section{Outliers detection}

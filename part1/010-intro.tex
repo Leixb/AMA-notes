@@ -99,8 +99,8 @@ as we can see in \cref{fig:histogram_bins}.
 \begin{note}
 	The performance of the histogram as an estimator depends on the bin width $b$:
 	\begin{itemize}
-		\item If $b$ is too large \textrightarrow high bias and low variance.
-		\item If $b$ is too large \textrightarrow low bias and high variance.
+        \item If $b$ is too large \textrightarrow{} high bias and low variance.
+		\item If $b$ is too large \textrightarrow{} low bias and high variance.
 	\end{itemize}
 \end{note}
 
@@ -110,9 +110,11 @@ as we can see in \cref{fig:histogram_bins}.
 				xlabel=LSTAT,
 				ylabel=Density,
 				width=0.3\textwidth,
-				ymax=0.08
+				ymax=0.08,
+                title={$b=8$},
+                title style={xshift=5ex,},
 			]
-			\addplot+[mark=none,hist={density,bins=5}] table[y index=12,col sep=comma] {data/boston.csv};
+			\addplot+[mark=none,fill=blue!30,hist={density,data min=0, data max=40,bins=5}] table[y index=12,col sep=comma] {data/boston.csv};
 		\end{axis}
 	\end{tikzpicture}
 	\begin{tikzpicture}
@@ -120,9 +122,11 @@ as we can see in \cref{fig:histogram_bins}.
 				xlabel=LSTAT,
 				ylabel=Density,
 				width=0.3\textwidth,
-				ymax=0.08
+				ymax=0.08,
+                title={$b=2.5$},
+                title style={xshift=4ex,},
 			]
-			\addplot+[mark=none,hist={density,bins=15}] table[y index=12,col sep=comma] {data/boston.csv};
+			\addplot+[mark=none,fill=blue!30,hist={density,data min=0, data max=40,bins=16}] table[y index=12,col sep=comma] {data/boston.csv};
 		\end{axis}
 	\end{tikzpicture}
 	\begin{tikzpicture}
@@ -130,9 +134,11 @@ as we can see in \cref{fig:histogram_bins}.
 				xlabel=LSTAT,
 				ylabel=Density,
 				width=0.3\textwidth,
-				ymax=0.08
+				ymax=0.08,
+                title={$b=1$},
+                title style={xshift=5ex,},
 			]
-			\addplot+[mark=none,hist={density,bins=50}] table[y index=12,col sep=comma] {data/boston.csv};
+			\addplot+[mark=none,fill=blue!30,hist={density,data min=0, data max=40,bins=40}] table[y index=12,col sep=comma] {data/boston.csv};
 		\end{axis}
 	\end{tikzpicture}
 	\caption{Histograms of \texttt{LSTAT} from Boston Housing data with different $b$}%
@@ -161,14 +167,20 @@ It is smooth, continuous and respects the data distribution characteristics.
 		\begin{axis}[
 				xlabel=LSTAT,
 				ylabel=Density,
-				ymax=0.08
+				ymax=0.08,
+                width=0.7\textwidth,
+                height=0.4\textwidth,
 			]
-			\addplot+[mark=none,hist={density,bins=50}] table[y index=12,col sep=comma] {data/boston.csv};
-			\addplot [thick] gnuplot [raw gnuplot] {
+			\addplot+[mark=none,fill=blue!30,hist={density,data min=0, data max=40, bins=40},forget plot] table[y index=12,col sep=comma] {data/boston.csv};
+            \addlegendimage{area legend,blue,fill=blue!30}
+            \addlegendentry{Histogram ($b=1$)}
+			\addplot+[red,mark=none,very thick] gnuplot [raw gnuplot] {
 					set key autotitle columnhead;
 					set datafile separator ",";
-					plot 'data/boston.csv' u 13:(1./500.) smooth kdensity
+					plot 'data/boston.csv' using 13:(1./500.) smooth kdensity bandwidth 2;
 				};
+					% plot 'data/boston.csv' u 13:(1./500.) smooth kdensity
+            \addlegendentry{Kernel density ($h=1.5$)}
 		\end{axis}
 	\end{tikzpicture}
 	\caption{Histogram and kernel density estimator of \texttt{LSTAT} from Boston Housing data}%
@@ -226,7 +238,7 @@ The kernel density estimator spreads the weight $\frac{1}{n}$ of each
 observation in its neighborhood in a continuous way.
 
 \begin{definition}{Unimodal}{unimodal}
-	A function $f$ is unimodal if it has only one maximum.
+    A function $f$ is unimodal if it has \emph{only one maximum}.
 \end{definition}
 
 \begin{definition}{Symmetric}{symmetric}
@@ -313,7 +325,7 @@ known as the curse of dimensionality:
 
 \begin{marker}
 	Non-parametric estimation of the density function (or any other
-	function) is extremely difficult when the data dimension $p$ is large
+    function) is \emph{extremely difficult} when the data dimension $p$ is large
 	(in practice $p \geq 4$).
 \end{marker}
 
@@ -595,8 +607,8 @@ when using an uniform kernel on $\mathds{R}^p$ and bandwidth of $\varepsilon$.
 
 \begin{definition}{Cluster}{}\index{cluster}
     
-    Clusters are subsets of density-connected points (all the points in the cluster are
-    density-connected) which are maximal (if a point $\boldsymbol{x}_i$ is density-connected
+    Clusters are \emph{subsets of density-connected points} (all the points in the cluster are
+    density-connected) which are \emph{maximal} (if a point $\boldsymbol{x}_i$ is density-connected
     with another point $\boldsymbol{x}_j$, then both points are in the same cluster).
 
     \tcblower
@@ -641,7 +653,7 @@ There are two hyperparameters in DBSCAN: $\varepsilon$ and $\text{minPts}$.
 \end{algorithm}
 
 \begin{figure}[H]
-    \includegraphics[width=0.6\textwidth]{../figures/dbscan_eps_minpts}
+    \includegraphics[width=0.5\textwidth]{../figures/dbscan_eps_minpts}
     \caption{Visualization of the DBSCAN algorithm}
 \end{figure}
 

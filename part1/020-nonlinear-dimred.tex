@@ -185,6 +185,7 @@ where $y_{ij}$ is the score of the $i$-th observation on the $j$-th principal co
 	\end{note}
 \end{definition}
 
+\begin{definition}{Principal coordinates}
 When it does exist, $\boldsymbol{D}$ is said to be Euclidean. In this
 case $\boldsymbol{X}$ can be chosen verifying the following conditions:
 \begin{itemize}
@@ -195,11 +196,19 @@ case $\boldsymbol{X}$ can be chosen verifying the following conditions:
 \end{itemize}
 The columns of $\boldsymbol{X}$ are called \iemph{principal coordinates}.
 
+\tcblower
+
+\begin{note}
 When an Euclidean configuration does not exist, MDS allows to
-obtain approximated solutions. That is, MDS looks for a $q$-dimensional
+obtain \emph{approximated solution}s.
+
+That is, MDS looks for a $q$-dimensional
 configuration $\boldsymbol{X}$ such that the Euclidean distances between
-the rows of $\boldsymbol{X}$ are as close as possible to the observed
+the rows of $\boldsymbol{X}$ are \emph{as close as possible} to the observed
 distances.
+\end{note}
+\end{definition}
+
 
 \subsection{Classical metric scaling}
 
@@ -572,10 +581,10 @@ distribution.
 	Let $\boldsymbol X$ be a r.v. with density function $f \in C^r,\, r \geq 2$.
 	Assume that $\mu^*$ is a function (i.e. $|\boldsymbol \mu^*(\boldsymbol x)| = 1,\,\forall
 		\boldsymbol x \in \text{Support}(\boldsymbol X)$. Then, $\Gamma(\boldsymbol X)$ is a
-	non-empty set.
+        \emph{non-empty set}.
 	\tcblower
 	\begin{note}
-		To assume that $\mu^*$ is a function is a non-restrictive assumption.
+        To assume that $\mu^*$ is a function is a \emph{non-restrictive assumption}.
 	\end{note}
 \end{theorem}
 
@@ -648,18 +657,19 @@ metric scaling (\cref{sec:non-classical-metric-scaling}).
 \end{equation*}
 \end{problem}
 
-\begin{question}{Could Local MDS be even more local?}{}
+\begin{question}{Could Local MDS be even more local?}{} No
 
 	One could consider convenient to only consider the short distances and ignore
 	the large ones. This is equivalent to using $w = 0$ in Local MDS. This has been
 	tried several times but it does not work:
+    \tcblower
 	\begin{quote}
 		Removing large distances from the stress function has been tried
 		many times, but the hope that small dissimilarities add up to globally
 		meaningful optimal configurations have always been frustrated.
 
-		In some examples, removal of the largest third had calamitous
-		effects by reducing optimal configurations to mere disorder.
+		In some examples, removal of the largest third had \emph{calamitous
+        effects} by reducing optimal configurations to mere disorder.
 	\end{quote}
 \end{question}
 
@@ -733,7 +743,7 @@ ISOMAP only depends on a tuning parameter $\varepsilon$ or $k$ that is used to
 define the neighbourhood relations.
 
 \begin{marker}
-	The result if \emph{very} sensible to the bandwidth value and can result
+    The result if \emph{very} sensible to the \emph{bandwidth} value and can result
 	in short-circuits or fragmented graph $G^\varepsilon$.
 \end{marker}
 
@@ -803,24 +813,24 @@ then the conditional probabilities $p_{i \mid j}$ and $q_{i \mid j}$ will be equ
 	\end{equation*}
 	\tcblower
 	\begin{note}
-		Kullback-Leibler divergence is not symmetric: there is a large
+        Kullback-Leibler divergence is \emph{not symmetric}: there is a large
 		cost for using widely separated map points $\boldsymbol y_i$ to
 		represent nearby data points $\boldsymbol x_j$, but there is only a small
 		cost for using nearby map points to represent widely separated data points.
 	\end{note}
 \end{definition}
 
-\begin{problem}{SNE}{}
+\begin{problem}{Stochastic Neighbor Embedding (SNE)}{}
 
 SNE minimizes (in a gradient descent fashion) the sum of Kullback-Leibler
-divergences between the conditional distributions over all datapoints:
+divergences between the conditional distributions over all data points:
 \begin{equation*}
 	C(\boldsymbol Y) = \sum_{i=1}^n KL(P_i \mid\mid Q_i) =
 	\mathlarger{\sum_{i=1}^n} \sum_{j=1}^n p_{i \mid j} \log \frac{p_{i \mid j}}{q_{i \mid j}}
 \end{equation*}
 \tcblower
 \begin{note}
-	The SNE cost function focuses on retaining the local structure of the data in
+    The SNE cost function focuses on retaining the \emph{local structure} of the data in
 	the map.
 \end{note}
 \end{problem}
