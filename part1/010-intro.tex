@@ -218,10 +218,12 @@ The kernel density estimator provides two improvements over the histogram:
 	If we want to estimate at a different point $x'$, we move the interval again.
 \end{prop}
 
+\pagebreak
 \subsubsection{Smoothing (Moving average)}
 \begin{prop}{$\widehat{f}_U(x)$ is not smooth}{}
 	Since it is discontinuous and piecewise constant.
-	\tcblower
+\end{prop}
+\begin{definition}{Kernel density estimator}{}
 	If we want to smooth the estimator, we can use a kernel function $K$ (that is twice derivable) instead
 	of the indicator function resulting in a density estimator that inherits the
 	smoothness properties:
@@ -230,13 +232,14 @@ The kernel density estimator provides two improvements over the histogram:
 		\tag{kernel density estimator}
 	\end{equation}
 	This is called the \iemph{kernel density estimator}.
+    \tcblower
 
-	$K$ is the \iemph{kernel function}, which is a continuous density function, unimodal
-	and symmetric around $0$.
+	$K$ is a \iemph{kernel function}, which is a continuous density function, unimodal
+    and symmetric around $0$. (See def~\ref{def:kernel-functions})
 
 	$h$ is known as the \iemph{smoothing parameter} or \iemph{bandwidth} and is a
 	\iemph{hyperparameter} of the estimator.
-\end{prop}
+\end{definition}
 
 \begin{definition}{Unimodal}{unimodal}
     A function $f$ is unimodal if it has \emph{only one maximum}.
@@ -384,6 +387,7 @@ known as the curse of dimensionality:
 	(in practice $p \geq 4$).
 \end{marker}
 
+\pagebreak
 \subsection{Software}
 Density estimation in R:
 \begin{itemize}
