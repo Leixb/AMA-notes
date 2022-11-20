@@ -65,8 +65,8 @@ Let's assume that $\mathbf{X} = X$ is a one-dimensional continuous random variab
 
 Let $dx \geq 0$ be a small length. Let $0 \leq u \leq dx,\; v = dx - u$. Then:
 \begin{align*}
-	f(x) \approx \frac{P(X \in [x, x + dx])}{dx} \approx \frac{P(X \in [ x - u, x + v])}{dx} \\
-	f(x) \approx \frac{\text{probability}}{\text{length}}
+    f(x) &\approx \frac{P(X \in [x, x + dx])}{dx} \approx \frac{P(X \in [ x - u, x + v])}{dx} \\
+    f(x) &\approx \frac{\text{probability}}{\text{length}}
 \end{align*}
 Given $x_1, \ldots, x_n$ i.i.d.%
 \index{iid}%
@@ -82,19 +82,24 @@ at $x$ in a non-parametric way.
 \subsection{The histogram}
 It is a very simple non-parametric density estimator.
 
-\begin{definition}{histogram}{histogram}\index{histogram}
-	A histogram is a non-parametric density estimator that consists of a sequence of
-	rectangles, each of which has a height proportional to the density at the center of
-	the rectangle.
+\begin{definition}{Histogram}{histogram}\index{histogram}
+	A non-parametric density estimator that consists of a sequence of
+	rectangles, each of which has a height proportional
+    to the density at the center of the rectangle.
 	\tcblower
-	Formally:
 	\begin{equation*}
 		\widehat{f}_H(x) = \sum_{j=1}^m \frac{p_j}{b_j - b_{j-1}} I_{B_j}(x)
 	\end{equation*}
+    where $I$ is the indicator function.
 \end{definition}
 
 The appearance of the histogram strongly depends on the choice of the bin width $b$,
 as we can see in \cref{fig:histogram_bins}.
+
+\begin{definition}{Indicator function}{indicator} takes value 1 if
+    the argument is part of the set and 0 otherwise.
+\end{definition}
+
 
 \begin{note}
 	The performance of the histogram as an estimator depends on the bin width $b$:
@@ -206,8 +211,8 @@ The kernel density estimator provides two improvements over the histogram:
 
 	The estimator will be:
 	\begin{align*}
-		\widehat{f}_U(x) & = \frac{1}{n}\sum_{i=1}^n \frac{1}{b} I_{[x - b/2, x + b/2]}(x_i)                  \\
-		                 & = \frac{1}{n}\sum_{i=1}^n \frac{1}{2h} I_{[-1, 1]}\left( \frac{x_i - x}{h} \right)
+		\widehat{f}_U(x) & = \frac{1}{n}\sum_{i=1}^n \frac{1}{b} I_{[x - b/2,\, x + b/2]}(x_i)                  \\
+		                 & = \frac{1}{n}\sum_{i=1}^n \frac{1}{2h} I_{[-1,\, 1]}\left( \frac{x_i - x}{h} \right)
 	\end{align*}
 
 	If we want to estimate at a different point $x'$, we move the interval again.
@@ -215,8 +220,7 @@ The kernel density estimator provides two improvements over the histogram:
 
 \subsubsection{Smoothing (Moving average)}
 \begin{prop}{$\widehat{f}_U(x)$ is not smooth}{}
-	Since it is discontinuous and piecewise constant due to the use of the indicator
-	function $I_{[-1,1]}$.
+	Since it is discontinuous and piecewise constant.
 	\tcblower
 	If we want to smooth the estimator, we can use a kernel function $K$ (that is twice derivable) instead
 	of the indicator function resulting in a density estimator that inherits the
@@ -234,9 +238,6 @@ The kernel density estimator provides two improvements over the histogram:
 	\iemph{hyperparameter} of the estimator.
 \end{prop}
 
-The kernel density estimator spreads the weight $\frac{1}{n}$ of each
-observation in its neighborhood in a continuous way.
-
 \begin{definition}{Unimodal}{unimodal}
     A function $f$ is unimodal if it has \emph{only one maximum}.
 \end{definition}
@@ -244,6 +245,60 @@ observation in its neighborhood in a continuous way.
 \begin{definition}{Symmetric}{symmetric}
 	A function $f$ is symmetric around a point $x_0$ if $f(x) = f(x_0 - (x - x_0)) \quad \forall x$.
 \end{definition}
+
+\begin{example}{Kernel density estimator}{}
+The kernel density estimator spreads the weight $\frac{1}{n}$ of each
+observation in its neighborhood in a continuous way.
+    \begin{figure}[H]
+        \begin{tikzpicture}
+            \begin{axis}[
+                every axis plot/.append style={color=blue,mark=none},
+                domain=-1:3.5,
+                samples=150,
+                legend pos=outer north east,
+                ]
+                \addlegendimage{red,mark=*,only marks};
+                \addlegendentry{Observed data};
+                \addlegendimage{blue,mark=none};
+                \addlegendentry{Kernel functions};
+                \addlegendimage{blue,mark=none,line width=2pt};
+                \addlegendentry{Estimated density};
+
+                \pgfmathsetmacro{\h}{0.30}
+                % gaussian kernel with variance 1
+                \addplot[blue,mark=none]{1/sqrt(2*pi)*exp(-((x-0)/\h)^2/2)};
+                \addplot[blue,mark=none]{1/sqrt(2*pi)*exp(-((x-1)/\h)^2/2)};
+                \addplot[blue,mark=none]{1/sqrt(2*pi)*exp(-((x-1.2)/\h)^2/2)};
+                \addplot[blue,mark=none]{1/sqrt(2*pi)*exp(-((x-1.75)/\h)^2/2)};
+                \addplot[blue,mark=none]{1/sqrt(2*pi)*exp(-((x-2.5)/\h)^2/2)};
+
+
+                \addplot[blue,mark=none, line width=2pt]{1/sqrt(2*pi)*exp(-((x-0)/\h)^2/2) +
+                    1/sqrt(2*pi)*exp(-((x-1)/\h)^2/2) +
+                    1/sqrt(2*pi)*exp(-((x-1.2)/\h)^2/2) +
+                    1/sqrt(2*pi)*exp(-((x-1.75)/\h)^2/2) +
+                    1/sqrt(2*pi)*exp(-((x-2.5)/\h)^2/2)};
+
+            \addplot[mark=*,red, only marks] coordinates {
+                    (0,0)
+                    (1,0)
+                    (1.2,0)
+                    (1.75,0)
+                    (2.5,0)
+                    };
+            \addplot[mark=none,red,dotted,ycomb] coordinates {
+                    (0,0.4)
+                    (1,0.4)
+                    (1.2,0.4)
+                    (1.75,0.4)
+                    (2.5,0.4)
+                    };
+
+            \end{axis}
+        \end{tikzpicture}
+        \caption{Gaussian kernel density estimator ($h=0.3$)}
+    \end{figure}
+\end{example}
 
 \subsubsection{Bandwidth selection}
 \begin{marker}{}
@@ -543,7 +598,7 @@ of $\theta$ with weights $\hat{y}_i$ and $1 - \hat{y}_i$, respectively.
 \pagebreak
 \section{Density based clustering}
 \paragraph{References:} \cite{ester_density-based_1996}
-\subsection{DBSCAN}
+\subsection{Density-Based Spatial Clustering of Applications with Noise (DBSCAN)}
 
 Density-Based Spatial Clustering of Applications with Noise (DBSCAN) is
 a density-based clustering algorithm that is able to find clusters of

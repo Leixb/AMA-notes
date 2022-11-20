@@ -294,12 +294,12 @@ The coefficients $\beta_k$ are chosen as the solution of the problem:
 \begin{problem}{}{}
     \begin{equation*}
         \min_{\beta_1,\ldots,\beta_K} T(f; \mathcal X_1,\ldots,\mathcal X_n)
-        + \lambda_T \int_{a}^{b} \left(
+        + \underbrace{\lambda_T \int_{a}^{b} \left(
             L(f)(t)
-        \right)^2\, dt
+    \right)^2\, dt}_{\text{regularization term}}
     \end{equation*}
-\end{problem}
 where $\lambda_T$ is a \iemph{smoothing parameter}.
+\end{problem}
 
 \begin{note}
 When estimating functional parameters, finite basis expansion is

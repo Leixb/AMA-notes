@@ -1,5 +1,7 @@
 %! TEX root = ../000-main.tex
-\chapter{Dimensionality reduction}
+\chapter{Dimensionality reduction in Functional Data Analysis}
+\chaptermark{FDA Dim. red.}
+% \marginpar{FDA 4.a}
 
 \section{Introduction}
 We observe $n$ functions $\chi_1,\, \dots,\, \chi_n$. In general,
@@ -63,7 +65,7 @@ minimizing:
 	Let $C(t,\,u) = \text{Cov} \left( \boldsymbol \chi(t),\, \boldsymbol \chi(u) \right)$ be
 	the \iemph{covariance function} of $\boldsymbol \chi$.
 
-	Associated to $C(t,\,u)$ is the \iemph{covariance operator} $C$:
+	Associated to $C(t,\,u)$ is the \iemph{covariance operator} $\Gamma$:
 	\begin{alignat*}{2}
 		\Gamma : L^2(\mathcal T) & \to L^2(\mathcal T) &             &                                                   \\
 		f                        & \mapsto \Gamma(f) : & \mathcal  T & \to \mathds R                                     \\
