@@ -42,7 +42,7 @@ Let $(x_i, y_i)$ be a sample of size $n$ from the population $(X, Y)$ following
 the logistic regression model. The estimation of the parameters $\beta_0, \beta_1$
 is done by maximization of the log-likelihood function:
 \begin{equation*}
-    \ell(\beta_0, \beta_1) = \sum_{i=1}^n \left(y_i \log \left( \frac{p(x_i)}{1 - p(x_i)} \right) + \log\bigl(1 - p(x_i)\bigr) \right)
+    \ell(\beta_0,\, \beta_1) = \sum_{i=1}^n \left(y_i \log \left( \frac{p(x_i)}{1 - p(x_i)} \right) + \log\bigl(1 - p(x_i)\bigr) \right)
 \end{equation*}
 
 This maximization is done by numerical methods. The most used algorithm
@@ -86,7 +86,7 @@ We now consider the non-parametric version of the logistic regression model.
 
     \tcblower
 
-    The logit link ($\log\left(\frac{p}{1 - p}\right)$) is also used in this context.
+    The logit link $\left(\log\left(\frac{p}{1 - p}\right)\right)$ is also used in this context.
 
     The function $\theta(x)$ is \iemph{free of constraints}, while $p(x) \in [0, 1]$.
 
@@ -163,7 +163,7 @@ Adding up all the data contributions, weighted by the distance:
 $w_i^t \propto K((t - x_i)/h)$, where $K$ is a kernel function and $h$ is a bandwidth,
 we get the following log-likelihood function:
 \begin{equation*}
-    \ell(\beta_0^t, \beta_1^t) = \sum_{i = 1}^n w_i^t y_i\log\left(
+    \ell(\beta_0^t,\, \beta_1^t) = \sum_{i = 1}^n w_i^t y_i\log\left(
         \frac{p_i^t}{1 - p_i^t}
     \right) + \log\left(1 - p_i^t\right)
 \end{equation*}
@@ -187,9 +187,9 @@ In both cases, the quantities must be estimated, which can be done by cross-vali
 
     This probability is estimated by:
     \begin{equation*}
-        p_\text{CV}(h) = \frac{1}{n} \sum_{i = 1}^n \mathds{1}_{\{y_i \neq \hat{y}_i^{(-i)}\}}
+        p_\text{CV}(h) = \frac{1}{n} \sum_{i = 1}^n \mathds{1}_{\left\{y_i \neq \hat{y}_i^{(-i)}\right\}}
     \end{equation*}
-    where $\hat{y}_i^{(-i)} = \mathds{1}_{\{\hat{p}_i^{(-i)} \geq 1/2\}}$ and
+    where $\hat{y}_i^{(-i)} = \mathds{1}_{\left\{\hat{p}_i^{(-i)} \geq 1/2\right\}}$ and
     $p_i^{(-i)} = \hat p_h^{(-i)}(x_i)$ is the estimation of
     $p(x_i) = P(Y = 1 \mid X = x_i)$ when using $h$ as bandwidth and all the observations
     except the $i$-th one.

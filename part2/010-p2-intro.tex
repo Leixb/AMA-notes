@@ -6,7 +6,7 @@
 
 \begin{definition}{Regression function}{}
 
-	Let $(X, Y)$ be random variables with continuous joint distribution.
+	Let $(X,\, Y)$ be random variables with continuous joint distribution.
 
 	The best prediction (in the sense of the minimum mean squared prediction error)
 	of the dependent variable $Y$ given that the independent variable $X$ takes
@@ -44,7 +44,7 @@ regression function $m(x)$ is not specified.
 	To provide an estimator $\hat{m}(t)$ of the regression function $m(t)$ for
 	all $t \in \mathbb{R}$.
 
-	This usually implies to draw the graphic of the pairs $(t, \hat{m}(t))$ where
+	This usually implies to draw the graphic of the pairs $(t,\, \hat{m}(t))$ where
 	$t_j,\, j=1,\ldots,J$ is a regular fine grid covering the range of observed values
 	$x_i,\, i=1,\ldots,n$.
 	Alternatively, an algorithm that computes the values $\hat{m}(t)$ for any $t$
@@ -67,13 +67,13 @@ each of them showing an \iemph{approximately linear} relationship between $X$ an
 This provides good results, but its not satisfactory, we apply to improvements:
 \begin{description}
 	\item[Localizing] In order to estimate the regression function at a given value $t$,
-		use the data $(x_i, y_i)$ such that $x_i$ is in an interval centered at $t$.
-	\item[Smoothing] Assign to each datum $(x_i, y_i)$ a weight $w_i$ that decreases
+		use the data $(x_i,\, y_i)$ such that $x_i$ is in an interval centered at $t$.
+	\item[Smoothing] Assign to each datum $(x_i,\, y_i)$ a weight $w_i$ that decreases
 		as $|x_i - t|$ increases.
 \end{description}
 
 \begin{definition}{datum}{}
-	A datum is a pair $(x_i, y_i)$ where $x_i$ is the value of the independent
+	A datum is a pair $(x_i,\, y_i)$ where $x_i$ is the value of the independent
 	variable and $y_i$ is the value of the dependent variable.
 \end{definition}
 
@@ -83,7 +83,7 @@ symmetric unimodal density function centered at $0$.
 
 The weight of $(x_i, y_i)$ is when estimating $m(t)$ is:
 \begin{equation*}
-	w_i = w(t,x_i) = K \left. \left( \frac{x_i - t}{h} \right) \middle/ \sum_{j=1}^n K \left( \frac{x_i - t}{h} \right) \right.
+	w_i = w(t,\,x_i) = K \left. \left( \frac{x_i - t}{h} \right) \middle/ \sum_{j=1}^n K \left( \frac{x_i - t}{h} \right) \right.
 \end{equation*}
 where $h$ is the \iemph{smoothing parameter} or \iemph{bandwidth}.
 
@@ -144,9 +144,9 @@ of $m$ at $t$:
 
 \begin{prop}{Every local polynomial estimator is itself a weighted average}{}
 	\begin{equation*}
-		\hat m_{q}(t) = \sum_{i=1}^n w_q^*(t, x_i) y_i
+		\hat m_{q}(t) = \sum_{i=1}^n w_q^*(t,\, x_i) y_i
 	\end{equation*}
-	But the weights $w_q^*(t, x_i)$ are not necessarily non-negative.
+	But the weights $w_q^*(t,\, x_i)$ are not necessarily non-negative.
 \end{prop}
 
 \subsubsection{Matrix formulation of the local polynomial estimator}
@@ -179,7 +179,7 @@ For $j=0,\ldots,q$, let $e_j$ be the $(q+1)$-dimensional vector
 having all its coordinates 0 except for the $(j+1)$-th one, which is 1.
 Then:
 \begin{equation*}
-	\hat m_q(t) = \hat \beta_0 = e_0^T (X_t^T W_t X_t)^{-1} X_t^T W_t Y = S_tY = \sum_{i=1}^n w^*_q(t, x_i) y_i
+	\hat m_q(t) = \hat \beta_0 = e_0^T (X_t^T W_t X_t)^{-1} X_t^T W_t Y = S_tY = \sum_{i=1}^n w^*_q(t,\, x_i) y_i
 \end{equation*}
 where $S_t = e_0^T (X_t^T W_t X_t)^{-1} X_t^T W_t$ is an $n$-dimensional row vector (it
 is in fact a \iemph{smoothing matrix}).
@@ -512,7 +512,7 @@ IMSE (\ref{def:IMSE}) to choose the bandwidth $h$ as shown in~\cref{fig:IMSE}.
 			\right\}
 			\right]
 	\end{equation*}
-	where $\boldsymbol Z = \{(x_i,\, Y_i) \mid i = 1,\ldots,n\}$ is the sample
+	where $\boldsymbol Z = \left\{(x_i,\, Y_i) \mid i = 1,\ldots,n\right\}$ is the sample
 	used to estimate $\hat m$ and $T$ is a r.v. independent from $\boldsymbol Z$
 	with the same distribution that generates the independent variable values $x_i$.
 	\tcblower
@@ -591,15 +591,15 @@ alternatives based in a train, test (and validation) split of the data.
 	\begin{equation*}
 		\text{PMSE}_\text{Val}(h) = \frac{1}{n_V} \sum_{i=1}^{n_V} \left( Y_i^V - \hat m(x_i^V) \right)^2
 	\end{equation*}
-	where $(x_i^V, Y_i^V),\,i=1,\ldots,n_V$ are the observations of the validation set and
+	where $(x_i^V,\, Y_i^V),\,i=1,\ldots,n_V$ are the observations of the validation set and
 	$\hat m$ is the estimator with bandwidth $h$ using the training set.
 \end{definition}
 
 \begin{definition}{Leave-one-out cross-validation (LOOCV)}{LOOCV}
 	\begin{enumerate}
-		\item For each observation $(x_i, Y_i)$ of the training set, we fit the model
+		\item For each observation $(x_i,\, Y_i)$ of the training set, we fit the model
 		      using the remaining observations.
-		\item We compute the squared prediction error for the observation $(x_i, Y_i)$
+		\item We compute the squared prediction error for the observation $(x_i,\, Y_i)$
 		      using the fitted model.
 		\item We average the squared prediction errors.
 	\end{enumerate}

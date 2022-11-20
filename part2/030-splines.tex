@@ -76,10 +76,10 @@ the second order Sobolev space in $[a,b]$:
     degree $p$ with knots $t_1, \ldots, t_k$ when:
     \begin{itemize}
         \item $a < t_1 < \ldots < t_k < b$ (we define $t_0 = a$ and $t_{k+1} = b$).
-        \item At each interval $[t_j, t_{j+1}]$, $j=0,\ldots,k$, the function $s$ is
+        \item At each interval $[t_j,\, t_{j+1}]$, $j=0,\ldots,k$, the function $s$ is
             a degree $p$ polynomial (or lower).
         \item $s$ has $(p-1)$ continuous derivatives in $[a,\,b]$. That is,
-            the polynomials defining $s$ in $[t_{j-1}, t_{j}]$ and $[t_j, t_{j+1}]$
+            the polynomials defining $s$ in $[t_{j-1},\, t_{j}]$ and $[t_j,\, t_{j+1}]$
             have a smooth link at $t_j$.
     \end{itemize}
     \tcblower
@@ -250,17 +250,17 @@ both numerically and computationally convenient.
     \begin{equation*}
         \tau_{M+j} = t_j,\; j=1,\ldots,k
     \end{equation*}
-
+    %
     The choice of auxiliary knots is arbitrary, they can be:
     \begin{equation*}
         \tau_1=\cdots=\tau_M = t_0,\; \tau_{k+M+1}=\cdots=\tau_{k+2M} = t_{k+1}
     \end{equation*}
-
+    %
     We define the basis of B-splines of order 1 (degree 0) as:
     \begin{equation*}
         B_{j,1} = I_{[\tau_j,\tau_{j+1})},\; j=1,\ldots,k+2M - 1
     \end{equation*}
-
+    %
     For $m=2,\ldots,M$ the basis of B-splines of order $m$ (degree $m-1$) is:
     \begin{equation*}
         B_{j,m} = \frac{x-\tau_j}{\tau_{j+m-1}-\tau_j}B_{j,m-1}
@@ -288,9 +288,9 @@ as a linear combination of the basis of B-splines:
         \left( Y - \boldsymbol B_{\boldsymbol X} \beta \right)
         + \lambda \beta^T \boldsymbol D \beta
     \end{equation*}
-    where $\boldsymbol D$ is the $(n+4)\times(n+4)$ matrix with generic $(i,j)$
+    where $\boldsymbol D$ is the $(n+4)\times(n+4)$ matrix with generic $(i,\,j)$
     element $\int_a^b B_i''(x)B_j''(x)\,dx$ and $\boldsymbol B_{\boldsymbol X}$ is
-    the $n \times (n+4)$ matrix with generic $(i,j)$ element $B_j(x_i)$.
+    the $n \times (n+4)$ matrix with generic $(i,\,j)$ element $B_j(x_i)$.
 
     Now the solution is:
     \begin{equation*}
@@ -323,7 +323,7 @@ cost of doing that is prohibitive for large $n$.
 
 It is enough to take a sufficiently large number of $k$ knots. The
 $k$ knots can be evenly spaced or they can be the quantiles
-$(j/(k+1)),\,j=1,\ldots,k$ of the $x_i$'s.
+$\frac{j}{k+1},\,j=1,\ldots,k$ of the $x_i$'s.
 
 Regarding the choice of $k$, Rupper, Wand and Carroll suggest:
 \begin{equation*}

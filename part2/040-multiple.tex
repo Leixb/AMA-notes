@@ -87,7 +87,7 @@ Smoothing splines can be generalized to higher dimensions:
     \end{equation*}
     where (assuming that there are only $p=2$ predictors):
     \begin{equation*}
-        \phi(f) = \int \int_{\mathbb R^2}
+        \phi(f) = \mathlarger{\int} \int_{\mathbb R^2}
             \left( \frac{\partial^2 f(x_1, x_2)}{\partial x_1^2} \right)^2
             + 2 \left( \frac{\partial^2 f(x_1, x_2)}{\partial x_1 \partial x_2} \right)^2
             + \left( \frac{\partial^2 f(x_1, x_2)}{\partial x_2^2} \right)^2
@@ -145,7 +145,7 @@ Fitting functions:
 
 Penalty for tensor product splines (two penalty parameters):
 \begin{align*}
-    \phi(f) &= \int \int_{\mathbb R^2}
+    \phi(f) &= \mathlarger{\int} \int_{\mathbb R^2}
     \lambda_x \left( \frac{\partial^2 f(x,\,z)}{\partial x^2} \right)^2
     + \lambda_z \left( \frac{\partial^2 f(x,\,z)}{\partial z^2} \right)^2
     \, dx \, dz \\
@@ -362,6 +362,7 @@ This way, the final model is GAM instead of a GLM.
 
 \subsection{Local scoring algorithm for logistic GAM}
 
+\begin{algorithm}{Local scoring algorithm for logistic GAM}{LSAGAM}
 \begin{enumerate}
     \item Compute starting values $\hat \alpha = \log \left( \frac{\bar y}{1-\bar y} \right)$
         where $\bar y$ is the sample proportion of ones, and set $\hat f_j = 0,\,\forall j$.
@@ -380,6 +381,7 @@ This way, the final model is GAM instead of a GLM.
         \item Repeat step 2 until the change in functions falls below a previously
             specified threshold.
 \end{enumerate}
+\end{algorithm}
 
 \pagebreak
 \section{Semi-parametric models}
@@ -399,11 +401,13 @@ Other possible modifications of the GAM model are:
         $g_j(x_j) + g_k(x_k)$ by $g_{jk}(x_j, x_k)$.
     \item Estimating the effect of a variable $x_j$ differently at each of the
         classes determined by another categorical variable $x_h$. There
-        effects could be estimated linearly of non-parametrically.
+        effects could be estimated linearly or non-parametrically.
 \end{itemize}
 
 Models incorporating this modifications to the GAM model are known as
 \iemph{semi-parametric models}.
+
+\subsection{Software}
 
 These models can be fitted using the function \texttt{gam} in the R package
 \texttt{mgcv}. The \texttt{anova.gam} functions allows for testing between

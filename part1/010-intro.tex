@@ -562,9 +562,9 @@ Let $\mathcal{D} = \{ \boldsymbol{x}_1, \ldots, \boldsymbol{x}_n \}$ be a set of
 in a $p$-dimensional space. For each observation $\boldsymbol{x}_i$, we define the $\varepsilon-$\iemph{neighborhood}
 of $\boldsymbol{x}_i$ as the set of points $\boldsymbol{x}_j$ such that:
 \begin{equation*}
-    N_{\varepsilon}(\boldsymbol{x}_i) = \bigl\{
-    \boldsymbol{x}_j \in \mathcal{D} \mid d(\boldsymbol{x}_i,\,\boldsymbol{x}_j) \leq \varepsilon
-    \bigr\}
+    N_{\varepsilon}(\boldsymbol{x}_i) = \left\{
+    \boldsymbol{x}_j \in \mathcal{D} \;\middle|\; d(\boldsymbol{x}_i,\,\boldsymbol{x}_j) \leq \varepsilon
+    \right\}
 \end{equation*}
 where $d(\boldsymbol{x}_i,\,\boldsymbol{x}_j)$ is a distance measure between points in $\mathds{R}^p$.
 
@@ -623,7 +623,7 @@ when using an uniform kernel on $\mathds{R}^p$ and bandwidth of $\varepsilon$.
     connected component of the level set of the estimated density function:
     \begin{equation*}
         \left\{
-            \boldsymbol x \in \mathds{R}^p \mid \hat{f}_\varepsilon(\boldsymbol x) \geq f_0
+            \boldsymbol x \in \mathds{R}^p \;\middle|\; \hat{f}_\varepsilon(\boldsymbol x) \geq f_0
         \right\}
     \end{equation*}
     where the threshold $f_0$ is: $\frac{\text{minPts}}{n \cdot \varepsilon^p \text{Volume}(N_{1}(\boldsymbol{0}))}$.

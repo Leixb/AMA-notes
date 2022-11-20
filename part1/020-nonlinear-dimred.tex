@@ -229,7 +229,7 @@ The metric \iemph{STRESS} (STandardized REsidual Sum of Squares), a measure
 of the relative error made when matrix $\boldsymbol{X}$ is considered as
 an Euclidean configuration for the distance matrix $\boldsymbol{D}$, is defined as:
 \begin{equation*}
-	\text{STRESS}_M(\boldsymbol{D}, \boldsymbol{X}) = \sqrt{\frac
+	\text{STRESS}_M(\boldsymbol{D},\, \boldsymbol{X}) = \sqrt{\frac
 		{\sum_{i<j}(\delta_{ij} - d_{ij})^2}
 		{\sum_{i<j}\delta_{ij}^2}
 	}
@@ -237,7 +237,7 @@ an Euclidean configuration for the distance matrix $\boldsymbol{D}$, is defined 
 
 \begin{problem}{Non-classical metric scaling}{}
 \begin{equation*}
-	\min_{\boldsymbol{X} \in \mathds{R}^{n\times q}} \text{STRESS}_M(\boldsymbol{D}, \boldsymbol{X})
+	\min_{\boldsymbol{X} \in \mathds{R}^{n\times q}} \text{STRESS}_M(\boldsymbol{D},\, \boldsymbol{X})
 \end{equation*}
 \end{problem}
 
@@ -253,7 +253,7 @@ There is also S-STRESS:
 Non-metric scaling uses only the ranks of the inter-individual distances $\delta_{ij}$.
 The metric used is the Non-metric Stress (NMS):
 \begin{equation*}
-	\text{STRESS}_{NM}(\boldsymbol{D}, \boldsymbol{X}, f) = \sqrt{\frac
+	\text{STRESS}_{NM}(\boldsymbol{D},\, \boldsymbol{X},\, f) = \sqrt{\frac
 	{\sum_{i<j}(\text{rank}(\delta_{ij}) - d_{ij})^2}
 	{\sum_{i<j}d_{ij}^2}
 	}
@@ -262,7 +262,7 @@ Where $f: \mathds{R}^+ \to \mathds{R}^+$ is an increasing function.
 
 \begin{problem}{Non-metric scaling}{}
 \begin{equation*}
-	\min_{\boldsymbol{X} \in \mathds{R}^{n\times q}} \min_{f\uparrow} \text{STRESS}_{NM}(\boldsymbol{D}, \boldsymbol{X}, f)
+    \mathlarger{\min_{\boldsymbol{X} \in \mathds{R}^{n\times q}}} \min_{f\uparrow} \text{STRESS}_{NM}(\boldsymbol{D},\, \boldsymbol{X},\, f)
 \end{equation*}
 \end{problem}
 
@@ -427,7 +427,7 @@ consists of the iteration until convergence of the function $\mathcal W_{\boldsy
 \end{equation*}
 that is, for any $s \in [a, b] \subseteq \mathds{R}$:
 \begin{equation*}
-	\alpha_{k+1}(s) = \mathds{E}(\boldsymbol X \mid \boldsymbol X \in H(\alpha_k(s), \alpha_k'(s)))
+	\alpha_{k+1}(s) = \mathds{E}(\boldsymbol X \mid \boldsymbol X \in H(\alpha_k(s),\, \alpha_k'(s)))
 \end{equation*}
 with the first principal component (PC1) line as initial set $\alpha_0$.
 
@@ -445,7 +445,7 @@ In practice, populational concepts are replaced by sampling ones:
 	      data on PC1.
 	\item Numerical derivation is used to compute the velocity vector $\alpha_k'(s_i)$.
 	\item Smoothing methods are used to estimate the conditional expectations
-	      $\mathds{E}(\boldsymbol X \mid \boldsymbol X \in H(\alpha_k(s), \alpha_k'(s)))$.
+	      $\mathds{E}(\boldsymbol X \mid \boldsymbol X \in H(\alpha_k(s),\, \alpha_k'(s)))$.
 \end{itemize}
 \begin{note}
 	The algorithm that computes HSPC is implemented in the \texttt{princurve} package in R.
@@ -458,12 +458,12 @@ first principal component (the straight line
 $\{\mathds{E}(\boldsymbol X) + s \boldsymbol v_1 \mid s \in \mathds{R}\}$)
 in a multivariate normal random variable $\boldsymbol X$:
 \begin{equation*}
-	TV(\boldsymbol X \mid \boldsymbol X \in H(\boldsymbol x, \boldsymbol v_1))
+	TV(\boldsymbol X \mid \boldsymbol X \in H(\boldsymbol x,\, \boldsymbol v_1))
 	\leq
-	TV(\boldsymbol X \mid \boldsymbol X \in H(\boldsymbol x, \boldsymbol b))
+	TV(\boldsymbol X \mid \boldsymbol X \in H(\boldsymbol x,\, \boldsymbol b))
 \end{equation*}
 for any direction $\boldsymbol b \in S^{p-1}$ and any point $\boldsymbol x \in \mathds{R}^p$,
-where $H(\boldsymbol x, \boldsymbol b) = \left\{
+where $H(\boldsymbol x,\, \boldsymbol b) = \left\{
 	\boldsymbol y \in \mathds{R}^p \mid \boldsymbol y - \boldsymbol x \perp \boldsymbol b
 	\right\}$
 is the hyperplane orthogonal to $\boldsymbol b$ at $\boldsymbol x$.
@@ -491,17 +491,17 @@ if the curve length from $\alpha(s_1)$ to $\alpha(s_2)$ is equal to $|s_2 - s_1|
 
 It is also said that $\alpha$ is \iemph{unit speed parameterized} if $\lVert \alpha'(s) \rVert = 1,\,\forall s$.
 \begin{align*}
-	\mu(\boldsymbol x, \boldsymbol b)  & = \mathds{E}(\boldsymbol X \mid \boldsymbol X \in H(\boldsymbol x, \boldsymbol b)) \\
-	\phi(\boldsymbol x, \boldsymbol b) & = TV(\boldsymbol X \mid \boldsymbol X \in H(\boldsymbol x, \boldsymbol b))
+	\mu(\boldsymbol x,\, \boldsymbol b)  & = \mathds{E}(\boldsymbol X \mid \boldsymbol X \in H(\boldsymbol x,\, \boldsymbol b)) \\
+	\phi(\boldsymbol x,\, \boldsymbol b) & = TV(\boldsymbol X \mid \boldsymbol X \in H(\boldsymbol x,\, \boldsymbol b))
 \end{align*}
 \begin{alignat*}{2}
-	\boldsymbol b^*   & : \mathds{R}^p \to S^{p-1}      & \quad \boldsymbol b^*(\boldsymbol x)   & = \argmin_{\boldsymbol b \in S^{p-1}} \phi(\boldsymbol x, \boldsymbol b) \\
-	\boldsymbol \mu^* & : \mathds{R}^p \to \mathds{R}^p & \quad \boldsymbol \mu^*(\boldsymbol x) & = \boldsymbol \mu(\boldsymbol x, \boldsymbol b^*(\boldsymbol x))         \\
-	\phi^*            & : \mathds{R}^p \to \mathds{R}   & \quad \phi^*(\boldsymbol x)            & = \phi(\boldsymbol x, \boldsymbol b^*(\boldsymbol x))
+	\boldsymbol b^*   & : \mathds{R}^p \to S^{p-1}      & \quad \boldsymbol b^*(\boldsymbol x)   & = \argmin_{\boldsymbol b \in S^{p-1}} \phi(\boldsymbol x,\, \boldsymbol b) \\
+	\boldsymbol \mu^* & : \mathds{R}^p \to \mathds{R}^p & \quad \boldsymbol \mu^*(\boldsymbol x) & = \boldsymbol \mu(\boldsymbol x,\, \boldsymbol b^*(\boldsymbol x))         \\
+	\phi^*            & : \mathds{R}^p \to \mathds{R}   & \quad \phi^*(\boldsymbol x)            & = \phi(\boldsymbol x,\, \boldsymbol b^*(\boldsymbol x))
 \end{alignat*}
 We say that $\boldsymbol b^*(\boldsymbol x)$ is the \iemph{principal direction} of $\boldsymbol x$.
 
-The smoothness of the functions $\mu, \phi, \boldsymbol b^*, \boldsymbol \mu^*$ and $\phi^*$ depend
+The smoothness of the functions $\mu,\, \phi,\, \boldsymbol b^*,\, \boldsymbol \mu^*$ and $\phi^*$ depend
 on the smoothness of the density function $f$ of $\boldsymbol X$.
 
 \begin{figure}[H]
@@ -511,7 +511,7 @@ on the smoothness of the density function $f$ of $\boldsymbol X$.
 
 \subsubsection{Multivariate normal case}
 \begin{prop}{}{}
-	Let $\boldsymbol X \sim N_p(\mu, \Sigma)$. Let $\lambda_1$ be the largest eigenvalue of $\Sigma$
+	Let $\boldsymbol X \sim N_p(\mu,\, \Sigma)$. Let $\lambda_1$ be the largest eigenvalue of $\Sigma$
 	and let $\boldsymbol v_1$ be the corresponding unit norm eigenvector.
 
 	The following properties hold:
@@ -553,9 +553,9 @@ distribution.
 	Let $\alpha : \mathds{R} \to \mathds{R}^p$ be a continuous curve parameterized by the arc length.
 	We say that $\alpha$ is a \iemph{principal curve of oriented points} for $\boldsymbol X$ if:
 	\begin{equation*}
-		\{
-		\alpha(s) \mid s \in [a, b]
-		\} \subseteq \Gamma(\boldsymbol X)
+		\left\{
+		\alpha(s) \mid s \in [a,\, b]
+		\right\} \subseteq \Gamma(\boldsymbol X)
 	\end{equation*}
 	\tcblower
 	The former Proposition states that the first principal component is a PCOP
@@ -567,11 +567,11 @@ distribution.
 	The probability distribution over the interval $[a, b]$ induced by $\boldsymbol X$ and $\alpha$
 	is the distribution of a r.v. $S$ having density function:
 	\begin{equation*}
-		f_S(s) \propto f_1(\alpha(s), b^*(\alpha(s))),\,s\in[a, b]
+		f_S(s) \propto f_1(\alpha(s),\, b^*(\alpha(s))),\,s\in[a,\, b]
 	\end{equation*}
 	\tcblower
 	Where $f_1$ is the one-dimensional density function obtained by integrating
-	the joint density of $\boldsymbol X$ over the hyperplane $H(\alpha(s), b^*(\alpha(s)))$
+	the joint density of $\boldsymbol X$ over the hyperplane $H(\alpha(s),\, b^*(\alpha(s)))$
 	assuming that $\int_a^b f_S(s) ds < \infty$.
 
 	Without loss of generality, we can assume that $S$ has expectation 0.
@@ -600,8 +600,8 @@ distribution.
 	Let $\boldsymbol x_0$ be a POP in the interior of $\text{Support}(\boldsymbol X)$.
 	Then, there exists a PCOP $\alpha$ in a neighbourhood of $\boldsymbol x_0$:
 
-	There exists $\varepsilon > 0$ and a curve $\alpha : (-\varepsilon, \varepsilon) \to \mathds{R}^p$
-	such that $\alpha(0) = \boldsymbol x_0$ and $\alpha(t)$ is a POP for all $t \in (-\varepsilon, \varepsilon)$.
+	There exists $\varepsilon > 0$ and a curve $\alpha : (-\varepsilon,\, \varepsilon) \to \mathds{R}^p$
+	such that $\alpha(0) = \boldsymbol x_0$ and $\alpha(t)$ is a POP for all $t \in (-\varepsilon,\, \varepsilon)$.
 
 	\tcblower
 
@@ -642,18 +642,18 @@ neighbours of point $j$ and vice versa.
 
 Then construct the \iemph{local stress function}:
 \begin{equation*}
-	\text{STRESS}_L(\boldsymbol X, \boldsymbol Y) = \sum_{(i, j) \in \mathcal N_K} (\delta_{ij} - d_{ij})^2
-	+ \sum_{(i, j) \notin \mathcal N_K} w(D_\infty - d_{ij})^2
+	\text{STRESS}_L(\boldsymbol X,\, \boldsymbol Y) = \sum_{(i,\, j) \in \mathcal N_K} (\delta_{ij} - d_{ij})^2
+	+ \sum_{(i,\, j) \notin \mathcal N_K} w(D_\infty - d_{ij})^2
 \end{equation*}
 where $D_\infty$ is some large constant and $w$ is a small weight.
 
-$\boldsymbol D = (\delta_{ij})^n_{i,j=1}$, the $n \times q$ matrix $\boldsymbol X$, and
+$\boldsymbol D = (\delta_{ij})^n_{i,\,j=1}$, the $n \times q$ matrix $\boldsymbol X$, and
 $d_{ij} = \lVert \boldsymbol x_i - \boldsymbol x_j \rVert$ are defined as in non-classical
 metric scaling (\cref{sec:non-classical-metric-scaling}).
 
 \begin{problem}{Local MDS}{}
 \begin{equation*}
-	\min_{\boldsymbol X \in \mathds{R}^{n \times q}} \text{STRESS}_L(\boldsymbol X, \boldsymbol Y)
+	\min_{\boldsymbol X \in \mathds{R}^{n \times q}} \text{STRESS}_L(\boldsymbol X,\, \boldsymbol Y)
 \end{equation*}
 \end{problem}
 
