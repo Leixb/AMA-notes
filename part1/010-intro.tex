@@ -65,8 +65,8 @@ Let's assume that $\mathbf{X} = X$ is a one-dimensional continuous random variab
 
 Let $dx \geq 0$ be a small length. Let $0 \leq u \leq dx,\; v = dx - u$. Then:
 \begin{align*}
-    f(x) &\approx \frac{P(X \in [x, x + dx])}{dx} \approx \frac{P(X \in [ x - u, x + v])}{dx} \\
-    f(x) &\approx \frac{\text{probability}}{\text{length}}
+	f(x) & \approx \frac{P(X \in [x, x + dx])}{dx} \approx \frac{P(X \in [ x - u, x + v])}{dx} \\
+	f(x) & \approx \frac{\text{probability}}{\text{length}}
 \end{align*}
 Given $x_1, \ldots, x_n$ i.i.d.%
 \index{iid}%
@@ -85,26 +85,26 @@ It is a very simple non-parametric density estimator.
 \begin{definition}{Histogram}{histogram}\index{histogram}
 	A non-parametric density estimator that consists of a sequence of
 	rectangles, each of which has a height proportional
-    to the density at the center of the rectangle.
+	to the density at the center of the rectangle.
 	\tcblower
 	\begin{equation*}
 		\widehat{f}_H(x) = \sum_{j=1}^m \frac{p_j}{b_j - b_{j-1}} I_{B_j}(x)
 	\end{equation*}
-    where $I$ is the indicator function.
+	where $I$ is the indicator function.
 \end{definition}
 
 The appearance of the histogram strongly depends on the choice of the bin width $b$,
 as we can see in \cref{fig:histogram_bins}.
 
 \begin{definition}{Indicator function}{indicator} takes value 1 if
-    the argument is part of the set and 0 otherwise.
+	the argument is part of the set and 0 otherwise.
 \end{definition}
 
 
 \begin{note}
 	The performance of the histogram as an estimator depends on the bin width $b$:
 	\begin{itemize}
-        \item If $b$ is too large \textrightarrow{} high bias and low variance.
+		\item If $b$ is too large \textrightarrow{} high bias and low variance.
 		\item If $b$ is too large \textrightarrow{} low bias and high variance.
 	\end{itemize}
 \end{note}
@@ -116,8 +116,8 @@ as we can see in \cref{fig:histogram_bins}.
 				ylabel=Density,
 				width=0.3\textwidth,
 				ymax=0.08,
-                title={$b=8$},
-                title style={xshift=5ex,},
+				title={$b=8$},
+				title style={xshift=5ex,},
 			]
 			\addplot+[mark=none,fill=blue!30,hist={density,data min=0, data max=40,bins=5}] table[y index=12,col sep=comma] {data/boston.csv};
 		\end{axis}
@@ -128,8 +128,8 @@ as we can see in \cref{fig:histogram_bins}.
 				ylabel=Density,
 				width=0.3\textwidth,
 				ymax=0.08,
-                title={$b=2.5$},
-                title style={xshift=4ex,},
+				title={$b=2.5$},
+				title style={xshift=4ex,},
 			]
 			\addplot+[mark=none,fill=blue!30,hist={density,data min=0, data max=40,bins=16}] table[y index=12,col sep=comma] {data/boston.csv};
 		\end{axis}
@@ -140,8 +140,8 @@ as we can see in \cref{fig:histogram_bins}.
 				ylabel=Density,
 				width=0.3\textwidth,
 				ymax=0.08,
-                title={$b=1$},
-                title style={xshift=5ex,},
+				title={$b=1$},
+				title style={xshift=5ex,},
 			]
 			\addplot+[mark=none,fill=blue!30,hist={density,data min=0, data max=40,bins=40}] table[y index=12,col sep=comma] {data/boston.csv};
 		\end{axis}
@@ -173,19 +173,19 @@ It is smooth, continuous and respects the data distribution characteristics.
 				xlabel=LSTAT,
 				ylabel=Density,
 				ymax=0.08,
-                width=0.7\textwidth,
-                height=0.4\textwidth,
+				width=0.7\textwidth,
+				height=0.4\textwidth,
 			]
 			\addplot+[mark=none,fill=blue!30,hist={density,data min=0, data max=40, bins=40},forget plot] table[y index=12,col sep=comma] {data/boston.csv};
-            \addlegendimage{area legend,blue,fill=blue!30}
-            \addlegendentry{Histogram ($b=1$)}
+			\addlegendimage{area legend,blue,fill=blue!30}
+			\addlegendentry{Histogram ($b=1$)}
 			\addplot+[red,mark=none,very thick] gnuplot [raw gnuplot] {
 					set key autotitle columnhead;
 					set datafile separator ",";
 					plot 'data/boston.csv' using 13:(1./500.) smooth kdensity bandwidth 2;
 				};
-					% plot 'data/boston.csv' u 13:(1./500.) smooth kdensity
-            \addlegendentry{Kernel density ($h=1.5$)}
+			% plot 'data/boston.csv' u 13:(1./500.) smooth kdensity
+			\addlegendentry{Kernel density ($h=1.5$)}
 		\end{axis}
 	\end{tikzpicture}
 	\caption{Histogram and kernel density estimator of \texttt{LSTAT} from Boston Housing data}%
@@ -232,17 +232,17 @@ The kernel density estimator provides two improvements over the histogram:
 		\tag{kernel density estimator}
 	\end{equation}
 	This is called the \iemph{kernel density estimator}.
-    \tcblower
+	\tcblower
 
 	$K$ is a \iemph{kernel function}, which is a continuous density function, unimodal
-    and symmetric around $0$. (See def~\ref{def:kernel-functions})
+	and symmetric around $0$. (See def~\ref{def:kernel-functions})
 
 	$h$ is known as the \iemph{smoothing parameter} or \iemph{bandwidth} and is a
 	\iemph{hyperparameter} of the estimator.
 \end{definition}
 
 \begin{definition}{Unimodal}{unimodal}
-    A function $f$ is unimodal if it has \emph{only one maximum}.
+	A function $f$ is unimodal if it has \emph{only one maximum}.
 \end{definition}
 
 \begin{definition}{Symmetric}{symmetric}
@@ -250,57 +250,57 @@ The kernel density estimator provides two improvements over the histogram:
 \end{definition}
 
 \begin{example}{Kernel density estimator}{}
-The kernel density estimator spreads the weight $\frac{1}{n}$ of each
-observation in its neighborhood in a continuous way.
-    \begin{figure}[H]
-        \begin{tikzpicture}
-            \begin{axis}[
-                every axis plot/.append style={color=blue,mark=none},
-                domain=-1:3.5,
-                samples=150,
-                legend pos=outer north east,
-                ]
-                \addlegendimage{red,mark=*,only marks};
-                \addlegendentry{Observed data};
-                \addlegendimage{blue,mark=none};
-                \addlegendentry{Kernel functions};
-                \addlegendimage{blue,mark=none,line width=2pt};
-                \addlegendentry{Estimated density};
+	The kernel density estimator spreads the weight $\frac{1}{n}$ of each
+	observation in its neighborhood in a continuous way.
+	\begin{figure}[H]
+		\begin{tikzpicture}
+			\begin{axis}[
+					every axis plot/.append style={color=blue,mark=none},
+					domain=-1:3.5,
+					samples=150,
+					legend pos=outer north east,
+				]
+				\addlegendimage{red,mark=*,only marks};
+				\addlegendentry{Observed data};
+				\addlegendimage{blue,mark=none};
+				\addlegendentry{Kernel functions};
+				\addlegendimage{blue,mark=none,line width=2pt};
+				\addlegendentry{Estimated density};
 
-                \pgfmathsetmacro{\h}{0.30}
-                % gaussian kernel with variance 1
-                \addplot[blue,mark=none]{1/sqrt(2*pi)*exp(-((x-0)/\h)^2/2)};
-                \addplot[blue,mark=none]{1/sqrt(2*pi)*exp(-((x-1)/\h)^2/2)};
-                \addplot[blue,mark=none]{1/sqrt(2*pi)*exp(-((x-1.2)/\h)^2/2)};
-                \addplot[blue,mark=none]{1/sqrt(2*pi)*exp(-((x-1.75)/\h)^2/2)};
-                \addplot[blue,mark=none]{1/sqrt(2*pi)*exp(-((x-2.5)/\h)^2/2)};
+				\pgfmathsetmacro{\h}{0.30}
+				% gaussian kernel with variance 1
+				\addplot[blue,mark=none]{1/sqrt(2*pi)*exp(-((x-0)/\h)^2/2)};
+				\addplot[blue,mark=none]{1/sqrt(2*pi)*exp(-((x-1)/\h)^2/2)};
+				\addplot[blue,mark=none]{1/sqrt(2*pi)*exp(-((x-1.2)/\h)^2/2)};
+				\addplot[blue,mark=none]{1/sqrt(2*pi)*exp(-((x-1.75)/\h)^2/2)};
+				\addplot[blue,mark=none]{1/sqrt(2*pi)*exp(-((x-2.5)/\h)^2/2)};
 
 
-                \addplot[blue,mark=none, line width=2pt]{1/sqrt(2*pi)*exp(-((x-0)/\h)^2/2) +
-                    1/sqrt(2*pi)*exp(-((x-1)/\h)^2/2) +
-                    1/sqrt(2*pi)*exp(-((x-1.2)/\h)^2/2) +
-                    1/sqrt(2*pi)*exp(-((x-1.75)/\h)^2/2) +
-                    1/sqrt(2*pi)*exp(-((x-2.5)/\h)^2/2)};
+				\addplot[blue,mark=none, line width=2pt]{1/sqrt(2*pi)*exp(-((x-0)/\h)^2/2) +
+					1/sqrt(2*pi)*exp(-((x-1)/\h)^2/2) +
+					1/sqrt(2*pi)*exp(-((x-1.2)/\h)^2/2) +
+					1/sqrt(2*pi)*exp(-((x-1.75)/\h)^2/2) +
+					1/sqrt(2*pi)*exp(-((x-2.5)/\h)^2/2)};
 
-            \addplot[mark=*,red, only marks] coordinates {
-                    (0,0)
-                    (1,0)
-                    (1.2,0)
-                    (1.75,0)
-                    (2.5,0)
-                    };
-            \addplot[mark=none,red,dotted,ycomb] coordinates {
-                    (0,0.4)
-                    (1,0.4)
-                    (1.2,0.4)
-                    (1.75,0.4)
-                    (2.5,0.4)
-                    };
+				\addplot[mark=*,red, only marks] coordinates {
+						(0,0)
+						(1,0)
+						(1.2,0)
+						(1.75,0)
+						(2.5,0)
+					};
+				\addplot[mark=none,red,dotted,ycomb] coordinates {
+						(0,0.4)
+						(1,0.4)
+						(1.2,0.4)
+						(1.75,0.4)
+						(2.5,0.4)
+					};
 
-            \end{axis}
-        \end{tikzpicture}
-        \caption{Gaussian kernel density estimator ($h=0.3$)}
-    \end{figure}
+			\end{axis}
+		\end{tikzpicture}
+		\caption{Gaussian kernel density estimator ($h=0.3$)}
+	\end{figure}
 \end{example}
 
 \subsubsection{Bandwidth selection}
@@ -383,7 +383,7 @@ known as the curse of dimensionality:
 
 \begin{marker}
 	Non-parametric estimation of the density function (or any other
-    function) is \emph{extremely difficult} when the data dimension $p$ is large
+	function) is \emph{extremely difficult} when the data dimension $p$ is large
 	(in practice $p \geq 4$).
 \end{marker}
 
@@ -528,52 +528,52 @@ $\boldsymbol{X} = \boldsymbol{x}$ instead:
 $(Y_i \mid \boldsymbol{X}=\boldsymbol{x})$ is a Bernoulli random variable with parameter
 $p = P(Y_i = 1 \mid \boldsymbol{X}=\boldsymbol{x})$. Thus, by Bayes' theorem:
 \begin{align*}
-    E(Y_i \mid \boldsymbol{X}=\boldsymbol{x}) & = P(Y_i = 1 \mid \boldsymbol{X}=\boldsymbol{x})
-    \propto f_{\boldsymbol{X}}(\boldsymbol{x} \mid Y_i = 1) P(Y_i = 1) \\
-                                              &= \prod_{h=1}^n f_{X_h}(x_h \mid Y_i = 1) P(Y_i = 1)
-                                              \propto f_X(x_i \mid Y_i = 1) P(Y_i = 1) = f_X(x_i;\,\theta_1) p
+	E(Y_i \mid \boldsymbol{X}=\boldsymbol{x}) & = P(Y_i = 1 \mid \boldsymbol{X}=\boldsymbol{x})
+	\propto f_{\boldsymbol{X}}(\boldsymbol{x} \mid Y_i = 1) P(Y_i = 1)                               \\
+	                                          & = \prod_{h=1}^n f_{X_h}(x_h \mid Y_i = 1) P(Y_i = 1)
+	\propto f_X(x_i \mid Y_i = 1) P(Y_i = 1) = f_X(x_i;\,\theta_1) p
 \end{align*}
 Analogously: $P(Y_i = 0 \mid \boldsymbol{X}=\boldsymbol{x}) = f_X(x_i;\,\theta_0) (1-p)$.
 
 Using that $P(Y_i = 1 \mid \boldsymbol{X}=\boldsymbol{x}) + P(Y_i = 0 \mid \boldsymbol{X}=\boldsymbol{x}) = 1$,
 and assuming that $p, \theta_0, \theta_1$ are known:
 \begin{align*}
-    P(Y_i = 1 \mid \boldsymbol{X}=\boldsymbol{x}) & = \frac{f_X(x_i;\,\theta_1) p}{f_X(x_i;\,\theta_1) p + f_X(x_i;\,\theta_0) (1-p)} \tag{$\hat{y}_i$}\\
-    P(Y_i = 0 \mid \boldsymbol{X}=\boldsymbol{x}) & = \frac{f_X(x_i;\,\theta_0) (1-p)}{f_X(x_i;\,\theta_1) p + f_X(x_i;\,\theta_0) (1-p)}
+	P(Y_i = 1 \mid \boldsymbol{X}=\boldsymbol{x}) & = \frac{f_X(x_i;\,\theta_1) p}{f_X(x_i;\,\theta_1) p + f_X(x_i;\,\theta_0) (1-p)} \tag{$\hat{y}_i$} \\
+	P(Y_i = 0 \mid \boldsymbol{X}=\boldsymbol{x}) & = \frac{f_X(x_i;\,\theta_0) (1-p)}{f_X(x_i;\,\theta_1) p + f_X(x_i;\,\theta_0) (1-p)}
 \end{align*}
 
 Let
 \begin{align*}
-    \hat{y}_i & = E(Y_i \mid \boldsymbol{X}=\boldsymbol{x}) ) =
-    P(Y_i = 1 \mid \boldsymbol{X}=\boldsymbol{x}) \\
-              &= \frac{f_X(x_i;\,\theta_1) p}{f_X(x_i;\,\theta_1) p + f_X(x_i;\,\theta_0) (1-p)}
-              = \hat{y}_i(p,\theta_0,\theta_1)
+	\hat{y}_i & = E(Y_i \mid \boldsymbol{X}=\boldsymbol{x}) ) =
+	P(Y_i = 1 \mid \boldsymbol{X}=\boldsymbol{x})                                                 \\
+	          & = \frac{f_X(x_i;\,\theta_1) p}{f_X(x_i;\,\theta_1) p + f_X(x_i;\,\theta_0) (1-p)}
+	= \hat{y}_i(p,\theta_0,\theta_1)
 \end{align*}
 
 \subsubsection{The M(aximization)-step}
 We want to maximize the conditional expectation of the log-likelihood function:
 \begin{align*}
-    E \left(\ell(p,\theta_0,\theta_1;\,\boldsymbol{X},\boldsymbol{Y}) \mid \boldsymbol{X}=\boldsymbol{x} \right)
-    = & \left(
-        \sum_{i=1}^n \hat{y}_i \log \frac{p}{1-p} + n \log (1 - p)
-        \right) \\
-      & + \sum_{i=1}^n \hat{y}_i \log f(x_i;\,\theta_1) + \sum_{i=1}^n (1 - \hat{y}_i) \log f(x_i;\,\theta_0)
+	E \left(\ell(p,\theta_0,\theta_1;\,\boldsymbol{X},\boldsymbol{Y}) \mid \boldsymbol{X}=\boldsymbol{x} \right)
+	= & \left(
+	\sum_{i=1}^n \hat{y}_i \log \frac{p}{1-p} + n \log (1 - p)
+	\right)                                                                                                   \\
+	  & + \sum_{i=1}^n \hat{y}_i \log f(x_i;\,\theta_1) + \sum_{i=1}^n (1 - \hat{y}_i) \log f(x_i;\,\theta_0)
 \end{align*}
 
 If we consider $\hat{y}_i$ as fixed (ignoring its dependence on $p, \theta_0, \theta_1$), the
 previous function is the sum of 3 functions, each depending on a single parameter:
 \begin{alignat*}{2}
-    \max_{p}&\left( \sum_{i=1}^n \hat{y}_i \log \frac{p}{1-p} + n \log (1 - p) \right) & \quad \rightarrow{} \quad
-    \hat{p} & = \frac{\sum_{i=1}^n \hat{y}_i}{n} \\
-    \max_{\theta_1}&\sum_{i=1}^n \hat{y}_i \log f(x_i;\,\theta_1) \\
-    \max_{\theta_0}&\sum_{i=1}^n \hat{y}_i \log f(x_i;\,\theta_0)
+	\max_{p}        & \left( \sum_{i=1}^n \hat{y}_i \log \frac{p}{1-p} + n \log (1 - p) \right) & \quad \rightarrow{} \quad
+	\hat{p}         & = \frac{\sum_{i=1}^n \hat{y}_i}{n}                                                                    \\
+	\max_{\theta_1} & \sum_{i=1}^n \hat{y}_i \log f(x_i;\,\theta_1)                                                         \\
+	\max_{\theta_0} & \sum_{i=1}^n \hat{y}_i \log f(x_i;\,\theta_0)
 \end{alignat*}
 
 $\hat{\theta}_1$ and $\hat{\theta}_0$ are the weighted maximum likelihood estimates
 of $\theta$ with weights $\hat{y}_i$ and $1 - \hat{y}_i$, respectively.
 
 \begin{marker}
-    The \emph{EM-algorithm} consists of iterating the E-step and the M-step until convergence.
+	The \emph{EM-algorithm} consists of iterating the E-step and the M-step until convergence.
 \end{marker}
 
 \subsection{Software}
@@ -585,11 +585,11 @@ of $\theta$ with weights $\hat{y}_i$ and $1 - \hat{y}_i$, respectively.
 		      \item Also includes other clustering methods such as $k$-means and $k$-medoids.
 	      \end{itemize}
 	\item Package \texttt{mclust}: model-based clustering, classification and density estimation
-        based on finite normal mixture modeling.
+	      based on finite normal mixture modeling.
 	      \begin{itemize}
 		      \item \texttt{Mclust}: Model-based clustering based on parameterized finite
-                  Gaussian mixture models. Modesl are estimated by EM algorithm. The optimal
-                  model is selected by \iemph{BIC} (Bayesian Information Criterion).
+		            Gaussian mixture models. Modesl are estimated by EM algorithm. The optimal
+		            model is selected by \iemph{BIC} (Bayesian Information Criterion).
 	      \end{itemize}
 	\item Package \texttt{fpc}, Flexible Procedures for Clustering:
 	      \begin{itemize}
@@ -621,9 +621,9 @@ Let $\mathcal{D} = \{ \boldsymbol{x}_1, \ldots, \boldsymbol{x}_n \}$ be a set of
 in a $p$-dimensional space. For each observation $\boldsymbol{x}_i$, we define the $\varepsilon-$\iemph{neighborhood}
 of $\boldsymbol{x}_i$ as the set of points $\boldsymbol{x}_j$ such that:
 \begin{equation*}
-    N_{\varepsilon}(\boldsymbol{x}_i) = \left\{
-    \boldsymbol{x}_j \in \mathcal{D} \;\middle|\; d(\boldsymbol{x}_i,\,\boldsymbol{x}_j) \leq \varepsilon
-    \right\}
+	N_{\varepsilon}(\boldsymbol{x}_i) = \left\{
+	\boldsymbol{x}_j \in \mathcal{D} \;\middle|\; d(\boldsymbol{x}_i,\,\boldsymbol{x}_j) \leq \varepsilon
+	\right\}
 \end{equation*}
 where $d(\boldsymbol{x}_i,\,\boldsymbol{x}_j)$ is a distance measure between points in $\mathds{R}^p$.
 
@@ -632,88 +632,115 @@ of observations at $N_{\varepsilon}(\boldsymbol{x}_i)$.
 
 Observe that this is proportional to:
 \begin{equation*}
-    \hat{f}_\varepsilon(\boldsymbol{x}_i) =
-    \frac{|N_{\varepsilon}(\boldsymbol{x}_i)| / n}{\text{Volume}(N_{\varepsilon}(\boldsymbol{x}_i))}
-    = \frac{|N_{\varepsilon}(\boldsymbol{x}_i)| / n}{\text{Volume}(\varepsilon^p N_{1}(\boldsymbol{0}))}
+	\hat{f}_\varepsilon(\boldsymbol{x}_i) =
+	\frac{|N_{\varepsilon}(\boldsymbol{x}_i)| / n}{\text{Volume}(N_{\varepsilon}(\boldsymbol{x}_i))}
+	= \frac{|N_{\varepsilon}(\boldsymbol{x}_i)| / n}{\text{Volume}(\varepsilon^p N_{1}(\boldsymbol{0}))}
 \end{equation*}
 which is the kernel estimator of the probability density function at $\boldsymbol{x}_i$
 when using an uniform kernel on $\mathds{R}^p$ and bandwidth of $\varepsilon$.
 
 \subsubsection{Main concepts}
 \begin{definition}{Core point}{}\index{core point}
-    A point $\boldsymbol{x}_i$ is a \emph{core point} if $|N_{\varepsilon}(\boldsymbol{x}_i)| \geq \text{minPts}$.
+	A point $\boldsymbol{x}_i$ is a \emph{core point} if $|N_{\varepsilon}(\boldsymbol{x}_i)| \geq \text{minPts}$.
 
-    That is, if the estimated density of observations around $\boldsymbol{x}_i$ is over a certain threshold.
+	That is, if the estimated density of observations around $\boldsymbol{x}_i$ is over a certain threshold.
 \end{definition}
 
 \begin{definition}{Border point}{}\index{border point}
-    A point $\boldsymbol{x}_i$ is a \emph{border point} if it is not a core point but it is
-    in the $\varepsilon-$neighborhood of a core point.
+	A point $\boldsymbol{x}_i$ is a \emph{border point} if it is not a core point but it is
+	in the $\varepsilon-$neighborhood of a core point.
 \end{definition}
 
 \begin{definition}{Noise point (or outlier)}{}\index{noise point}
-    A point $\boldsymbol{x}_i$ is a \emph{noise point} if it is not a core point and it is not a border point.
+	A point $\boldsymbol{x}_i$ is a \emph{noise point} if it is not a core point and it is not a border point.
 \end{definition}
 
 \begin{definition}{Densly connected}{}\index{densly connected}
-    Two points $\boldsymbol{x}_0$ and $\boldsymbol{x}_{m+1}$ are \emph{densly connected} if
-    there is a path of \emph{core points} $\boldsymbol{x}_1, \ldots, \boldsymbol{x}_{m}$ such
-    that $d(\boldsymbol{x}_i,\,\boldsymbol{x}_{i+1}) \leq \varepsilon$ for all $i = 0, \ldots, m$.
+	Two points $\boldsymbol{x}_0$ and $\boldsymbol{x}_{m+1}$ are \emph{densly connected} if
+	there is a path of \emph{core points} $\boldsymbol{x}_1, \ldots, \boldsymbol{x}_{m}$ such
+	that $d(\boldsymbol{x}_i,\,\boldsymbol{x}_{i+1}) \leq \varepsilon$ for all $i = 0, \ldots, m$.
 
-    \tcblower
-    Observe that $\boldsymbol{x}_0$ and/or $\boldsymbol{x}_{m+1}$ can be core or border points.
+	\tcblower
+	Observe that $\boldsymbol{x}_0$ and/or $\boldsymbol{x}_{m+1}$ can be core or border points.
 \end{definition}
 
 \begin{definition}{Cluster}{}\index{cluster}
-    
-    Clusters are \emph{subsets of density-connected points} (all the points in the cluster are
-    density-connected) which are \emph{maximal} (if a point $\boldsymbol{x}_i$ is density-connected
-    with another point $\boldsymbol{x}_j$, then both points are in the same cluster).
 
-    \tcblower
+	Clusters are \emph{subsets of density-connected points} (all the points in the cluster are
+	density-connected) which are \emph{maximal} (if a point $\boldsymbol{x}_i$ is density-connected
+	with another point $\boldsymbol{x}_j$, then both points are in the same cluster).
 
-    Only core and border points can be part of a cluster.
+	\tcblower
 
-    Outliers are not part of any cluster.
+	Only core and border points can be part of a cluster.
 
-    The number of clusters is not known in advance.
+	Outliers are not part of any cluster.
 
-    The core points in a DBSCAN cluster are a subset of observed points belonging to the same
-    connected component of the level set of the estimated density function:
-    \begin{equation*}
-        \left\{
-            \boldsymbol x \in \mathds{R}^p \;\middle|\; \hat{f}_\varepsilon(\boldsymbol x) \geq f_0
-        \right\}
-    \end{equation*}
-    where the threshold $f_0$ is: $\frac{\text{minPts}}{n \cdot \varepsilon^p \text{Volume}(N_{1}(\boldsymbol{0}))}$.
-    
+	The number of clusters is not known in advance.
+
+	The core points in a DBSCAN cluster are a subset of observed points belonging to the same
+	connected component of the level set of the estimated density function:
+	\begin{equation*}
+		\left\{
+		\boldsymbol x \in \mathds{R}^p \;\middle|\; \hat{f}_\varepsilon(\boldsymbol x) \geq f_0
+		\right\}
+	\end{equation*}
+	where the threshold $f_0$ is: $\frac{\text{minPts}}{n \cdot \varepsilon^p \text{Volume}(N_{1}(\boldsymbol{0}))}$.
+
 \end{definition}
 
 \begin{algorithm}{DBSCAN}{}
-    \begin{algorithmic}[1]
-    \Procedure{DBSCAN}{$\varepsilon$, minPts}
-        \State Mark each point $\boldsymbol{x}_i$ as either core, border or noise
-        \State Remove all noise points
-        \State $j \gets 0$
-        \While{There are still core points}
-            \State Select a random core point $\boldsymbol{x}_i$
-            \State Define a new cluster $C_j$ with $\boldsymbol{x}_i$
-            \State Add to $C_j$ all points density-connected to $\boldsymbol{x}_i$
-            \State Add to $C_j$ all border points density-connected to $\boldsymbol{x}_i$
-            \State Remove all points in $C_j$ from the set of core points
-            \State $j \gets j + 1$
-        \EndWhile
-    \EndProcedure
-\end{algorithmic}
-\tcblower
-\begin{marker}
-There are two hyperparameters in DBSCAN: $\varepsilon$ and $\text{minPts}$.
-\end{marker}
+	\begin{algorithmic}[1]
+		\Procedure{DBSCAN}{$\varepsilon$, minPts}
+		\State Mark each point $\boldsymbol{x}_i$ as either core, border or noise
+		\State Remove all noise points
+		\State $j \gets 0$
+		\While{There are still core points}
+		\State Select a random core point $\boldsymbol{x}_i$
+		\State Define a new cluster $C_j$ with $\boldsymbol{x}_i$
+		\State Add to $C_j$ all points density-connected to $\boldsymbol{x}_i$
+		\State Add to $C_j$ all border points density-connected to $\boldsymbol{x}_i$
+		\State Remove all points in $C_j$ from the set of core points
+		\State $j \gets j + 1$
+		\EndWhile
+		\EndProcedure
+	\end{algorithmic}
+	\tcblower
+	\begin{marker}
+		There are two hyperparameters in DBSCAN: $\varepsilon$ and $\text{minPts}$.
+	\end{marker}
 \end{algorithm}
 
 \begin{figure}[H]
-    \includegraphics[width=0.5\textwidth]{../figures/dbscan_eps_minpts}
-    \caption{Visualization of the DBSCAN algorithm}
+	\begin{tikzpicture}
+			\begin{axis}[
+					xmin=-2, xmax=2,
+					ymin=-2, ymax=2,
+					axis equal image,
+					legend pos=outer north east,
+					legend cell align={left},
+                    title={$\varepsilon = 0.25$ , $\text{minPts} = 4$},
+				]
+				\addplot[only marks, mark=*,mark options={red!80!black}] table[col sep=comma,x index=0, y index=1] {data/dbscan_c1.csv}
+				\foreach \i in {0,...,49} { coordinate [pos=\i/49] (a\i) }
+				;
+				\addplot[only marks, mark=*,mark options={green!60!black}] table[col sep=comma,x index=0, y index=1] {data/dbscan_c2.csv}
+				\foreach \i in {0,...,19} { coordinate [pos=\i/19] (b\i) }
+				;
+				\addplot[only marks, mark=*,mark options={black}] table[col sep=comma,x index=0, y index=1] {data/dbscan_out.csv};
+				\addlegendentry{\,Cluster 1}
+				\addlegendentry{\,Cluster 2}
+				\addlegendentry{\,Outliers}
+			\end{axis}
+            % I am not sure why 0.25 is not the correct size for the circle.
+			\foreach \i in {0,...,49} { \draw [red!80!black,fill=red!50,fill opacity=0.1] (a\i) circle (0.35); }
+			\foreach \i in {0,...,49} { \draw [red!80!black,fill=red!80!black] (a\i) circle (2pt); }
+
+			\foreach \i in {0,...,19} { \draw [green!60!black,fill=green!50,fill opacity=0.1] (b\i) circle (0.35); }
+			\foreach \i in {0,...,19} { \draw [green!60!black,fill=green!60!black] (b\i) circle (2pt); }
+	\end{tikzpicture}
+	% \includegraphics[width=0.5\textwidth]{../figures/dbscan_eps_minpts}
+	\caption{Visualization of the DBSCAN algorithm}
 \end{figure}
 
 \subsection{Software}
