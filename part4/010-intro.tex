@@ -1,6 +1,107 @@
 %! TEX root = ../000-main.tex
 \chapter{Introduction to interpretability in machine learning}
 
-\section{Transparent models versus ``black box'' models}
+\section{Model interpretability and variable relevance}
+
+In a stimulating and provocative paper, Breiman (2001)
+% TODO: cite
+shook the
+statistical community by making it to be aware that traditional
+Statistics was no longer the only way to learn from data:
+\begin{itemize}
+	\item \emph{Data modelling culture} (traditional statistics):
+	      \begin{itemize}
+		      \item Linear regression, logistic regression, additive models, etc.
+		      \item They allow to interpret how the response variable is associated with
+		            the input variables: \iemph{Transparent models}.
+	      \end{itemize}
+	\item \emph{Algorithmic Modeling Culture} (machine learning):
+	      \begin{itemize}
+		      \item Decision trees, neural networks, support vector machines, etc.
+		      \item They have extremely good predictive accuracy, and they usually outperform
+		            in this criterion statistical models.
+		      \item However, they have low interpretability: \iemph{Black-box models}.
+	      \end{itemize}
+\end{itemize}
+
+From that it follows an apparent dichotomy: \iemph{predictive capacity} versus \iemph{interpretability}.
+
+Breiman claimed for procedures allowing better interpretation of the algorithmic models
+results, without giving up their predictive ability.
+
+Machine learning community has been worried about interpretability:
+\begin{quote}
+	If the users do not trust a model or a prediction, they will not use it.
+
+	\emph{Ribeiro, Singh and Guestrin (2016)}
+\end{quote}
+
+In 2018, the General Data Protection Regulation (GDPR) of the European Union
+established users' right to explanation: ``When an algorithmic decision
+significantly affects a user, he or she has the right to ask for an explanation
+of such decision''.
+
+A powerful research line has been developed:
+\iemph{Interpretable Machine Learning} (\iemph{IML}) and
+\iemph{eXplainable Artificial Intelligence} (\iemph{XAI}).
+
+There are several review papers on this topic.
+Barredo-Arrieta et al. (2020) is one of the most
+recent and extensive ones. % TODO: cite properly
+Also three monographs: Molnar (2019), Biecek and Burzykowski (2021), and
+Masís (2021).
+
+There are also many functions and packages in both R and Python.
+
+\section{IML/XAI concepts}
+
+\begin{note}
+	The \emph{accuracy} of predictions is no longer the only criterion to evaluate
+	the quality of a prediction algorithm.
+\end{note}
+
+Desirable properties for predictive models:
+\begin{itemize}
+	\item \iemph{transparency}
+	\item \iemph{interpretability}
+	\item \iemph{explainability}
+\end{itemize}
+
+However, these concepts are not well defined and are difficult to measure:
+\begin{itemize}
+	\item Lipton 2018: ``The term \emph{interpretability} is ill-defined''
+	\item Barredo-Arrieta et al. 2020: ``The derivation of general metrics
+	      to assess the quality of XAI approaches remain as an open challenge.''
+\end{itemize}
+
+To fix ideas, the possibility of obtaining information on the
+performance of the algorithm, in both the \emph{global} and \emph{local} senses, is
+now appreciated.
+
+\subsection{Global vs. Local interpretability}
+
+\begin{definition}{Global interpretability}{}
+	Measures of variable importance or relevance.
+
+	Information about the global performance refers to determining which
+	is the role of each explanatory variable in the prediction
+	process over the whole support of the explanatory variables.
+\end{definition}
+
+\begin{definition}{Local interpretability}{}
+	Why the prediction model does a particular prediction for a given individual?
+
+	The aim is to provide a meaningful explanation of why the algorithm returns a
+	certain prediction given a particular combination of the predicting variable values.
+
+	\tcblower
+
+	\begin{note}
+		The local aspect of interpretability is directly related with the users’
+		right to explanation advocated for by, for instance, the EU’s GDPR.
+	\end{note}
+\end{definition}
+
+\subsection{Transparent models versus ``black box'' models}
 
 \section{Global methods (relevance of variables) versus local methods (explainability)}
