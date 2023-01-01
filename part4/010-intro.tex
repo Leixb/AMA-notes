@@ -104,4 +104,140 @@ now appreciated.
 
 \subsection{Transparent models versus ``black box'' models}
 
-\section{Global methods (relevance of variables) versus local methods (explainability)}
+\begin{definition}{Transparent models}{}
+	or interpretable by design models, or white-boxes or glass-boxes.
+
+	Models, that, by design, have an easily interpretable structure.
+
+	Linear models (LM, and generalized linear models (GLM)),
+	generalized additive models (GAM, including additive models),
+	classification and regression trees (CART),
+	decision trees (DT), k-nearest neighbors (kNN) and
+	Bayesian models (including Naïve Bayes prediction rules).
+
+	They offer sufficient interpretation and/or diagnostic tools, both numeric and graphic
+\end{definition}
+
+\begin{definition}{Black-box models}{}
+	or non-transparent models.
+
+	Models, that do not provide a directly interpretable structure.
+
+	These models require additional interpretation tools.
+
+	All the prediction methods not explicitly mentioned above.
+\end{definition}
+
+We can divide non-transparent models into two groups:
+\begin{itemize}
+	\item Models for which there exist a \emph{model-specific} methods
+	      for knowledge extraction. These methods require full access to the model
+	      structure.
+	\item The rest of the models. We can only use \emph{model-agnostic} methods
+	      for interpretation.
+\end{itemize}
+
+\begin{example}{Models with model-specific tools}{}
+	\begin{itemize}
+		\item Tree ensembles (including random forests and boosted methods).
+		\item Neural networks (NN, includidng deep learning based on
+		      multi-layer, recurrent or convolutional NN).
+		\item Support vector machines (SVM).
+	\end{itemize}
+\end{example}
+
+\begin{example}{Characteristics of model-agnostic methods}{}
+	\begin{itemize}
+		\item Do not need to know the internal structure of the prediction
+		      model to be explained.
+		\item Only requirements: the ability to evaluate the prediction model
+		      repeated times on data from the training or the
+		      test set, or on perturbations of them.
+		\item They can be applied to any predictive model, even to those
+		      having model-specific methods or those that are
+		      transparent models.
+	\end{itemize}
+\end{example}
+
+All the interpretation methods applicable to non-transparent prediction
+models are  globally known as \iemph{post-hoc interpretation methods},
+a term that encompasses model-specific and model-agnostic methods.
+
+The results provided by these methods can be numerical and graphical,
+although most of the methods chose one or the other.
+
+Finally, it is worth mentioning that most of the interpretation
+methods are heuristic, and only some of them are derived from
+a formal axiomatic statement.
+
+\begin{recap}{Classification of models and interpretability tools}{}
+
+	\begin{tikzpicture}[
+			every node/.style={minimum width=2cm, minimum height=1cm},
+			node distance=0.25cm,
+		]
+		\node[draw,text width=6cm] (global) {
+			\textbf{Global measures}
+			\begin{itemize}
+				\item Variable importance by
+				      \begin{itemize}
+					      \item Leave-one-covariate-out (LOCO)
+					      \item Perturbing a variable in the
+					            test set: Random permutations, knockoffs,
+					            ghost-variables, \dots
+				      \end{itemize}
+				\item Variable importance based on Sapley's value
+				\item Partial dependence plots (PDP)
+				\item Accumulated local effects (ALE)
+			\end{itemize}
+		};
+
+		\node[draw,text width=6cm, right=of global] (local) {
+			\textbf{Local measures}
+			\begin{itemize}
+				\item Local interpretable model-agnostic explanations (LIME)
+				\item Local variable importance based on Shapley's value
+				\item SHAP (SHapley Additive exPlanations)
+				\item Break-down plots
+				\item Individual conditional expectation (ICE) plot or
+				      ceteris paribus (CP) plot.
+			\end{itemize}
+		};
+
+		\node[above=0.1cm and 0.1cm of global] (model-agnostic-text) {
+			\textbf{Model-agnostic methods}
+		};
+		\node[draw,fit=(global) (local)(model-agnostic-text)] (model-agnostic) { };
+
+		\node[draw,text width=6cm, above=of model-agnostic] (model-specific) {
+			\textbf{Model-specific methods}
+			\begin{itemize}
+				\item Tree ensembles
+				\item NN
+				\item SVM
+			\end{itemize}
+		};
+
+
+		\node[above=0.1cm and 0.1cm of model-specific] (non-transparent-text) {
+			\textbf{Black-boxes: Post-modeling interpretability}
+		};
+		\node[draw,fit=(non-transparent-text)(model-agnostic)(model-specific)] (non-transparent) { };
+
+		\node[draw,text width=10cm, above=of non-transparent] (transparent) {
+			\textbf{Transparent models}
+			\begin{multicols}{2}
+				\begin{itemize}
+					\item Linear model (LM)
+					\item GLM
+					\item GAM
+					\item CART
+					\item Rule-based models
+					\item Naïve Bayes
+					\item kNN
+				\end{itemize}
+			\end{multicols}
+		};
+
+	\end{tikzpicture}
+\end{recap}

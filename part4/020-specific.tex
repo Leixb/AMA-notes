@@ -1,5 +1,117 @@
 %! TEX root = ../000-main.tex
 \chapter{Interpretability methods for specific models}
 
+\begin{definition}{model-specific methods}{}
+    Interpretability methods developed for a particular prediction method.
+
+    They allow model exploration, validation or visualization.
+
+    They require full access to the model structure.
+
+    Different prediction models have different model-specific interpretability
+    methods, usually difficult to be compared.
+
+    \tcblower
+
+    We are talking here about interpretability in random forests and neural
+    networks. For support vector machines, refer to section 4.2.2 in
+    Barredo-Arriet et al. (2020).
+\end{definition}
+
 \section{Random forests}
+
+Random forests are combinations of more simpler models:
+classification and regression trees (CART).
+
+CART are usually considered transparent models because the
+prediction rules they encode are easily understood by non-experts.
+
+Additionally, a simple importance measure for the input variables
+can be defined for CART: at each split in the tree, the
+\emph{improvement in the split-criterion} is the importance measure
+attributed to the splitting variable.
+
+In random forests, this importance measure is accumulated over all trees in the forest
+separately for each variable.
+
+Breiman (2001) introduced an alternative way to measure the variable importance
+in random forests, combining the use of the
+\iemph{out-of-bag} (OOB) samples and the principle of
+\iemph{randomly permuting} the values of each predictor in a test sample to
+measure the decrease in accuracy.
+
+\subsection{Brief review of CART and random forests}
+
+Three-based methods divide the feature space into a set of regions,
+and then fir a simple model (like a constant) in each region.
+
+They are conceptually simple, yet powerful.
+
+\begin{example}{}{}
+    Consider a regression problem with continuous response $Y$ and
+    inputs $X_1$ and $X_2$, each taking values in the unit interval.
+
+    Let $\{R_1,\dots,R_5\}$ be a partition of the unit spare into 5 regions.
+
+    The corresponding regression model predicts $Y$ with a constant
+    $c_m$ in a region $R_m$ that is,
+    \begin{equation*}
+        \hat{f}(X_1,\,X_2) = \sum_{m=1}^5 c_m I_{R_m}(X_1\,,\,X_2)
+    \end{equation*}
+
+\begin{figure}[H]
+\begin{tikzpicture}[
+    scale=4.5,
+    ]
+    % t1 = 0.4 t2=0.6  t4= 0.8 t3= 0.33
+    % constants:
+    \pgfmathsetmacro{\ta}{0.4}
+    \pgfmathsetmacro{\tb}{0.4}
+    \pgfmathsetmacro{\tc}{0.6}
+    \pgfmathsetmacro{\td}{0.7}
+
+    \draw (0,0) rectangle (\ta,\tb) node[pos=.5] {$R_1$};
+    \draw (0,\tb) rectangle (\ta,1) node[pos=.5] {$R_2$};
+    \draw (\ta,0) rectangle (\tc,1) node[pos=.5] {$R_3$};
+    \draw (\tc,0) rectangle (1,\td) node[pos=.5] {$R_4$};
+    \draw (\tc,\td) rectangle (1,1) node[pos=.5] {$R_5$};
+
+    \node[anchor=north] at (\ta,0) {$t_1$};
+    \node[anchor=east] at (0,\tb) {$t_2$};
+    \node[anchor=north] at (\tc,0) {$t_3$};
+    \node[anchor=west] at (1,\td) {$t_4$};
+
+    \node[anchor=south,rotate=90] at (-0.15,0.5) {$X_2$};
+    \node[anchor=north] at (0.5,-0.15) {$X_1$};
+
+\end{tikzpicture}
+\hfill
+\begin{tikzpicture}[
+    scale=4.5,
+    ]
+    \pgfmathsetmacro{\ta}{0.4}
+    \pgfmathsetmacro{\tb}{0.4}
+    \pgfmathsetmacro{\tc}{0.6}
+    \pgfmathsetmacro{\td}{0.7}
+
+    \draw (0,0) rectangle (1,1);
+    \draw (0,0) rectangle (0.25,\td);
+    \draw (0,0) rectangle (0.55,\td);
+
+    \draw[fill=white] (0.25,0.4) rectangle (0.9,0.8);
+    \draw[fill=white] (0,0.6) rectangle (0.8,0.9);
+
+    \node[anchor=south,rotate=90] at (-0.1,0.5) {$X_2$};
+    \node[anchor=north] at (0.5,-0.15) {$X_1$};
+
+\end{tikzpicture}
+\caption{Two examples of partitions of the unit square into 5 regions.}%
+\label{fig:cart}
+\end{figure}
+
+\Cref{fig:cart} we can see two examples of partitions, the left has been obtained
+by recursive binary partitioning and can be easily represented by a binary tree.
+
+\end{example}
+
 \section{Neural networks}
