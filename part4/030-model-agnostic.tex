@@ -1,12 +1,130 @@
 %! TEX root = ../000-main.tex
 \chapter{Model-agnostic interpretability methods}
 
-\section{Global methods}
+\section{Introduction}
 
-\subsection{Importance of variables through disturbances}
-\subsection{Importance based on the Shapley Value}
-\subsection{Partial dependency graph}
-\subsection{Cumulative local effects graphs}
+Model-agnostic interpretation methods are those that only require
+the evaluation of the fitted prediction model on the training set, on
+the test set, or on perturbations of them.
+
+No other information from the kind of model at hand is needed.
+
+To be more formal, let $f$ be the prediction function estimated from a
+training sample using a generic prediction model.
+
+We assume that $f$ depends on $p$ arguments, so the predicted value
+for $x = (x_1, \dots , x_p)$ is $f(x)$.
+
+The only connection between the model-agnostic interpretation
+methods and the prediction model is through the function $f$ and,
+more specifically, only evaluations of $f$ at different points $x$ are
+allowed.
+
+Under this setting, to interpret the prediction model equals to
+interpret the prediction function $f$.
+
+This task is essentially the same we would have to do if we wanted
+to explore a generic mathematical function $g$ depending on $p$
+variables, from which only evaluations are allowed.
+
+Therefore, any procedure that allows exploring a generic function $g$
+(using only evaluations of $g$) can be considered a model-agnostic
+method that could be used for interpreting a prediction function $f$.
+
+For instance, computing a numerical approximation to the gradient
+of $f$ at a point $x$ can be considered a model-agnostic interpretation
+method, as well as using this approximation to compute the first
+order Taylor expansion of $f$ around $x$.
+
+Model-agnostic methods are specially useful for interpreting
+prediction models for which there are no specific interpretation
+methods.
+
+Nevertheless, model-agnostic methods can also improve the
+interpretation of models that are usually considered interpretable.
+
+Even multiple linear regression could benefit from the application of
+some model-agnostic methods.
+
+When a new model-agnostic interpretation method is introduced, a
+good practice is to check what it provides when applied to a classical
+simple prediction model, as linear regression, logistic regression or
+their additive extensions.
+
+In these simple cases, sometimes it is possible to obtain the closed
+expression of the new method results and then to relate them to the
+standard outputs of the classical methods.
+
+This way the new interpretation method will be either reinforced
+(when its classical counterpart is a sensible measure) or called into
+question (when the opposite happens).
+
+\section{Global measures of variable relevance}
+
+Let us consider the prediction problem involving the random
+vector $(X,\,Z,\,Y),\;X\in\mathds{R}^p,\,Z\in\mathds{R},\,Y\in\mathds{R}$,
+where $Y$ is the response variable that should be predicted from $(X,\,Z)$.
+
+A \iemph{prediction function} $f : \mathds{R}^{p+1} \to \mathds{R}$ has
+\emph{expected loss} (or \emph{risk}):
+\begin{equation*}
+    R(f(X,\,Z),\,Y) = \mathbb{E} \left[ L(f(X,\,Z),\,Y) \right]
+\end{equation*}
+where $L : \mathds{R}\times\mathds{R} \to \mathds{R}^+$ is a \iemph{loss function}
+measuring the \emph{cost} associated with predicting $Y$ by $f(X,\,Z)$.
+
+For instance, \iemph{quadratic loss} is defined as:
+\begin{equation*}
+    L(y,\,f(x,\,z)) = (y - f(x,\,z))^2
+\end{equation*}
+
+We consider the problem of measuring the effect of the single
+variable $Z$ on the prediction function $f$ when predicting $Y$
+by $f(X,\,Z)$. We call that effect the \iemph{variable relevance}
+or \iemph{variable importance} of $Z$.
+
+We assume that a training sample of size $n_1$ and
+a test sample of size $n_2$ are available.
+
+\subsection{Leave-one-covariate-out (LOCO)}
+
+A simple approach to define the importance of the variable $Z$:
+\begin{enumerate}
+    \item Fit the model including both $X$ and $Z$.
+    \item Fit the model including only $X$ (leave $Z$ out).
+    \item The relevance of $Z$ by \iemph{LOCO} is given by the relative
+        decrease in the prediction accuracy when $Z$ is omitted from the model.
+\end{enumerate}
+
+This approach is used, for instance, in multiple linear regression
+to decide if a variable should be included in the model or not.
+
+\begin{note}
+    The model must be fitted \emph{twice}
+\end{note}
+
+\subsubsection{Relevance by LOCO at a populational level}
+
+It could happen that there would exists a natural reduced version of
+$f$, say $f_p$, depending only on $p$ variables such that $f_p(X)$ would be the prediction
+of $Y$ when $Z$ is not available.
+
+For instance, the natural reduced version of $f(X,\,Z) = \beta_0 + X^T\beta_x + Z\beta_z$
+could be $f_p(X) = \beta'_0 + X^T\beta'_x$ for some $\beta'_0,\,\beta'_x$ possibly
+different from $\beta_0,\,\beta_x$.
+
+
+\subsection{Variable importance by random permutations}
+\subsection{Relevance by ghost variables}
+\subsection{Other relevance measures based on perturbations}
+\subsection{The relevance matrix}
+\subsection{Variable relevance measures as Shapley’s values}
+\subsection{Global graphical methods}
+
+% \subsection{Importance of variables through disturbances}
+% \subsection{Importance based on the Shapley Value}
+% \subsection{Partial dependency graph}
+% \subsection{Cumulative local effects graphs}
 
 \section{Local methods}
 
