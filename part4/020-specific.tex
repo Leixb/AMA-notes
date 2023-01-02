@@ -2,20 +2,20 @@
 \chapter{Interpretability methods for specific models}
 
 \begin{definition}{model-specific methods}{}
-    Interpretability methods developed for a particular prediction method.
+	Interpretability methods developed for a particular prediction method.
 
-    They allow model exploration, validation or visualization.
+	They allow model exploration, validation or visualization.
 
-    They require full access to the model structure.
+	They require full access to the model structure.
 
-    Different prediction models have different model-specific interpretability
-    methods, usually difficult to be compared.
+	Different prediction models have different model-specific interpretability
+	methods, usually difficult to be compared.
 
-    \tcblower
+	\tcblower
 
-    We are talking here about interpretability in random forests and neural
-    networks. For support vector machines, refer to section 4.2.2 in
-    Barredo-Arriet et al. (2020).
+	We are talking here about interpretability in random forests and neural
+	networks. For support vector machines, refer to section 4.2.2 in
+	Barredo-Arriet et al. (2020).
 \end{definition}
 
 \section{Random forests}
@@ -48,70 +48,449 @@ and then fir a simple model (like a constant) in each region.
 They are conceptually simple, yet powerful.
 
 \begin{example}{}{}
-    Consider a regression problem with continuous response $Y$ and
-    inputs $X_1$ and $X_2$, each taking values in the unit interval.
+	Consider a regression problem with continuous response $Y$ and
+	inputs $X_1$ and $X_2$, each taking values in the unit interval.
 
-    Let $\{R_1,\dots,R_5\}$ be a partition of the unit spare into 5 regions.
+	Let $\{R_1,\dots,R_5\}$ be a partition of the unit spare into 5 regions.
 
-    The corresponding regression model predicts $Y$ with a constant
-    $c_m$ in a region $R_m$ that is,
-    \begin{equation*}
-        \hat{f}(X_1,\,X_2) = \sum_{m=1}^5 c_m I_{R_m}(X_1\,,\,X_2)
-    \end{equation*}
+	The corresponding regression model predicts $Y$ with a constant
+	$c_m$ in a region $R_m$ that is,
+	\begin{equation*}
+		\hat{f}(X_1,\,X_2) = \sum_{m=1}^5 c_m I_{R_m}(X_1\,,\,X_2)
+	\end{equation*}
 
-\begin{figure}[H]
-\begin{tikzpicture}[
-    scale=4.5,
-    ]
-    % t1 = 0.4 t2=0.6  t4= 0.8 t3= 0.33
-    % constants:
-    \pgfmathsetmacro{\ta}{0.4}
-    \pgfmathsetmacro{\tb}{0.4}
-    \pgfmathsetmacro{\tc}{0.6}
-    \pgfmathsetmacro{\td}{0.7}
+	\begin{figure}[H]
+		\begin{tikzpicture}[
+				scale=4.5,
+			]
+			% t1 = 0.4 t2=0.6  t4= 0.8 t3= 0.33
+			% constants:
+			\pgfmathsetmacro{\ta}{0.4}
+			\pgfmathsetmacro{\tb}{0.4}
+			\pgfmathsetmacro{\tc}{0.6}
+			\pgfmathsetmacro{\td}{0.7}
 
-    \draw (0,0) rectangle (\ta,\tb) node[pos=.5] {$R_1$};
-    \draw (0,\tb) rectangle (\ta,1) node[pos=.5] {$R_2$};
-    \draw (\ta,0) rectangle (\tc,1) node[pos=.5] {$R_3$};
-    \draw (\tc,0) rectangle (1,\td) node[pos=.5] {$R_4$};
-    \draw (\tc,\td) rectangle (1,1) node[pos=.5] {$R_5$};
+			\draw (0,0) rectangle (\ta,\tb) node[pos=.5] {$R_1$};
+			\draw (0,\tb) rectangle (\ta,1) node[pos=.5] {$R_2$};
+			\draw (\ta,0) rectangle (\tc,1) node[pos=.5] {$R_3$};
+			\draw (\tc,0) rectangle (1,\td) node[pos=.5] {$R_4$};
+			\draw (\tc,\td) rectangle (1,1) node[pos=.5] {$R_5$};
 
-    \node[anchor=north] at (\ta,0) {$t_1$};
-    \node[anchor=east] at (0,\tb) {$t_2$};
-    \node[anchor=north] at (\tc,0) {$t_3$};
-    \node[anchor=west] at (1,\td) {$t_4$};
+			\node[anchor=north] at (\ta,0) {$t_1$};
+			\node[anchor=east] at (0,\tb) {$t_2$};
+			\node[anchor=north] at (\tc,0) {$t_3$};
+			\node[anchor=west] at (1,\td) {$t_4$};
 
-    \node[anchor=south,rotate=90] at (-0.15,0.5) {$X_2$};
-    \node[anchor=north] at (0.5,-0.15) {$X_1$};
+			\node[anchor=south,rotate=90] at (-0.15,0.5) {$X_2$};
+			\node[anchor=north] at (0.5,-0.15) {$X_1$};
 
-\end{tikzpicture}
-\hfill
-\begin{tikzpicture}[
-    scale=4.5,
-    ]
-    \pgfmathsetmacro{\ta}{0.4}
-    \pgfmathsetmacro{\tb}{0.4}
-    \pgfmathsetmacro{\tc}{0.6}
-    \pgfmathsetmacro{\td}{0.7}
+		\end{tikzpicture}
+		\hfill
+		\begin{tikzpicture}[
+				scale=4.5,
+			]
+			\pgfmathsetmacro{\ta}{0.4}
+			\pgfmathsetmacro{\tb}{0.4}
+			\pgfmathsetmacro{\tc}{0.6}
+			\pgfmathsetmacro{\td}{0.7}
 
-    \draw (0,0) rectangle (1,1);
-    \draw (0,0) rectangle (0.25,\td);
-    \draw (0,0) rectangle (0.55,\td);
+			\draw (0,0) rectangle (1,1);
+			\draw (0,0) rectangle (0.25,\td);
+			\draw (0,0) rectangle (0.55,\td);
 
-    \draw[fill=white] (0.25,0.4) rectangle (0.9,0.8);
-    \draw[fill=white] (0,0.6) rectangle (0.8,0.9);
+			\draw[fill=white] (0.25,0.4) rectangle (0.9,0.8);
+			\draw[fill=white] (0,0.6) rectangle (0.8,0.9);
 
-    \node[anchor=south,rotate=90] at (-0.1,0.5) {$X_2$};
-    \node[anchor=north] at (0.5,-0.15) {$X_1$};
+			\node[anchor=south,rotate=90] at (-0.1,0.5) {$X_2$};
+			\node[anchor=north] at (0.5,-0.15) {$X_1$};
 
-\end{tikzpicture}
-\caption{Two examples of partitions of the unit square into 5 regions.}%
-\label{fig:cart}
-\end{figure}
+		\end{tikzpicture}
+		\caption{Two examples of partitions of the unit square into 5 regions.}%
+		\label{fig:cart}
+	\end{figure}
 
-\Cref{fig:cart} we can see two examples of partitions, the left has been obtained
-by recursive binary partitioning and can be easily represented by a binary tree.
+	\Cref{fig:cart} we can see two examples of partitions, the left has been obtained
+	by recursive binary partitioning and can be easily represented by a binary tree.
+
+	% TODO: add a figure with binary tree
 
 \end{example}
 
+\subsubsection{Regression trees}
+
+Our data set consists of $p$ inputs and a response, for each of $n$ observations:
+$(\boldsymbol{x}_i,\,y_i),\, i=1,\dots,n$ with $\boldsymbol{x}_i=(x_{i1},\dots,x_{ip})^T$.
+
+The algorithm needs to automatically decide on the splitting variables and split points.
+
+Suppose first that we have a partition into $M$ regions $R_1,\dots,R_M$,
+and we model the response as a constant $c_m$ in each region:
+\begin{equation*}
+	{f}(\boldsymbol x) = \sum_{m=1}^M c_m I_{R_m}(\boldsymbol x)
+\end{equation*}
+
+If we adopt as our criterion the minimization of the sum of squares,
+$\sum_{i=1}^n (y_i - {f}(\boldsymbol x_i))^2$, then the optimal
+value for $c_m$ is the average (ave) of $y_i$ in the region $R_m$:
+\begin{equation*}
+	\hat{c}_m = \text{ave}(y_i \mid \boldsymbol x_i \in R_m)
+\end{equation*}
+
+\paragraph{Finding the best binary partition} in terms of the minimization of the
+sum of squares is generally \emph{computationally infeasible}.
+
+Instead, a greedy strategy is adopted:
+\begin{algorithm}{}{}
+	Starting with all the data, consider a splitting variable $j$ and a split point $x$,
+	and define the pair of half-planes:
+	\begin{equation*}
+		R_1(j,\,s) = \{ \boldsymbol x \in \mathds R^p \mid x_j \leq s \} \qquad
+		R_2(j,\,s) = \{ \boldsymbol x \in \mathds R^p \mid x_j > s \}
+	\end{equation*}
+	The we seek the splitting variable $j$ and split point $s$ that solve:
+	\begin{equation*}
+		\min_{j,\,s} \left\{
+		\min_{c_1} \sum_{\boldsymbol x_i \in R_1(j,\,s)} (y_i - c_1)^2
+		\quad+\quad \min_{c_2} \sum_{\boldsymbol x_i \in R_2(j,\,s)} (y_i - c_2)^2
+		\right\}
+	\end{equation*}
+	For any choice of $j$ and $s$, the inner minimization is solved by:
+	\begin{equation*}
+		\hat{c}_1 = \text{ave}(y_i \mid \boldsymbol x_i \in R_1(j,\,s)) \qquad
+		\hat{c}_2 = \text{ave}(y_i \mid \boldsymbol x_i \in R_2(j,\,s))
+	\end{equation*}
+	For each splitting variable, the determination of the split point $s$ can
+	be done very quickly, and hence by scanning through all of the inputs,
+	determination of the best pair $(j,\,s)$ is feasible.
+
+	Having found the best split, we partition the data into the two resulting regions and repeat the
+	splitting process on each of the two regions. This process is repeated until a stopping
+	criterion is met.
+\end{algorithm}
+
+\begin{definition}{Squared-error impurity measure}{}
+	for the $m$-th region (or \emph{node}) $R_m$ with $N_m$ cases and average
+	response $\hat{c}_m = \frac{1}{N_m} \sum_{i: \boldsymbol x_i \in R_m} y_i$,
+	is defined as:
+	\begin{equation*}
+		Q_m(T) = \frac{1}{N_m} \sum_{i: \boldsymbol x_i \in R_m} (y_i - \hat{c}_m)^2
+	\end{equation*}
+\end{definition}
+
+\subsubsection{Classification trees}
+
+Assume now that the target is a classification outcome taking values $1,\dots,K$.
+
+The only changes needed in the tree algorithm affect the criteria for
+\emph{splitting nodes} and \emph{pruning the tree}.
+
+In a node $m$, representing a region $R_m$ with $N_m$ observations, let
+\begin{equation*}
+	\hat{p}_{mk} = \frac{1}{N_m} \sum_{i: \boldsymbol x_i \in R_m} I(y_i = k)
+\end{equation*}
+the proportion of class $k$ observations in node $m$.
+
+We classify the observations in node $m$ to class $k(m) = \arg\max_k \hat{p}_{mk}$,
+the majority class in node $m$.
+
+The squared-error node impurity measure $Q_m(T)$ used for regression is not
+suitable for classification. Instead, we use one of the following alternatives:
+\begin{align}
+	\frac{1}{N_m} \sum_{i: \boldsymbol x_i \in R_m} I(y_i \neq k) & = 1 - \max_k \hat{p}_{mk} \tag{misclassification error}                     \\
+	\sum_{k\neq k'} \hat{p}_{mk} \hat{p}_{m k'}                   & = \sum_{k=1}^K \hat{p}_{mk} (1 - \hat{p}_{mk}) \tag{Gini index}             \\
+	                                                              & \sum_{k=1}^K \hat{p}_{mk} \log \hat{p}_{mk} \tag{cross-entropy or deviance}
+\end{align}
+
+\begin{note}
+	Both the Gini index and the cross-entropy are lower for the splits producing pure nodes, that are probably
+	preferable.
+
+	For this reason, either the Gini index or cross-entropy should be used when growing the tree.
+
+	To guide cost-complexity pruning, any of the three measures can be used but typically
+	the misclassification rate is used.
+\end{note}
+
+\subsubsection{Instability of trees}
+
+One major problem with trees is their high variance. Often, a small change in the data can result in a very
+different series of splits, making interpretation somewhat precarious.
+
+The major reason for this instability is the hierarchical nature of the process:
+the effect of an error in the top split is propagated down to all of the splits below it.
+
+Instability is the price to be paid for estimating a simple, tree-based structure of the
+data.
+
+We can use methods such as bagging and random forests to reduce the variance of the tree:
+
+\index{Bagging}
+\paragraph{Bagging} averages $B$ trees to reduce the variance.
+
+% \paragraph{Random forests} are a variant of bagging that use a random subset of the
+% variables at each split. In many problems, it outperforms bagging.
+
+\subsubsection{Random forests}
+
+In random forests, a large amount of random trees is generated and then they
+are averaged.
+
+It is hopped to reduce variance without increase in bias.
+
+The first random ingredient: take a \emph{bootstrap sample}, choosing with
+replacement $n$ random elements from the original data set:
+\begin{equation*}
+	\{
+	(
+	\boldsymbol x_i^*,\,y_i^*
+	),\, i = 1,\dots,n
+	\} \text{ randomly chosen from }
+	\{
+	(
+	\boldsymbol x_i,\,y_i
+	),\, i = 1,\dots,N
+	\}
+\end{equation*}
+Several real data appear more than once in the bootstrap sample (around $2/3$ of them).
+The rest (around $1/3$) do not belong to the bootstrap sample and we call them
+\iemph{out-of-bag} (OOB) sample.
+
+This idea is shared with bagging (\iemph{bootstrap aggregation}), but
+random forest try to reduce the correlation between the trees,
+without increasing the variance too much.
+
+This is achieved in the tree-growing process through random selection of the
+input variables.
+
+\paragraph{Out-of-Bag samples}
+An important feature of random forests is its use of out-of-bag (OOB) samples:
+\begin{quote}
+	For each observation $\boldsymbol z_i = (\boldsymbol x_i,\,y_i)$ in the
+	training set, construct its random forest predictor by averaging only
+	those trees corresponding to bootstrap samples in which $\boldsymbol z_i$
+	was not included.
+\end{quote}
+
+An OOB error estimate is almost identical to that obtained by $n$-fold cross-validation.
+
+Hence, unlike many other non-linear estimators, random forests can be fit in one sequence,
+with cross-validation being performed along the way.
+
+Once the OOB error stabilizes, the training can be stopped.
+
+\subsection{Variable Importance based on node impurity measures}
+
+
+Let $T$ be a tree found in the fitting process of a CART, and let
+$|T|$ be the number of terminal nodes in $T$.
+
+\begin{definition}{Total impurity measure}{} of $T$ is defined as:
+	\begin{equation*}
+		C(T) = \sum_{m=1}^{|T|} N_m Q_m
+	\end{equation*}
+\end{definition}
+
+Assume that the $j$-th variable is used to split the node $R_r$ of $T$ into
+two child-nodes, say $R_{r'}$ and $R_{r''}$, this way producing a new tree $T'$.
+
+The \iemph{improvement in the impurity measure} (also known as
+\iemph{improvement in the split-criterion}) is:
+\begin{equation*}
+	C(T) - C(T') = N_r Q_r - \left(N_{r'} Q_{r'} + N_{r''} Q_{r''} \right)
+\end{equation*}
+
+A simple \emph{importance measure} for the input variables can be defined for
+\emph{CART}:
+\begin{itemize}
+	\item At each split in the tree, the improvement in the split-criterion
+	      is attributed to the splitting variable as a partial measure of its
+	      importance.
+	\item The importance measure of a variable is the \emph{sum of
+		      the partial measures} over all splits in which it is involved.
+\end{itemize}
+
+In \emph{Random Forests}, this importance measure is accumulated over \emph{all the trees in the forest}
+separately for each variable:
+
+At each split in each tree, the improvement in the split-criterion
+is the importance measure attributed to the splitting variable, and
+is accumulated over all the trees in the forest separately for each variable.
+
+\subsection{Out-of-Bag Variable Importance}
+
+% TODO: cite properly
+Breiman (2010) introduced an alternative way to measure the \iemph{variable importance}
+(or \iemph{prediction strength}) in random forests, combining the use
+of the out-of-bag (OOB) samples as test samples, and the principle of
+\emph{randomly permuting the values of each predictor in a test sample}
+to measure the decrease in accuracy.
+
+\begin{algorithm}{}{}
+	When the $b$-th tree is grown, the OOB samples are passed down the tree, and the prediction
+	accuracy is recorded:
+	\begin{equation*}
+		SSE_{oob}^b = \sum_{i \in oob_b} \left( y_i - T^b(\boldsymbol x_i) \right)^2
+	\end{equation*}
+	Then the values for the $j$-th variable are randomly permuted in the OOB samples,
+	and the accuracy is again computed:
+	\begin{equation*}
+		SSE_{oob,\,\pi(j)}^b = \sum_{i \in oob_b} \left( y_i - T^b(\boldsymbol x_{i\{\pi(j)\}}) \right)^2
+	\end{equation*}
+	The decrease in accuracy as a result of this permuting is averaged over all trees, and is used
+	as a measure of the importance of variable $j$ in the random forest:
+	\begin{equation*}
+		VI_{oob}(j) = \frac{1}{B}\sum_{b=1}^B \left( SSE_{oob,\,\pi(j)}^b - SSE_{oob}^b \right)
+	\end{equation*}
+
+	\tcblower
+
+	The randomization effectively voids the effect of a variable, much like setting a coefficient
+	to zero in a linear model.
+
+	\begin{note}
+		This does not measure the effect on the prediction if this variable
+		were not available, because if the model was refitted without the variable,
+		other variables could be used as surrogates.
+	\end{note}
+\end{algorithm}
+
 \section{Neural networks}
+
+\subsection{A brief review of neural networks}
+
+\begin{definition}{Neural Networks}{} (NN) or \iemph{Artificial Neural Networks} (ANN)
+	are a class of Machine Learning models inspired by the structure and function of biological
+	neural networks.
+
+	They try to mimic with mathematical functions the way biological neurons
+	in the brain process information.
+
+	\tcblower
+
+	Here, we will deal only with \emph{one-hidden-layer} neural networks.
+\end{definition}
+
+\begin{definition}{One-hidden-layer neural networks}{}
+	are non-linear parametric regression model represented by the following
+	directed acyclic graph:
+
+	\begin{center}
+		\begin{neuralnetwork}[height=5]
+			\tikzstyle{input neuron}=[neuron, fill=orange!70];
+			\tikzstyle{output neuron}=[neuron, fill=blue!60!black, text=white];
+
+			\inputlayer[count=5, bias=false, title=Input Layer]
+
+			\hiddenlayer[count=3, bias=false, title=Hidden Layer]
+			\linklayers
+
+			\outputlayer[count=3, title=Output Layer]
+			\linklayers
+		\end{neuralnetwork}
+	\end{center}
+
+	At each node $\boldsymbol N$ the inputs are additively combined, then
+	they are transformed by an \iemph{activation function} $\sigma$ and they
+	result in:
+	\begin{equation*}
+		z_{\boldsymbol N} = \sigma \left( \sum_{\ell \in \text{ input of } \boldsymbol N} w_\ell x_\ell \right)
+	\end{equation*}
+
+\end{definition}
+
+\begin{example}{}{} A neural network represented by the graph:
+	\begin{center}
+		\begin{neuralnetwork}[height=5]
+			\tikzstyle{input neuron}=[neuron, fill=orange!70];
+			\tikzstyle{output neuron}=[neuron, fill=blue!60!black, text=white];
+
+			\newcommand{\xin}[2]{
+				\ifthenelse{\numexpr#2<4\relax}{#2}{
+					\ifthenelse{\numexpr#2=4\relax}{\dots}{p}
+				}
+			}
+			\newcommand{\xhid}[2]{
+				\ifthenelse{\numexpr#2<3\relax}{#2}{
+					\ifthenelse{\numexpr#2=3\relax}{\dots}{m}
+				}
+			}
+			\renewcommand{\xout}[2]{1}
+
+			\inputlayer[count=5, bias=false, title=Input Layer, text=\xin]
+
+			\hiddenlayer[count=4, bias=false, title=Hidden Layer, text=\xhid]
+			\linklayers
+
+			\outputlayer[count=1, title=Output Layer, text=\xout]
+			\linklayers
+		\end{neuralnetwork}
+	\end{center}
+	corresponds to the following function from $\mathds R^p \to \mathds R$:
+	\begin{equation*}
+		f(\boldsymbol x) = \sigma_2 \left(
+		    w_0^{(2)} + \sum_{j=1}^p w_j^{(2)} \sigma_1 \left(
+                w_{0j}^{(1)} + \sum_{\ell=1}^p w_{\ell j}^{(1)} x_\ell
+            \right)
+		\right)
+	\end{equation*}
+\end{example}
+
+\subsection{Interpretability in Neural Networks}
+
+A useful tool for interpretability in neural networks is to look at the
+\emph{derivatives of the prediction function}:
+\begin{equation*}
+    f(\boldsymbol x) = 
+    \beta_0 + \sum_{j=1}^m \beta_j \sigma \left( \alpha_{0j} + \sum_{\ell=1}^p \alpha_{\ell j} x_\ell \right)
+\end{equation*}
+with respect to each variable $x_\ell,\,\ell=1,\dots,p$:
+\begin{equation*}
+    \frac{\partial f}{\partial x_\ell} = \sum_{j=1}^m \beta_j \alpha_{\ell j} \sigma' \left( \alpha_{0j} + \sum_{\ell=1}^p \alpha_{\ell j} x_\ell \right)
+\end{equation*}
+The gradient of $f$ at $\boldsymbol x$ is often required:
+\begin{equation*}
+    \nabla f(\boldsymbol x) = \left( \frac{\partial f}{\partial x_1}, \dots, \frac{\partial f}{\partial x_p} \right)
+\end{equation*}
+
+These computations are easy to implement since partial derivatives can be computed
+using \iemph{backpropagation}, even in NN with complex architectures.
+
+\begin{definition}{Activation maximization}{} consists on searching
+    for the input pattern (\iemph{prototype}) that produces a maximum
+    model response for a quantity of interest
+    (for instance, the estimated probability to belong to one of the classes when the response
+    is qualitative).
+
+    The found prototype indicates which characteristics in the data are mainly taken into account
+    by the model.
+\end{definition}
+
+\subsubsection{Explanation}
+
+Given a data point $\boldsymbol x \in \mathds R^p$, the objective is to \emph{explain}
+why the NN produces the response prediction $f(\boldsymbol x)$ for it.
+
+For explanation of NN decision, \iemph{sensitivity analysis} and
+\iemph{simple Taylor decomposition} are considered in Montavon et al. (2018). % TODO: add reference
+
+\begin{definition}{Sensitive analysis}{}
+    the goal is to identify the input feature along which the largest local variation is produced around
+    a given data point $\boldsymbol x$.
+
+    A possibility is to compute the \iemph{relevance score} at $\boldsymbol x$
+    for each feature $h$, that is, \emph{the square of the partial derivative with respect to
+    the $h$-th variable} of the function codified by the NN.
+\end{definition}
+
+\begin{definition}{Simple Taylor decomposition}{}
+    the NN function is approached at a given data point $\boldsymbol x$ by the \emph{first
+    order Taylor expansion} which is then interpreted as any linear estimator, providing
+    an explanation of how the NN function varies around $\boldsymbol x$.
+\end{definition}
+
+\begin{note}
+    These procedures, as well as activation maximization, have limitations
+    to show the general pattern of interactions among variables.
+\end{note}
+
+% TODO: convolutional NN references
