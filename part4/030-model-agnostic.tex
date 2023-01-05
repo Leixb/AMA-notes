@@ -325,8 +325,188 @@ in  the prediction of $Y$, measured by the quadratic loss:
 	\end{enumerate}
 \end{note}
 
+\begin{example}{Additive model}{}
+	If $f$ is additive in $X$ and $Z$, under quadratic loss,
+	the relevance of $Z$ by its ghost variable is given by:
+	\begin{equation*}
+		\mathds{E} \left[
+			\left( f(X,\,Z) - f(X,\,\mathds{E}(Z \mid X)) \right)^2
+			\right] =
+		\mathds{E} \left[
+			\left( s_2(Z) - s_2(\mathds{E}(Z \mid X)) \right)^2
+			\right]
+	\end{equation*}
+	which does not coincide neither with LOCO nor with random permutations.
+
+	If additionally there is linearity, $s_2(Z) = Z\beta_Z$, it is
+	equal to:
+	\begin{equation*}
+		\beta_Z^2 \mathds{E} \left[
+			\left( Z - \mathds{E}(Z \mid X)\right)^2
+			\right] =
+		\beta_Z^2 \mathds{E} \left[
+			\text{Var}(Z \mid X)
+			\right]
+	\end{equation*}
+	which coincides with LOCO in this case.
+\end{example}
+
+\begin{recap}{LOCO, random permutation and Ghost variables}{}
+	\begin{itemize}
+		\item It is desirable that any variable relevance method would
+		      measure meaningful quantities when applied to simple models.
+		\item We have seen that for \emph{multiple linear regression}
+		      models:
+		      \begin{itemize}
+			      \item \emph{LOCO} and \emph{ghost variables} give
+			            approximately the same results.
+			      \item The relevance of variable $Z$ by LOCO and ghost
+			            variable is proportional to the clasical
+			            $F$-statistic used for testing $H_0: \beta_Z = 0$
+			            against $H_1: \beta_Z \neq 0$.
+			      \item The relevance by random permutations does not
+			            reproduce any standard test statistic for the
+			            significance of $\beta_Z$.
+		      \end{itemize}
+		\item We conclude that \emph{measuring variable relevance by ghost
+			      variables combines the advantages of the other two methods}:
+		      \begin{itemize}
+			      \item The model is trained only once.
+			      \item In linear regression it reproduces the significance
+			            $F$-statistics.
+		      \end{itemize}
+		\item When we measure the relevance by ghost variable in a
+		      predictive model, we are in some way
+		      \emph{extending the concept of variable relevance} to
+		      that model.
+	\end{itemize}
+\end{recap}
+
 \subsection{Other relevance measures based on perturbations}
+\index{perturbation}
+
+Random permutations and ghost variables methods for computing
+relevance of a explanatory variable $Z$ follow a general
+scheme:
+\begin{quote}
+	To replace the values of $Z$ in the test set by ``perturbed'' values
+	of them, which are independent of the response variable $Y$, given
+	the other explanatory variables $X$.
+\end{quote}
+
+Other possibilities of ``perturbation'' of $Z$ have been considered
+recently in the literature.
+
+\subsubsection{Knockoffs}
+
+Consider the lasso estimation of a linear model with
+reponse variable $Y$ and explanatory variables
+$\boldsymbol{X} = (X_1,\ldots,X_p)$ with large $p$.
+
+When testing the significance of a large number of predictors
+the problem of controlling the \iemph{false discovery rate} (FDR)
+\index{FDR}
+arises.
+
+\begin{definition}{Knockoff variables}{} \index{knockoff}
+	% TODO cite
+	were defined by Barber and Candès (2015) as
+	variables unrelated to the response and that jointly
+	have the same distribution as the original ones,
+	but being \emph{as different as possible} from them.
+\end{definition}
+
+Assuming that the explanatory variables $\boldsymbol{X}$ are
+random variables with a known joint distribution, then
+the set of \iemph{model-X} (MX)
+\index{MX}
+knockoff variables $\tilde{\boldsymbol{X}} = (\tilde{X}_1,\ldots,\tilde{X}_p)$,
+are independents of $Y$ given $\boldsymbol{X}$, and the joint distribution of
+\begin{equation*}
+	(\boldsymbol{X},\,\tilde{\boldsymbol{X}}) =
+	\left( X_1,\ldots,X_p,\,\tilde{X}_1,\ldots,\tilde{X}_p \right)
+\end{equation*}
+does not change if we interchange any subset of the original variables
+and their knockoffs.
+
+The lasso model is fitted with all $X_i$ and $\tilde{X}_i$ as
+explanatory variables.
+
+% TODO: continue next slide on knockoffs
+
+\subsubsection{Estimated conditional distribution}
+
+% TODO: cite
+In the context of feature selection in complex predictive models,
+Tansey et al. (2022) also deal with the problem of working with
+an unknown conditional distribution $(Z \mid X = x)$, when
+they describe the general \iemph{Holdout Randomized Test} (HRT)
+\index{HRT}.
+
+They model the conditional distribution of $(Z \mid X = x)$
+as a \emph{mixture of univariate Gaussians}. They fix the
+number of components as 5, then there are
+$ 5 + 5  + (5 - 1) = 14$ conditional
+parameters to estimate as functions of the $p$ values
+of $x$.
+
+% TODO: cite
+Then, they propose to estimate the conditional distribution
+of $(Z \mid X = x)$ following the proposal of Bishop (1996)
+on \iemph{mixture density networks}.
+
+This method uses a neural network with 14 neurons in the
+output layer (one for each parameter), instead of having
+just one output neuron as it happens when the goal is
+to estimate expectation $\mathds{E}(Z \mid X = x)$.
+
+\begin{note}
+	The estimation of the conditional distribution models
+	is a complicated task, requiring considerable computer effort.
+
+	On the contrary, \emph{ghost variables} require only
+	to estimate the conditional expectation using the regression model
+	preferred by the user.
+
+	If there are many variables, it may be better to use \emph{lasso}
+	type estimation.
+\end{note}
+
+\begin{recap}{Knockoffs vs. ghost variables}{}
+	\begin{itemize}
+		\item Using ghost variables or using knockoffs to compute relevance of
+		      features are comparable strategies regarding:
+		      \begin{itemize}
+			      \item the quality of the resulting relevance measures,
+			      \item the computational efficiency.
+		      \end{itemize}
+		\item Both are preferred to other alternatives considered in our simulation
+		      study.
+		\item When using ghost variables the practitioner has to propose
+		      regression models of each explanatory variable over the others, and
+		      then fit these models.
+		\item This is a routine process which is easily implemented in any standard
+		      platform (R or Python, for instance), even if the linearity assumption
+		      is not fulfilled by our data.
+		\item On the other hand, generating knockoffs variables is difficult even in
+		      the most standard settings.
+		\item Moreover, when the data are far from well mimicked with Model-X
+		      Gaussian knockoffs there is no easy way to generate knockoffs.
+		\item Simplicity and flexibility of the ghost variable procedure are a clear
+		      advantage with respect to using knockoffs.
+	\end{itemize}
+\end{recap}
+
 \subsection{The relevance matrix}
+
+We jointly measure the relevance of all the explanatory variables.
+
+Given the random vector $(X,\,Y)$, $X = (X_1,\ldots,X_p) \in \mathds{R}^p$,
+$Y \in \mathds{R}$, the prediction of $Y$ from the $p$ components of
+$X$ through  the estimation of the regression function
+$m(x) = \mathds{E}(Y \mid X = x)$ is considered.
+
+
 \subsection{Variable relevance measures as Shapley’s values}
 \subsection{Global graphical methods}
 
