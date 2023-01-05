@@ -497,7 +497,7 @@ to estimate expectation $\mathds{E}(Z \mid X = x)$.
 	\end{itemize}
 \end{recap}
 
-\subsection{The relevance matrix}
+\subsection{The relevance matrix}\index{relevance matrix}
 
 We jointly measure the relevance of all the explanatory variables.
 
@@ -506,9 +506,359 @@ $Y \in \mathds{R}$, the prediction of $Y$ from the $p$ components of
 $X$ through  the estimation of the regression function
 $m(x) = \mathds{E}(Y \mid X = x)$ is considered.
 
+A training sample $(\boldsymbol X_1, \boldsymbol y_1 ) \in \mathds R^{n_1 \times (p+1)}$
+has been used to build an estimator $\widehat m(x)$ of $m(x)$.
+
+An additional test sample $(\boldsymbol X_2, \boldsymbol y_2 ) \in \mathds R^{n_2 \times (p+1)}$
+is available.
+
+$\boldsymbol X_{2.\hat\jmath } = (\boldsymbol x_{2,1},\ldots,\boldsymbol x_{2.j-1}, \hat{\boldsymbol{x}}_{2.j}
+	,\boldsymbol x_{2,j+1},\ldots,\boldsymbol x_{2,p}),\;j=1,\ldots,p$.
+
+$\hat{\boldsymbol{y}}_2 = \widehat{m}(\boldsymbol X_{2}),\quad
+	\hat{\boldsymbol{y}}_{2.\hat\jmath} = \widehat{m}(\boldsymbol X_{2.\hat\jmath})$.
+
+\begin{definition}{Case-variable relevance matrix}{}\index{case-variable relevance matrix}
+	\begin{equation*}
+		\boldsymbol A = \left(
+		\hat{\boldsymbol{y}}_{2} - \hat{\boldsymbol{y}}_{2.\hat 1},
+		\ldots,
+		\hat{\boldsymbol{y}}_{2} - \hat{\boldsymbol{y}}_{2.\hat p}
+		\right)
+	\end{equation*}
+\end{definition}
+
+\begin{definition}{Variable relevance matrix}{}\index{variable relevance matrix}
+	\begin{equation*}
+		\boldsymbol V = \frac{1}{n_2} \boldsymbol A^T \boldsymbol A
+	\end{equation*}
+	\tcblower
+
+	In the diagonal of $\boldsymbol V$ we have:
+	\begin{equation*}
+		v_{jj} = \text{Rel}_{Gh}(X_j),\quad j=1,\ldots,p
+	\end{equation*}
+
+	Similarly, for random permutations: $\tilde{\boldsymbol{V}}$.
+\end{definition}
+
+\subsubsection{Comparing relevance matrices in linear regression}
+
+Let $\boldsymbol S_2,\, \boldsymbol R$ and $\boldsymbol P$ be, respectively,
+estimations of the covariance matrix, the correlation matrix, and the partial correlation matrix of
+$X$ computed in the test sample.
+
+\paragraph{Ghost variables}
+
+\begin{align*}
+	\boldsymbol V & = - \text{diag}\left(\hat\beta\right) \text{diag}\left(\hat\sigma_{[1]},\ldots,\hat\sigma_{[p]}\right)
+	\boldsymbol P\text{diag}\left(\hat\sigma_{[1]},\ldots,\hat\sigma_{[p]}\right) \text{diag}\left(\hat\beta\right)        \\
+	              & = \frac{n_2 - 1}{n_2}
+	\text{diag}\left(\hat\beta\right) \text{diag}\left(\hat\sigma_{[1]}^2,\ldots,\hat\sigma_{[p]}^2\right)
+	\boldsymbol S_2^{-1} \text{diag}\left(\hat\sigma_{[1]}^2,\ldots,\hat\sigma_{[p]}^2\right) \text{diag}\left(\hat\beta\right)
+\end{align*}
+
+\paragraph{Random permutation}
+
+\begin{align*}
+	\tilde{\boldsymbol V} & \approx
+	2\text{diag}\left(\hat\beta\right) \text{diag}\left(S_1,\ldots,S_p\right) \boldsymbol R \text{diag}\left(S_1,\ldots,S_p\right) \text{diag}\left(\hat\beta\right) \\
+	                      & = 2 \text{diag}\left(\hat\beta\right) \boldsymbol S_2 \text{diag}\left(\hat\beta\right)
+\end{align*}
+
+\begin{align*}
+\end{align*}
+
+\begin{note}
+	In linear regression, $\boldsymbol V$ and $\tilde{\boldsymbol{V}}$ codify
+	\emph{complimentary information}.
+\end{note}
+
 
 \subsection{Variable relevance measures as Shapley’s values}
+
+Consider a linear regression model with response $y$ and explanatory
+variables $x_1,\ldots,x_p$, estimated by OLS from the sample
+$\{(x_i = (x_{i1},\ldots,x_{ip}),\,y_i)\}_{i=1}^n$.
+
+Let $\bar y = \frac{1}{n} \sum_{i=1}^n y_i$ and $\hat y_i$ be the $i$-th fitted value.
+
+A quality measure of the model is the coefficient of determination:
+\begin{equation*}
+	R^2 = 1 - \frac{\sum_{i=1}^n (y_i - \hat y_i)^2}{\sum_{i=1}^n (y_i - \bar y)^2}
+	\tag{Coefficient of determination}\index{coefficient of determination}
+\end{equation*}
+
+More over, $R^2$ is equal to the squared sampling correlation coefficient
+between the observed responses $y_i$ and the fitted values $\hat y_i$.
+
+When the $p$ explanatory variables are \emph{uncorrelated},
+\begin{equation*}
+	R^2 = \sum_{j=1}^p R_j^2
+\end{equation*}
+where $R_j^2$ is the coefficient of determination in the simple linear regression
+of $y$ against the $j$-th explanatory variable $x_j$.
+
+Therefore, $R_j^2$ is the contribution of $x_j$ to the global quantity measure
+$R^2$, and it is a good measure of the relevance of $x_j$ in the model.
+
+\begin{note}
+	This decomposition is no longer true when the explanatory variables are
+	correlated.
+\end{note}
+
+% TODO: cite properly (both Lipovetsky and Shapley)
+Lipovetsky and Conklin (2001) propose an alternative decomposition of
+$R^2$ based on the Shapley value. A useful tool coming from the
+cooperative game theory.
+
+\index{cooperative game}
+
+A cooperative game with $p$ players, $P = \{1,\ldots,p\}$, is characterized
+by a \iemph{payoff function} $v: 2^P \to \mathbb R$, such that for any coalition
+of players $S \subseteq P$ the total payoff the members of $S$ can obtain is
+$v(S)$.
+
+It is assumed that $v(\emptyset) = 0$.
+
+When all the players collaborate, the total payoff is $v(P)$.
+
+The relevant question in cooperative games theory is to find a fair
+distribution of $v(P)$ among the $p$ players, $\phi_i(v),\,i = 1,\ldots,p$.
+Or, rephrasing, to determine the importance of each player to the
+overall cooperation.
+
+\subsubsection{Shapley value axiomatic definition}
+
+Four desirable properties:
+\begin{itemize}
+	\item \textbf{Efficiency}: The global payoff is distributed among the players.
+	      That is, the sum of the individual payoffs of all players equals the value of the grand
+	      coalition, so that all the gain is distributed among the players:
+	      \begin{equation*}
+		      \sum_{i=1}^p \phi_i(v) = v(P)
+	      \end{equation*}
+
+	\item \textbf{Symmetry}: If $i$ and $j$ are two players who are equivalent
+	      in the sense that:
+	      \begin{equation*}
+		      v(S \cup \{i\}) = v(S \cup \{j\})
+	      \end{equation*}
+	      for every subset $S \subseteq P \setminus \{i,j\}$, then $\phi_i(v) = \phi_j(v)$.
+	      This property is also called ``equal treatment of equals''.
+
+	\item \textbf{Linearity}: If two coalition games described by payoff functions
+	      $v$ and $w$ are combined, then the distributed gains should correspond to the gains
+	      derived from $v$ and the gains derived from $w$:
+	      \begin{equation*}
+		      \phi_i(v + w) = \phi_i(v) + \phi_i(w),\quad \forall i \in P
+	      \end{equation*}
+	      also, for any real number $a$:
+	      \begin{equation*}
+		      \phi_i(av) = a \phi_i(v),\quad \forall i \in P
+	      \end{equation*}
+
+	\item \textbf{Null player}: The payoff $\phi_i(v)$ of a \iemph{null player} $i$ in game $v$ is zero.
+	      A player is ``null'' if $v(S \cup \{i\}) = v(S)$ for every subset $S \subseteq P \setminus \{i\}$.
+
+\end{itemize}
+
+\begin{theorem}{}{}
+	The only distribution satisfying the four axioms above is the Shapley value of the game,
+	defined as follows for the $j$-th player:
+	\begin{equation*}
+		\phi_j(v) = \sum_{S \subseteq P \setminus \{j\}} \frac{|S|! (p - |S| - 1)!}{p!} (v(S \cup \{j\}) - v(S))
+	\end{equation*}
+
+	\tcblower
+
+	The quantity $\frac{|S|! (p - |S| - 1)!}{p!}$ is the \emph{marginal contribution} of
+	the player $j$ to the coalition $S$. And, its Shapey value $\phi_j(v)$ is the
+	average of these marginal contributions over the possible different permutations
+	of the set $P$.
+
+	An alternative expression for the Shapey value is: % cite e.g., Cohen, Dror, and Ruppin 2007
+	\begin{equation*}
+		\phi_j(v) = \frac{1}{p!} \sum_{\pi \in \Pi(P)}
+		\left(
+		v(S_j(\pi) \cup \{j\}) - v(S_j(\pi))
+		\right)
+	\end{equation*}
+	where $\Pi(P)$ is the set of all permutations of $P$ and $S_j(\pi)$ is the
+	set of players preceding $j$ in the permutation $\pi$.
+\end{theorem}
+
+Lipovetsky and Conklin (2001) propose to consider the cooperative game at which
+the $p$ players are the explanatory variables.
+
+For a subset $S$ of the $p$ predictors, the characteristic function $v(S)$ is
+the coefficient of determination $R^2_S$ in the regression of $y$ against the
+variables belonging to $S$.
+
+Therefore, the Shapley value of this game is a fair distribution of the total
+$R^2$ among the $p$ predictors:
+\begin{equation*}
+	R^2 = \sum_{j \in P} \phi_j(v)
+\end{equation*}
+and $\phi_j(v)$ measures the importance of the $j$-th regressor in the model.
+
+Given that exact computation of Shapley values is quite time intensive,
+Lipovetsky and Conklin (2001) suggest to average over
+a moderate number of random permutation of the explanatory
+variables. % TODO: cite
+
+This average estimation is founded in  the second alternative expression
+for $\phi_j(v)$, given above.
+
+\begin{note}
+	The computation of the Shapey value requires fitting the prediction model as many times as
+	different subsets $v(S_j(\pi)$ and $v(S_j(\pi) \cup \{j\})$ are considered.
+
+	This can be prohibitive with models with moderate or large fitting cost.
+\end{note}
+
 \subsection{Global graphical methods}
+
+The general problem of graphically representing a function $f$
+depending on $p$ variables, $x = (x_1,\ldots,x_p) \in \mathbb R^p$,
+is not easy.
+
+We present here several approaches that take into account that the function $f$ to be represented
+is a prediction function estimated from a training set with data assumed to come from a
+$p$-dimensional random variable $X$.
+
+Availability of additional test set is also assumed.
+
+We refer to either the training or the test set as $\{x_i\}_{i=1}^n$.
+
+\subsubsection{Partial dependence plots (PDP)}\index{partial dependence plots}\index{PDP}
+
+The PDP corresponding to the $j$-th variable aims to
+represent the $j$-th \iemph{partial dependence profile function} $f_j(z)$ defined as:
+\begin{equation*}
+	f_j(z) = \mathds E \left[
+		f(X_{(-j)},\,z)
+		\right],\quad\forall z \in \left[
+	x_{\min,j},\,x_{\max,j}
+	\right]
+\end{equation*}
+where the notation $(X_{(-j)},\,z)$ refers to the $p$ dimensional random
+vector having all the coordinates as $X$ except the $j$-th one, that is
+constant and equal to $z$. Additionally, $x_{\min,j}$ and $x_{\max,j}$ are the
+support of the $j$-th marginal of $X$.
+
+The natural estimator of $f_j(z)$ is the average of the predictions:
+\begin{equation*}
+	\hat f_j(z) = \frac{1}{n} \sum_{i=1}^n f(x_{i(-j)},\,z)
+\end{equation*}
+
+Therefore, the $j$-th PDP is the graphical representation of the function $\hat f_j(z)$.
+
+For an additive model $f(x) = \alpha_0 + \sum_{j=1}^p g_j(x_j)$, the $j$-th PDP
+is the graph of $g_j(z) + C_j$, for some constant $C_j$.
+
+\subsubsection{Local-dependence plots (LDP) or marginal plots}
+
+When explanatory variables are not independent, much more interesting than
+PDPs would be the plots representing the \iemph{conditional expectation functions}:
+\begin{equation*}
+	h_j(z) = \mathds E \left[
+		f(X) \mid X_j = z
+		\right]
+\end{equation*}
+because the relevant distribution of $X_{(-j)}$ when $X_j = z$ is not the
+marginal distribution of $X_{(-j)}$ but the conditional distribution
+$X_{(-j)} \mid X_j = z$.
+
+The functions $h_j(z)$ can be estimated using any non-parametric
+regression tool to smooth the scatter plot
+\begin{equation*}
+	\left(
+	x_{ij},\,f(x_{i(-j)},\,x_{ij})
+	\right) = \left(
+	x_{ij},\,f(x_i)
+	\right),\quad i = 1,\ldots,n
+\end{equation*}
+
+The graphical representation of the estimated functions $h_j(z)$ are known
+as \iemph{local-dependence plots} or \iemph{marginal plots}.
+
+\subsubsection{Accumulated Local Effects (ALE)}
+
+Nevertheless, local-dependence plots are not fully satisfactory when there are
+interactions between the explanatory variables in the
+definition of $f$, because a problem of omitted variables can appear, as
+pointed out by Apley and Zhu (2020). % TODO: cite
+
+Consider, for instance, the function $f(x_1,\,x_2) = x_2 - 0.1x_1 x_2$ and
+$(X_1,\,X_2)$ uniformly distributed in the set:
+\begin{equation*}
+	\mathcal U = \left\{
+	\left|
+	x_1 - x_2
+	\right| \leq 0.1
+	\right\} \cap \left(
+	[0,\,1] \times [0,\,1]
+	\right)
+\end{equation*}
+
+The local dependence function corresponding to the first explanatory variable is, for
+$z \in [0,\,1,\,0.9]$, $h_1(z) = z - 0.1 z^2$ with
+$h_1'(z) = 1 - 0.2 z > 0$. even if $f(x_1,\,x_2)$ is decreasing in $x_1$
+for any $(x_1,\,x_2) \in \mathcal U$.
+
+Apley and Zhu (2020) overcome this difficulty by introducing the
+\iemph{accumulated local effects} (ALE) plots. \index{ALE}
+
+\begin{definition}{ALE plot}{} for $p = 2$ variables
+
+	The \iemph{local effect} of $x_1$ on $f$ at $(x_1,\,x_2)$ is computed as the partial
+	derivative $f^1(x_1,\,x_2) = \partial f/\partial x_1$. Therefore:
+	\begin{equation*}
+		\mathds E \left[
+			f^1(X_1,\,X_2)
+			\mid X_1 = x_1
+			\right] = \mathds E \left[
+			f^1(x_1,\,X_2) \mid X_1 = x_1
+			\right]
+	\end{equation*}
+	is the \iemph{conditional expected local effect} of $x_1$ on $f$.
+
+	Then, the \iemph{accumulated local effect} of the first argument of $f$
+	until the value $x_1$ is defined as:
+	\begin{equation*}
+		f_{1,\text{ALE}}(x_1) = \int_{x_{\min,1}}^{x_1} \mathds E \left[
+			f^1(X_1,\,X_2)
+			\mid X_1 = z
+			\right] \, \mathrm d z
+	\end{equation*}
+	where $x_{\min,1}$ is the lower bound of the support of $X_1$.
+
+	The \emph{ALE plot} is the graphical representation of
+	$(x_1,\,f_{1,\text{ALE}}(x_1))$ for $x_1 \in [x_{\min,1},\,x_{\max,1}]$.
+
+\end{definition}
+
+\begin{example}{ALE for an additive model}{}
+	$f(x_1,\,x_2) = \alpha_0 + g_1(x_1) + g_2(x_2)$, the
+	conditional expected local effect of $x_1$ at $f$ is equal to $g_1'(x_1)$ and the
+	ALE plot is $(x_1,\,g(x_1) + C)$ for $C = -g_1(x_{\min,1})$.
+\end{example}
+
+\begin{example}{ALE for a linear function}{}
+	$f(x_1,\,x_2) = \beta_0 + \beta_1 x_1 + \beta_2 x_2$, the
+	conditional expected local effect of $x_1$ at $f$ is equal to $\beta_1$ and the
+	ALE plot is $(x_1,\,\beta_1 x_1 + C)$ for $C = -\beta_1 x_{\min,1}$.
+\end{example}
+
+\begin{note}
+	These 3 methods (PDP, LDP and ALE) could provide
+	different results when dependence between the explanatory variables
+	and/or interaction effects are present.
+
+	In this case, the recommendation is to explore these causes and take
+	them into account.
+\end{note}
 
 % \subsection{Importance of variables through disturbances}
 % \subsection{Importance based on the Shapley Value}
@@ -517,8 +867,195 @@ $m(x) = \mathds{E}(Y \mid X = x)$ is considered.
 
 \section{Local methods}
 
+This section is devoted to model-agnostic methods that provide
+explanations for a single prediction $f(x)$ of a non-transparent model
+$f$.
+
+Most of the local explanation methods have a common structure: a
+simple interpretable method $g$ is fitted locally around $x$ in such a
+way that $g(x') \approx f (x')$ when $x'$ is in a neighborhood of $x$.
+
+Then it is expected that the available interpretation of $g$ remains
+valid for $f$ around $x$.
+
+This general approach (called \iemph{explanation by simplification} by
+Barredo-Arrieta et al. 2020) has certain similarities to local
+polynomial fitting in non-parametric regression (see, e.g., Fan and
+Gijbels 1996).
+
 \subsection{LIME: Local interpretable model-agnostic explanations}
+\index{LIME}
+\index{local interpretable model-agnostic explanations}
+
+% TODO: cite
+Among the methods of explanation by simplification, Local
+Interpretable Model-agnostic Explanations (LIME, Ribeiro, Singh,
+and Guestrin 2016) is probably the most popular one.
+
+In LIME, $d \ll p$ easily recognizable properties of $x$ are selected
+(e.g., if $x$ is a car image, a property can be the presence of a wheel
+in the image; if $x$ is a text, a property could be the presence of a
+certain key word), and their influence in the prediction $f (x)$ is
+explored.
+
+The simple interpretable model $g$ is assumed to take values in
+$d$-dimensional space, and only $z \in \{0,\, 1\}^d$ are allowed as arguments
+of $g$.
+
+Let $\mathcal G$ be the class of models to which $g$ belongs to (for instance, $\mathcal G$
+can be the class of linear models with $d$ explanatory variables).
+
+Additionally, a one-to-one application $h_x$ is established between the
+elements in $\{0,\, 1\}^d$ and $2^d$ neighbors $x' \in \mathds R^p$ of $x$.
+
+For $r = 1, \ldots , d,\; z_r = 1$ means that $h_x (z)$ shares the $r$-th selected
+property with $x$. It is assumed that $h_x (1_d) = x$, where $1_d$ is the
+vector of ones in $\mathds R^d$.
+
+\begin{note}
+	The definition of $h_x$ is specific for each problem at hand.
+\end{note}
+
+\begin{example}{Possible definitions for $h_x$}{}
+
+	For instance, when $x$ is a text and the selected properties are the
+	presence of $d$ chosen key words contained in $x$, $h_x (z)$ returns the
+	text $x$ without the key words for which $z_r = 0$.
+
+	If $x$ is a car image, and the $r$-th property is the presence of a
+	super-pixel contained in $x$ showing a wheel, for a $z$ with $z_r = 0$ the
+	function $h_x (z)$ will return the same image $x$ with the wheel
+	super-pixel replaced by gray colored pixels.
+\end{example}
+
+A sufficiently large number $N \leq 2^d$ of random points $z \in \{0,\, 1\}^d$ are
+chosen, and the pairs $\left(z_k,\, f(h_x(z_k)) \right),\; k = 1, \ldots , N$ are annotated.
+
+The explanation produced by LIME to the prediction $f(x)$ is:
+\begin{equation*}
+	g_x = \arg \min_{g \in \mathcal G} \left\{
+	\sum_{k = 1}^N L \left(g(z_k),\, f(h_x(z_k)) \right) \boldsymbol \pi_x(h_x(z_k)) + \boldsymbol\Omega(g)
+	\right\}
+\end{equation*}
+where $L(y,\,y')$ is a \iemph{loss function} measuring how different the real numbers $y$ and
+$y'$ are, $\boldsymbol \pi_x(x')$ is a \iemph{proximity measure} between $x$ and $x'$
+(as the kernel function used in non-parametric regression), and $\boldsymbol\Omega(g)$ is a
+\iemph{measure of complexity} of the models belonging to $\mathcal G$.
+
+\begin{note}
+	Not every $g\in\mathcal G$ may be equally interpretable.
+
+	For instance, for linear models $\boldsymbol\Omega(g)$ can be
+	a $L_1$ penalty term in order to favor sparse solutions, as in LASSO estimation.
+\end{note}
+
+\begin{example}{}{}
+	In practical examples, Ribeiro, Singh, and Guestrin (2016) apply LIME
+	with:
+	\begin{itemize}
+		\item Quadratic loss $L(y,\,y') = (y - y')^2$.
+		\item Gaussian kernel $\boldsymbol \pi_x(x') = \exp \left( -\frac{1}{2\sigma^2} \|x - x'\|^2 \right)$.
+		\item Linear models as $\mathcal G$.
+		\item LASSO estimation (or least squares after having selected $K < d$ variables
+		      by LASSO).
+	\end{itemize}
+
+	Using these settings, the LIME explanation $g_x$ for $f(x)$ consists on
+	the selection of $K$ properties among the $d$ that originally were of
+	interest, plus the corresponding estimated coefficients.
+\end{example}
+
+\begin{note}
+	LIME is more a general methodology than a specific method for local
+	explanation.
+\end{note}
+
+However, many details have to be tuned before LIME can be applied to a
+specific problem:
+\begin{itemize}
+	\item Class of models
+	\item Loss function
+	\item Proximity function
+	\item Penalty term
+	\item Number $K$ of selected properties among the $d$ variable.
+	\item How many properties $d$ to choose and how are they chosen
+	\item How to fix the sample size $N$.
+	\item How to define the one-to-one function $h_x$.
+\end{itemize}
+
 \subsection{Local importance based on the Shapley Value}
+
+% TODO: cite
+Štrumbelj and Kononenko (2010) present a general method for
+explaining individual predictions of classification models, based on
+Shapley values.
+
+Their proposal extends easily to regression problems.
+
+Given an instance $x$, the goal is to explain how its feature values
+$(x_1,\ldots,x_p)$ contribute to the prediction difference between $f(x)$ and
+the expected prediction if no feature values are known.
+
+They consider the framework of a
+cooperative game at which the $p$ players are the observable features.
+
+Assuming that the feature values are random observations of a
+$p$-dimensional random variable $X$, the characteristic function
+proposed is $v_x (\emptyset) = 0$ and, for
+any nonempty subset $S$ of $P = \{1,\ldots,p\}$,
+\begin{equation*}
+	v_x(S) = \mathds E (f (X) \mid X_S = x_S) − \mathds E (f (X))
+\end{equation*}
+where $x_S$ is the vector containing the coordinates of $x$ with indices
+in $S$ (similarly for $X_S$).
+
+Using the same arguments and notation as in the global relevance
+problem, the Shapley value of this game for feature $j$ is:
+\begin{equation*}
+	\phi_j(v_x) = \frac{1}{p!} \sum_{\boldsymbol \pi \in \Pi(P)} \biggl(
+	\mathds E \left[
+			f(X) \mid X_{S_j(\boldsymbol \pi) \cup \{j\}} = x_{S_j(\boldsymbol \pi) \cup \{j\}}
+			\right]
+	- \mathds E \left[
+			f(X) \mid X_{S_j(\boldsymbol \pi)} = x_{S_j(\boldsymbol \pi)}
+			\right]
+    \biggr)
+\end{equation*}
+
+Observe that
+\begin{equation*}
+    f(x) = \mathds E(f(X)) + \sum_{j = 1}^p \phi_j(v_x)
+\end{equation*}
+because the sum of all the Shapley values is equal to
+$v_X(P) = f(x) - \mathds E(f(X))$.
+
+Therefore, $\phi_j(v_x)$ is effectively measuring how the $j$-th feature of $x$ is
+contributing to move the prediction from the information-less prediction
+$\mathds E(f(X))$ to the actual prediction $f(x)$.
+
+In order to give a feasible version of Shapley value, a sampling approach is needed.
+% TODO: there are two slides explaining the approach.
+
 \subsection{SHAP: SHApley Additive ExPlanations}
+\index{SHAP}
+
+% TODO: cite
+Lundberg and Lee (2017) propose a method for local explanations, that they call
+SHAP (\iemph{SHApley Additive ExPlanations}), unifying six existing methods.
+Among them, LIME and Shapley value based local explanations.
+
+The SHAP framework has several common elements with LIME:
+\begin{itemize}
+    \item A number $d \ll p$ of properties of $x$ are selected (here they are called
+        \iemph{simplified input features}) for which presence-absence is codified
+        as a vector $z \in \{0,\,1\}^d$.
+    \item A local one-to-one function $h_x$ is defined from $\{0,\,1\}^d$ to the
+        neighborhood of $x$ in $\mathds R^d$.
+    \item An explanation model $g(z)$ is fitted, which in this case is linear:
+        \begin{equation*}
+            g(z) = \phi_0 + \sum_{r = 1}^d \phi_r z_r
+        \end{equation*}
+\end{itemize}
+
 \subsection{Break down graphics}
 \subsection{ICE: Individual conditional expectation, or ceteris paribus chart}
