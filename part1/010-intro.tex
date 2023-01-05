@@ -180,7 +180,7 @@ It is smooth, continuous and respects the data distribution characteristics.
 			\addplot+[mark=none,fill=blue!30,hist={density,data min=0, data max=40, bins=40},forget plot] table[y index=12,col sep=comma] {data/boston.csv};
 			\addlegendimage{area legend,blue,fill=blue!30}
 			\addlegendentry{Histogram ($b=1$)}
-			\addplot+[red,mark=none,very thick] gnuplot [raw gnuplot] {
+			\addplot+[red,smooth,mark=none,very thick] gnuplot [raw gnuplot] {
 					set key autotitle columnhead;
 					set datafile separator ",";
 					plot 'data/boston.csv' using 13:(1./500.) smooth kdensity bandwidth 2;
@@ -270,14 +270,14 @@ The kernel density estimator provides two improvements over the histogram:
 
 				\pgfmathsetmacro{\h}{0.30}
 				% gaussian kernel with variance 1
-				\addplot[blue,mark=none]{1/sqrt(2*pi)*exp(-((x-0)/\h)^2/2)};
-				\addplot[blue,mark=none]{1/sqrt(2*pi)*exp(-((x-1)/\h)^2/2)};
-				\addplot[blue,mark=none]{1/sqrt(2*pi)*exp(-((x-1.2)/\h)^2/2)};
-				\addplot[blue,mark=none]{1/sqrt(2*pi)*exp(-((x-1.75)/\h)^2/2)};
-				\addplot[blue,mark=none]{1/sqrt(2*pi)*exp(-((x-2.5)/\h)^2/2)};
+				\addplot[blue,smooth,mark=none]{1/sqrt(2*pi)*exp(-((x-0)/\h)^2/2)};
+				\addplot[blue,smooth,mark=none]{1/sqrt(2*pi)*exp(-((x-1)/\h)^2/2)};
+				\addplot[blue,smooth,mark=none]{1/sqrt(2*pi)*exp(-((x-1.2)/\h)^2/2)};
+				\addplot[blue,smooth,mark=none]{1/sqrt(2*pi)*exp(-((x-1.75)/\h)^2/2)};
+				\addplot[blue,smooth,mark=none]{1/sqrt(2*pi)*exp(-((x-2.5)/\h)^2/2)};
 
 
-				\addplot[blue,mark=none, line width=2pt]{1/sqrt(2*pi)*exp(-((x-0)/\h)^2/2) +
+				\addplot[blue,smooth,mark=none, line width=2pt]{1/sqrt(2*pi)*exp(-((x-0)/\h)^2/2) +
 					1/sqrt(2*pi)*exp(-((x-1)/\h)^2/2) +
 					1/sqrt(2*pi)*exp(-((x-1.2)/\h)^2/2) +
 					1/sqrt(2*pi)*exp(-((x-1.75)/\h)^2/2) +
