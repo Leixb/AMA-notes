@@ -69,14 +69,14 @@ where $Y$ is the response variable that should be predicted from $(X,\,Z)$.
 A \iemph{prediction function} $f : \mathds{R}^{p+1} \to \mathds{R}$ has
 \emph{expected loss} (or \emph{risk}):
 \begin{equation*}
-    R(f(X,\,Z),\,Y) = \mathbb{E} \left[ L(f(X,\,Z),\,Y) \right]
+	R(f(X,\,Z),\,Y) = \mathbb{E} \left[ L(f(X,\,Z),\,Y) \right]
 \end{equation*}
 where $L : \mathds{R}\times\mathds{R} \to \mathds{R}^+$ is a \iemph{loss function}
 measuring the \emph{cost} associated with predicting $Y$ by $f(X,\,Z)$.
 
 For instance, \iemph{quadratic loss} is defined as:
 \begin{equation*}
-    L(y,\,f(x,\,z)) = (y - f(x,\,z))^2
+	L(y,\,f(x,\,z)) = (y - f(x,\,z))^2
 \end{equation*}
 
 We consider the problem of measuring the effect of the single
@@ -91,17 +91,17 @@ a test sample of size $n_2$ are available.
 
 A simple approach to define the importance of the variable $Z$:
 \begin{enumerate}
-    \item Fit the model including both $X$ and $Z$.
-    \item Fit the model including only $X$ (leave $Z$ out).
-    \item The relevance of $Z$ by \iemph{LOCO} is given by the relative
-        decrease in the prediction accuracy when $Z$ is omitted from the model.
+	\item Fit the model including both $X$ and $Z$.
+	\item Fit the model including only $X$ (leave $Z$ out).
+	\item The relevance of $Z$ by \iemph{LOCO} is given by the relative
+	      decrease in the prediction accuracy when $Z$ is omitted from the model.
 \end{enumerate}
 
 This approach is used, for instance, in multiple linear regression
 to decide if a variable should be included in the model or not.
 
 \begin{note}
-    The model must be fitted \emph{twice}
+	The model must be fitted \emph{twice}
 \end{note}
 
 \subsubsection{Relevance by LOCO at a populational level}
@@ -116,39 +116,39 @@ different from $\beta_0,\,\beta_x$.
 
 In this case, the usual relevance measure of $Z$ is:
 \begin{equation*}
-    R(f_p(X),\,Y) - R(f(X,\,Z),\,Y) = \mathds{E} \left[ (Y - f_p(X))^2 - (Y - f(X,\,Z))^2 \right]
+	R(f_p(X),\,Y) - R(f(X,\,Z),\,Y) = \mathds{E} \left[ (Y - f_p(X))^2 - (Y - f(X,\,Z))^2 \right]
 \end{equation*}
 which corresponds to the reduction in the risk function when using $Z$.
 
 An alternative measure of the relevance of $Z$ is:
 \begin{equation*}
-    \mathds{E}(L(f(X,\,Z),\,Y),f_p(X))) = \mathds{E} \left[ (f_p(X) - f(X,\,Z))^2 \right]
+	\mathds{E}(L(f(X,\,Z),\,Y),f_p(X))) = \mathds{E} \left[ (f_p(X) - f(X,\,Z))^2 \right]
 \end{equation*}
 
 Both measures coincide under quadratic loss, when $(Y - f(X,\,Z))$ has zero mean
 and it is independent of $(X,\,Z)$.
 
 \begin{example}{Additive model}{}
-    \begin{align*}
-        Y &= \beta_0 + s_1(X) + s_2(Z) + \varepsilon \\[0.5em]
-        f(X,\,Z) = \mathds{E}(Y \mid X,\,Z) &= \beta_0 + s_1(X) + s_2(Z) \\
-        f_p(X) = \mathds{E}(Y \mid X) &= \beta_0 + s_1(X) + \mathds{E}(s_2(Z) \mid X)
-            = \beta_0 + s_1'(X)
-    \end{align*}
+	\begin{align*}
+		Y                                   & = \beta_0 + s_1(X) + s_2(Z) + \varepsilon      \\[0.5em]
+		f(X,\,Z) = \mathds{E}(Y \mid X,\,Z) & = \beta_0 + s_1(X) + s_2(Z)                    \\
+		f_p(X) = \mathds{E}(Y \mid X)       & = \beta_0 + s_1(X) + \mathds{E}(s_2(Z) \mid X)
+		= \beta_0 + s_1'(X)
+	\end{align*}
 
-    The relevance of $Z$ by LOCO is:
-    \begin{equation*}
-        \mathds{E}(L(f(X,\,Z),\,Y),f_p(X))) = \mathds{E} \left[ (s_2(Z) - \mathds{E}(s_2(Z) \mid X))^2 \right]
-        = \mathds{E} \left[ \text{Var}(s_2(Z) \mid X)\right]
-    \end{equation*}
+	The relevance of $Z$ by LOCO is:
+	\begin{equation*}
+		\mathds{E}(L(f(X,\,Z),\,Y),f_p(X))) = \mathds{E} \left[ (s_2(Z) - \mathds{E}(s_2(Z) \mid X))^2 \right]
+		= \mathds{E} \left[ \text{Var}(s_2(Z) \mid X)\right]
+	\end{equation*}
 
-    \tcbline
+	\tcbline
 
-    Under additional linearity: $Y = \beta_0 + X^T\beta_X + Z\beta_Z + \varepsilon$,
-    the relevance of $Z$ by LOCO is:
-    \begin{equation*}
-        \mathds{E}\left[ \text{Var}(Z \beta_Z \mid X)\right] = \beta_Z^2 \mathds{E}\left[ \text{Var}(Z \mid X)\right]
-    \end{equation*}
+	Under additional linearity: $Y = \beta_0 + X^T\beta_X + Z\beta_Z + \varepsilon$,
+	the relevance of $Z$ by LOCO is:
+	\begin{equation*}
+		\mathds{E}\left[ \text{Var}(Z \beta_Z \mid X)\right] = \beta_Z^2 \mathds{E}\left[ \text{Var}(Z \mid X)\right]
+	\end{equation*}
 \end{example}
 
 
@@ -161,62 +161,62 @@ alternative to LOCO:
 (the out-of-bag dataset in RF).
 
 \begin{algorithm}{Variable importance by random permutations}{}
-    \begin{enumerate}
-        \item Fit the model with the training sample using all the original
-            explanatory variables, $X$ and $Z$.
-        \item Evaluate the accuracy of the estimated model in the test sample using the observed values of
-            $X$ and $Z$.
-        \item Replace the values of $Z$ in the test sample by a random permutation
-            $Z'$.
-        \item Evaluate the accuracy of the estimated model in the test sample using the observed values of $X$
-            and the permuted values $Z'$.
-        \item The relevance of $Z$ by \emph{random permutations} is given by the relative
-            decrease in the prediction accuracy when $Z$ is replaced by $Z'$.
-    \end{enumerate}
-    \tcblower
-    \begin{note}
-        Steps 3 and 4 can be repeated $n$ times and average the accuracy measures in step 5.
-    \end{note}
-    \begin{note}
-        The model is \emph{estimated only once}.
-    \end{note}
+	\begin{enumerate}
+		\item Fit the model with the training sample using all the original
+		      explanatory variables, $X$ and $Z$.
+		\item Evaluate the accuracy of the estimated model in the test sample using the observed values of
+		      $X$ and $Z$.
+		\item Replace the values of $Z$ in the test sample by a random permutation
+		      $Z'$.
+		\item Evaluate the accuracy of the estimated model in the test sample using the observed values of $X$
+		      and the permuted values $Z'$.
+		\item The relevance of $Z$ by \emph{random permutations} is given by the relative
+		      decrease in the prediction accuracy when $Z$ is replaced by $Z'$.
+	\end{enumerate}
+	\tcblower
+	\begin{note}
+		Steps 3 and 4 can be repeated $n$ times and average the accuracy measures in step 5.
+	\end{note}
+	\begin{note}
+		The model is \emph{estimated only once}.
+	\end{note}
 \end{algorithm}
 
 \subsubsection{Random permutations at a population level}
 
 The population counterpart of taking random permutations of values
 of $Z$ in the test sample, is to \emph{replace the random variable $Z$ by and independent
-copy of it, $Z'$}. with the same marginal distribution as
+	copy of it, $Z'$}. with the same marginal distribution as
 $Z$ but independent from $(X,\,Y)$.
 
 This approach does not require the reduced version $f_p$ of $f$.
 
 In this way, the relevance measure of $Z$ will be:
 \begin{equation*}
-    \mathds{E}(L(f(X,\,Z),\,Y),f(X,\,Z')) = \mathds{E} \left[ (f(X,\,Z) - f(X,\,Z'))^2 \right]
+	\mathds{E}(L(f(X,\,Z),\,Y),f(X,\,Z')) = \mathds{E} \left[ (f(X,\,Z) - f(X,\,Z'))^2 \right]
 \end{equation*}
 
 \begin{example}{Additive model}{}
-    Consider the case of $f$ being \emph{additive} in $X$ and $Z$:
-    \begin{equation*}
-        f(X,\,Z) = \beta_0 + s_1(X) + s_2(Z)
-    \end{equation*}
-    with $\mathds{E}(s_2(Z)) = 0$.
+	Consider the case of $f$ being \emph{additive} in $X$ and $Z$:
+	\begin{equation*}
+		f(X,\,Z) = \beta_0 + s_1(X) + s_2(Z)
+	\end{equation*}
+	with $\mathds{E}(s_2(Z)) = 0$.
 
-    Under \emph{quadratic loss}:
-    \begin{align*}
-        \mathds{E}(L(f(X,\,Z),\,Y),f(X,\,Z')) &= \mathds{E} \left[ (f(X,\,Z) - f(X,\,Z'))^2 \right] \\
-            &= \mathds{E} \left[ 
-                \left(
-                    (\beta_0 + s_1(X) + s_2(Z)) - (\beta_0 + s_1(X) + s_2(Z'))
-                    \right)^2
-                    )
-            \right] \\
-            &= 2\text{Var}(s_2(Z))
-    \end{align*}
+	Under \emph{quadratic loss}:
+	\begin{align*}
+		\mathds{E}(L(f(X,\,Z),\,Y),f(X,\,Z')) & = \mathds{E} \left[ (f(X,\,Z) - f(X,\,Z'))^2 \right] \\
+		                                      & = \mathds{E} \left[
+			\left(
+			(\beta_0 + s_1(X) + s_2(Z)) - (\beta_0 + s_1(X) + s_2(Z'))
+			\right)^2
+			)
+		\right]                                                                                      \\
+		                                      & = 2\text{Var}(s_2(Z))
+	\end{align*}
 
-    if additional linearity happens, $s_2(Z) = Z\beta_Z$, then this relevance measure
-    equals $2\beta_Z^2 \text{Var}(Z)$.
+	if additional linearity happens, $s_2(Z) = Z\beta_Z$, then this relevance measure
+	equals $2\beta_Z^2 \text{Var}(Z)$.
 \end{example}
 
 \subsubsection{Undesirable properties of random permutations}
@@ -224,49 +224,107 @@ In this way, the relevance measure of $Z$ will be:
 At first glance, the relevance measures of $2\text{Var}(s_2(Z))$ and $2\beta_Z^2 \text{Var}(Z)$
 seem to be suitable, but:
 \begin{itemize}
-    \item The relevance of $Z$ would be the same in two completely different scenarios:
-        \begin{enumerate}
-            \item $X$ and $Z$ are independent; $Z$ encode exclusive information about $Y$.
-            \item $X$ and $Z$ are strongly related; in such a case $X$ could make up for the
-                absence of $Z$.
-        \end{enumerate}
-        Clearly, $Z$ is more relevant in the first scenario, neither
-        $2\text{Var}(s_2(Z))$ nor $2\beta_Z^2 \text{Var}(Z)$ can distinguish between the two scenarios.
-        \begin{note}
-            This is not the case in relevance by LOCO which
-            is $\beta_Z^2 \mathds{E} \left[ \text{Var}(Z \mid X)\right]$.
-        \end{note}
-    \item The replacement of $Z$ by an independent copy $Z'$ implies a drastic alteration
-        of the prediction function $f(X,\,Z)$.
-        \begin{itemize}
-            \item Consider again the simple case of the linear predictor
-                $f(X,\,Z) = \beta_0 + X^T\beta_X + Z\beta_Z$.
-            \item When replacing $Z$ by $Z'$, the prediction function becomes:
-                \begin{equation*}
-                    f(X,\,Z') = \beta_0 + X^T\beta_X + Z'\beta_Z =
-                        (\beta_0 - \mathds{E}(Z)\beta_Z) + X^T\beta_X + (Z' + \mathds{E}(Z))\beta_Z
-                \end{equation*}
-                which is equivalent to using the reduced version of $f$:
-                \begin{equation*}
-                    f_p(X,\,Z') = \beta'_0 + X^T\beta_X + \nu
-                \end{equation*}
-                where $\beta'_0 = \beta_0 - \mathds{E}(Z)\beta_Z$ and $\nu = (Z' + \mathds{E}(Z))\beta_Z$ is
-                a random noise independent from $(X,\,Y)$, that does not help in any way to predict $Y$.
-            \item A preferred alternative would be to use the reduced version of $f$ directly:
-                \begin{equation*}
-                    f_p(X,\,Z) = \beta'_0 + X^T\beta_X
-                \end{equation*}
-                which is equivalent to replacing $Z$ by $\mathds{E}(Z)$ and
-                $\beta'_0 = \beta_0 + \mathds{E}(Z)\beta_Z$.
-        \end{itemize}
-    \item When $X$ and $Z$ are strongly related, there is a risk of
-        \emph{extrapolation} when evaluating $f(X,\,Z')$. This can happen since
-        the support of
-        $(X,\,Z)$ could be much smaller than the support of $(X,\,Z)$, which
-        is the Cartesian product of the supports $X$ and $Z$.
+	\item The relevance of $Z$ would be the same in two completely different scenarios:
+	      \begin{enumerate}
+		      \item $X$ and $Z$ are independent; $Z$ encode exclusive information about $Y$.
+		      \item $X$ and $Z$ are strongly related; in such a case $X$ could make up for the
+		            absence of $Z$.
+	      \end{enumerate}
+	      Clearly, $Z$ is more relevant in the first scenario, neither
+	      $2\text{Var}(s_2(Z))$ nor $2\beta_Z^2 \text{Var}(Z)$ can distinguish between the two scenarios.
+	      \begin{note}
+		      This is not the case in relevance by LOCO which
+		      is $\beta_Z^2 \mathds{E} \left[ \text{Var}(Z \mid X)\right]$.
+	      \end{note}
+	\item The replacement of $Z$ by an independent copy $Z'$ implies a drastic alteration
+	      of the prediction function $f(X,\,Z)$.
+	      \begin{itemize}
+		      \item Consider again the simple case of the linear predictor
+		            $f(X,\,Z) = \beta_0 + X^T\beta_X + Z\beta_Z$.
+		      \item When replacing $Z$ by $Z'$, the prediction function becomes:
+		            \begin{equation*}
+			            f(X,\,Z') = \beta_0 + X^T\beta_X + Z'\beta_Z =
+			            (\beta_0 - \mathds{E}(Z)\beta_Z) + X^T\beta_X + (Z' + \mathds{E}(Z))\beta_Z
+		            \end{equation*}
+		            which is equivalent to using the reduced version of $f$:
+		            \begin{equation*}
+			            f_p(X,\,Z') = \beta'_0 + X^T\beta_X + \nu
+		            \end{equation*}
+		            where $\beta'_0 = \beta_0 - \mathds{E}(Z)\beta_Z$ and $\nu = (Z' + \mathds{E}(Z))\beta_Z$ is
+		            a random noise independent from $(X,\,Y)$, that does not help in any way to predict $Y$.
+		      \item A preferred alternative would be to use the reduced version of $f$ directly:
+		            \begin{equation*}
+			            f_p(X,\,Z) = \beta'_0 + X^T\beta_X
+		            \end{equation*}
+		            which is equivalent to replacing $Z$ by $\mathds{E}(Z)$ and
+		            $\beta'_0 = \beta_0 + \mathds{E}(Z)\beta_Z$.
+	      \end{itemize}
+	\item When $X$ and $Z$ are strongly related, there is a risk of
+	      \emph{extrapolation} when evaluating $f(X,\,Z')$. This can happen since
+	      the support of
+	      $(X,\,Z)$ could be much smaller than the support of $(X,\,Z)$, which
+	      is the Cartesian product of the supports $X$ and $Z$.
 \end{itemize}
 
 \subsection{Relevance by ghost variables}
+
+We have seen that replacing $Z$ by $\mathds{E}(Z)$ in $f(X,\,Z)$ is
+more appropriate than replacing $Z$ by an independent copy $Z'$ (random
+permutations).
+
+\begin{note}
+	But, even better is to replace $Z$ by $\mathds{E}(Z \mid X)$:
+	the best prediction of $Z$ as a function of $X$ according to the
+	quadratic loss.
+\end{note}
+
+If there is dependence between $X$ and $Z$, then we expect $\left|Z - \mathds{E}(Z \mid X)\right|$
+to be less than $\left|Z - \mathds{E}(Z)\right|$, so
+$f(X,\,\mathds{E}(Z \mid X))$ should be closer to $f(X,\,Z)$ than
+$f(X,\,\mathds{E}(Z))$.
+
+Therefore, when $Z$ is not available, replacing it by $\mathds{E}(Z \mid X)$
+allows $X$ to contribute a little bit more in the prediction of $Y$ than
+when $Z$ is replaced by $\mathds{E}(Z)$.
+
+The bigger the contribution of $X$ is, the smaller is the relevance of $Z$
+in  the prediction of $Y$, measured by the quadratic loss:
+\begin{equation*}
+	\mathds{E}(L(f(X,\,Z),\,Y),f(X,\,\mathds{E}(Z \mid X))) =
+	\mathds{E} \left[ (f(X,\,Z) - f(X,\,\mathds{E}(Z \mid X)))^2 \right]
+\end{equation*}
+
+\begin{marker}
+	We call \iemph{ghost variable} of $Z$ any estimator of $\mathds{E}(Z \mid X)$.
+\end{marker}
+
+\begin{algorithm}{Relevance by ghost variables}{}
+	\begin{enumerate}
+		\item Fit the model with the training sample using all the original explanatory variables,
+		      $X$ and $Z$.
+		\item Evaluate the accuracy of the estimated model in the test sample using the observed values
+		      of $X$ and $Z$.
+		\item Define the \emph{ghost variable} of $Z$ as $\widehat{Z} = \widehat{\mathds{E}(Z \mid X)}$,
+		      where the last estimation is done in the test sample.
+		\item Evaluate the accuracy of the estimated model in the test sample using
+		      the observed values of $X$ and the ghost variable $\widehat{Z}$.
+		\item The \emph{Relevance of $Z$ by its ghost variable} is given by the relative
+		      decrease in prediction accuracy in the test sample when $Z$ is replaced by
+		      its ghost variable $\widehat{Z}$.
+	\end{enumerate}
+\end{algorithm}
+
+\begin{note}
+	The host variables approach to measure the effect of variable $Z$ combines
+	the advantages of LOCO and random permutations:
+	\begin{enumerate}
+		\item The model is estimated only once.
+		\item It gives results more similar to LOCO, which are better than those
+		      obtained with random permutations when there are dependence among
+		      covariates.
+	\end{enumerate}
+\end{note}
+
 \subsection{Other relevance measures based on perturbations}
 \subsection{The relevance matrix}
 \subsection{Variable relevance measures as Shapley’s values}
