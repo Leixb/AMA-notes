@@ -33,7 +33,7 @@
           src = ./.;
           shellEscape = true;
           minted = true;
-          name = "document.pdf";
+          name = "AMA-lecture-notes.pdf";
         };
 
         defaultPackage = packages.document;
