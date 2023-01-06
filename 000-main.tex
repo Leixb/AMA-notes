@@ -16,6 +16,8 @@
 
 \usepackage{neuralnetwork}
 
+\usepackage{emptypage}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % METADATA
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -39,7 +41,9 @@
 
 %\maketitle
 \include{004-coverpage}
+\cleardoublepage
 \include{005-titlepage}
+\cleardoublepage
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % TOC & lists
@@ -48,7 +52,7 @@
 \pagenumbering{Roman}
 
 %\setcounter{tocdepth}{2}
-\tableofcontents \pagebreak
+\tableofcontents \clearpage \null \cleardoublepage
 
 \pagenumbering{arabic}
 
@@ -74,7 +78,13 @@
 
 \nocite{*}
 
-\listoffigures \listoftables \pagebreak
+\begingroup
+\let\cleardoublepage\relax
+\let\clearpage\relax
+\listoffigures
+\endgroup
+\listoftables
+
 \printindex\pagebreak
 \printbibliography
 
