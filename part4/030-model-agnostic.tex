@@ -1019,12 +1019,12 @@ problem, the Shapley value of this game for feature $j$ is:
 	- \mathds E \left[
 			f(X) \mid X_{S_j(\boldsymbol \pi)} = x_{S_j(\boldsymbol \pi)}
 			\right]
-    \biggr)
+	\biggr)
 \end{equation*}
 
 Observe that
 \begin{equation*}
-    f(x) = \mathds E(f(X)) + \sum_{j = 1}^p \phi_j(v_x)
+	f(x) = \mathds E(f(X)) + \sum_{j = 1}^p \phi_j(v_x)
 \end{equation*}
 because the sum of all the Shapley values is equal to
 $v_X(P) = f(x) - \mathds E(f(X))$.
@@ -1046,16 +1046,83 @@ Among them, LIME and Shapley value based local explanations.
 
 The SHAP framework has several common elements with LIME:
 \begin{itemize}
-    \item A number $d \ll p$ of properties of $x$ are selected (here they are called
-        \iemph{simplified input features}) for which presence-absence is codified
-        as a vector $z \in \{0,\,1\}^d$.
-    \item A local one-to-one function $h_x$ is defined from $\{0,\,1\}^d$ to the
-        neighborhood of $x$ in $\mathds R^d$.
-    \item An explanation model $g(z)$ is fitted, which in this case is linear:
-        \begin{equation*}
-            g(z) = \phi_0 + \sum_{r = 1}^d \phi_r z_r
-        \end{equation*}
+	\item A number $d \ll p$ of properties of $x$ are selected (here they are called
+	      \iemph{simplified input features}) for which presence-absence is codified
+	      as a vector $z \in \{0,\,1\}^d$.
+	\item A local one-to-one function $h_x$ is defined from $\{0,\,1\}^d$ to the
+	      neighborhood of $x$ in $\mathds R^d$.
+	\item An explanation model $g(z)$ is fitted, which in this case is linear:
+	      \begin{equation*}
+		      g(z) = \phi_0 + \sum_{r = 1}^d \phi_r z_r
+	      \end{equation*}
 \end{itemize}
 
-\subsection{Break down graphics}
+Instead of estimating the parameters of $g(z)$ using any linear
+regression model estimator (as it is done in LIME), SHAP proposes
+three desirable properties (axioms) for this function:
+\begin{itemize}
+	\item \textbf{Local accuracy}: The explanation model $g$ matches the original
+	      model $f$ for $z = 0_d$ (the vectors of zeros in $\mathds R^d$) and for
+	      $z = 1_d$ (the vectors of ones in $\mathds R^d$):
+	      \begin{equation*}
+		      \phi_0 = g(0_d) = f(h_x(0_d)) \qquad \text{and} \qquad \phi_0 + \sum_{r = 1}^d \phi_r = g(1_d) = f(h_x(1_d))
+	      \end{equation*}
+	\item \textbf{Missingness}: If the $r$-th simplified input feature is not present in $x$,
+	      that is, the $r$-th coordinate of $h_x^{-1}(x)$ is zero, then $\phi_r = 0$.
+	\item \textbf{Consistency}: For any $z \in \{0,\,1\}^d$, let $z \\ r$ be the vector $z$ with
+	      the $r$-th coordinate set to zero. Let $f$ and $f'$ be two prediction models. If:
+	      \begin{equation*}
+		      f'(h_x(z)) - f'(h_x(z \\ r)) \geq f(h_x(z)) - f(h_x(z \\ r))
+	      \end{equation*}
+	      for all inputs $z \in \{0,\,1\}^d$, then $\phi_r(f',\,x) \geq \phi_r(f,\,x)$.
+\end{itemize}
+
+It can be proven that the only explanation linear model $g$ verifying these three
+properties is the one with $\phi_0 = f(h_x(0_d))$ and coefficients $\phi_r,\, r=1,\ldots,d$, equal to
+the Shapley values of the cooperative game with $d$ players and characteristic function
+$v_X(S) = f(h_x(z_S))$ for any $S \subseteq \{1,\ldots,d\}$,
+where $z_S$ is the vector in $\{0,\,1\}^d$ having coordinates 1 for the indices in $S$ and 0 otherwise.
+
+The exact computation of the coefficients $\phi_r$ can be done using the general expression for
+Shapley values given before or, more efficiently,
+using the previously seen sampling estimation leading to $\hat \phi_r$.
+
+\subsubsection{Kernel SHAP}
+
+SHAP coefficients $\phi_r$ can be computed much more efficiently using the LIME
+framework with quadratic loss, no penalty ($\Omega(g) = 0 \forall g \in \mathcal G$) and
+using the Shapley kernel as proximity function.
+
+\begin{definition}{Shapley kernel}{}
+    \begin{equation*}
+        \pi_x (h_x(z)) = \frac{d - 1}{\binom{d}{|z|}|z|(d - |z|)}
+    \end{equation*}
+    \tcblower
+    The \iemph{Shapley kernel} gives infinite weight to $z = 0_d$ and to $z = 1_d$,
+    enforcing \emph{local accuracy}
+\end{definition}
+
+With these choices, LIME reduces to a weighted least squares problem that can be solved efficiently.
+
+This way of computing SHAP is known as \iemph{Kernel SHAP}.
+
+
+\subsection{Break down plots}
+
+% TODO: cite
+Staniak and Biecek (2018) introduce the break-down plots, as a
+simplification of Shapley value based proposals of Strumbelj and
+Kononenko (2010) and Lundberg and Lee (2017).
+
+They propose to decompose the difference $f(x) − \mathds E(f (X))$ as the
+sum of $p$ terms, each accounting for the contribution of one of the $p$
+coordinates of $x$, but their proposal is much more straightforward:
+\begin{equation*}
+    f(x) = \mathds E(f(X)) + \sum_{j = 1}^p \mathds E \left[
+        f(x_1,\ldots,x_j,X_{j+1},\ldots,X_p)
+    \right] - \mathds E \left[
+        f(x_1,\ldots,x_{j-1},X_{j},\ldots,X_p)
+    \right]
+\end{equation*}
+
 \subsection{ICE: Individual conditional expectation, or ceteris paribus chart}
