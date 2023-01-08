@@ -13,7 +13,7 @@ We observe $n$ independent objects $\mathcal{O}_i,\;i=1,\ldots,n$ from a given p
 
 In general, they belong to a large-dimensional (or even infinite-dimensional) space $\Omega$.
 
-\begin{problem}{Dimensionality reduction problem}{}
+\begin{problem}{Dimensionality reduction problem}{}\index{dimensionality reduction}
 We want to find a low dimensional configuration $\boldsymbol{Y}$, that is an
 $n \times q$ matrix, where $q < n$ such that each of its rows $\boldsymbol{y}_i$ can
 be identified with the observed object $\mathcal{O}_i$ in some way:
@@ -116,7 +116,7 @@ observed variables having the largest possible variability.
 	In this, way one of the two main goals of PCA is met: Interpretation.
 \end{note}
 
-\subsection{Single value decomposition (SVD)}
+\subsection{Single value decomposition (SVD)}\index{single value decomposition}\index{SVD}
 
 \begin{theorem}{Singular-Value Decomposition}{svd}
 	Let $A$ be an $n \times p$ matrix. Then there exists an orthogonal matrix $U$ of size $n \times n$,
@@ -166,7 +166,7 @@ where $y_{ij}$ is the score of the $i$-th observation on the $j$-th principal co
 
 \section{Multidimensional scaling (MDS)}
 
-\begin{definition}{Multidimensional scaling (MDS)}{mds}\index{mds}
+\begin{definition}{Multidimensional scaling (MDS)}{mds}\index{MDS}\index{multidimensional scaling}
 	is a dimensionality reduction technique based on \emph{inter-individual distances}.
 \end{definition}
 
@@ -268,7 +268,7 @@ Where $f: \mathds{R}^+ \to \mathds{R}^+$ is an increasing function.
 
 \section{Distances and similarities}
 
-\begin{definition}{Metric and Semi-metric}{metric}
+\begin{definition}{Metric and Semi-metric}{metric}\index{metric}\index{semi-metric}
 
 	Let $\Omega$ be a set of objects. The application:
 	\begin{equation*}
@@ -287,7 +287,7 @@ Where $f: \mathds{R}^+ \to \mathds{R}^+$ is an increasing function.
 	\end{marker}
 \end{definition}
 
-\begin{definition}{Similarity}{similarity}
+\begin{definition}{Similarity}{similarity}\index{similarity}
 
 	Let $\Omega$ be a set of objects. The application:
 	\begin{equation*}
@@ -329,7 +329,7 @@ Given a dataset with a non-elliptical configuration,
 look for the curve best fitting the data.
 \end{problem}
 
-\begin{definition}{Principal curves}{}
+\begin{definition}{Principal curves}{}\index{principal curves}
 	Smooth one-dimensional curves that pass through the middle of a
 	$p$-dimensional data set, providing a non-linear summary of the data.
 	\cite{hastie_principal_1989}
@@ -372,8 +372,8 @@ all $i = 1, \dots, n$.
 The first definition of principal curves was given by Hastie and Stuetzle in \cite{hastie_principal_1989}.
 It does not include parametric assumptions.
 
-The definition is based on the concept of \emph{self-consistency}:
-\begin{definition}{HSPC}{}
+The definition is based on the concept of \iemph{self-consistency}:
+\begin{definition}{HSPC}{}\index{HSPC}
 	A curve $\alpha$ is a \iemph{Hastie-Stuetzle principal curve} if it is self-consistent.
 \end{definition}
 
@@ -451,9 +451,9 @@ In practice, populational concepts are replaced by sampling ones:
 	The algorithm that computes HSPC is implemented in the \texttt{princurve} package in R.
 \end{note}
 
-\subsection{Principal curves of oriented points}
+\subsection{Principal curves of oriented points}\index{Principal curves of oriented points}\index{PCOP}
 
-Delicado \cite{delicado_another_2001} propeses to generalize the following property of the
+Delicado \cite{delicado_another_2001} proposes to generalize the following property of the
 first principal component (the straight line
 $\{\mathds{E}(\boldsymbol X) + s \boldsymbol v_1 \mid s \in \mathds{R}\}$)
 in a multivariate normal random variable $\boldsymbol X$:
@@ -618,7 +618,7 @@ distribution.
 % \subsection{Non-Statistical Principal Curves}
 
 \pagebreak
-\section{Local MDS}
+\section{Local MDS}\index{Local MDS}
 
 PCA does not work for non-linear configurations. MDS depends on the distance that is
 used, Euclidean distance does not work for non-linear configurations.
@@ -716,10 +716,10 @@ There is the function \texttt{lmds} from package \texttt{stops} in R-forge.
 
 
 \clearpage
-\section{Isometric Feature Maping (ISOMAP)}
+\section{Isometric Feature Maping (ISOMAP)}\index{Isometric Feature Maping}\index{ISOMAP}
 
 ISOmetric feature MAPping (ISOMAP) is a non-linear dimensionality reduction
-method that is based on the idea of \emph{geodesic distances}.
+method that is based on the idea of \iemph{geodesic distances}.
 
 \begin{algorithm}{ISOMAP}{ISOMAP}
 	\begin{algorithmic}[1]
@@ -752,7 +752,7 @@ is no consensus on which one is the best.
 
 \pagebreak
 \section[t-Stochastic Neighbor Embedding]{t-Stochastic Neighbor Embedding (t-SNE)}
-\sectionmark{t-SNE}
+\sectionmark{t-SNE}\index{t-Stochastic Neighbor Embedding}\index{t-SNE}
 
 \subsection{Stochastic Neighbor Embedding (SNE)}
 It is an alternative to Local MDS or ISOMAP.
@@ -806,7 +806,7 @@ then the conditional probabilities $p_{i \mid j}$ and $q_{i \mid j}$ will be equ
 	the mismatch between the conditional probabilities $p_{i \mid j}$ and $q_{i \mid j}$.
 \end{marker}
 
-\begin{definition}{Kullback-Leibler divergence}
+\begin{definition}{Kullback-Leibler divergence}{}\index{Kullback-Leibler divergence}
 	The Kullback-Leibler divergence between two probability distributions $p$ and $q$ is defined as:
 	\begin{equation*}
 		KL(p \mid\mid q) = \sum_{j} p_j \log \frac{p_j}{q_j}
@@ -837,14 +837,14 @@ divergences between the conditional distributions over all data points:
 
 \subsubsection{Choosing $\sigma_i$}
 
-\begin{definition}{Shannon entropy}{}
+\begin{definition}{Shannon entropy}{}\index{Shannon entropy}
 	The Shannon entropy of a probability distribution $P$ is defined as:
 	\begin{equation*}
 		H(P) = - \sum_{j} p_j \log_2 p_j
 	\end{equation*}
 \end{definition}
 
-\begin{definition}{Perplexity}{}
+\begin{definition}{Perplexity}{}\index{perplexity}
 	The perplexity of a probability distribution $P$ is defined as:
 	\begin{equation*}
 		\text{Perp}(P) = 2^{H(P)}
@@ -878,7 +878,7 @@ that is symmetric:
 	\mathlarger{\sum_{i=1}^n} \sum_{j=1}^n p_{ij} \log \frac{p_{ij}}{q_{ij}}
 \end{align*}
 
-\subsubsection{The crowding problem of SNE}
+\subsubsection{The crowding problem of SNE}\index{crowding problem of SNE}
 If the intrinsic dimension of the observed object is moderate (say 10),
 the standard 2-dimensional dimensionality reduction, performed for
 visualization, can not give good results. Since pairwise distances
@@ -899,7 +899,7 @@ Local MDS or ISOMAP.
 
 To solve this problem, we need to use t-SNE instead.
 
-\subsection{t-Stochastic Neighbor Embedding (t-SNE)}
+\subsection{t-Stochastic Neighbor Embedding (t-SNE)}\index{t-SNE}
 
 The main change in t-SNE with respect to SNE is the way the joint
 probabilities $q_{i \mid j}$ for $i \neq j$ are computed:

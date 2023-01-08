@@ -39,6 +39,8 @@
 
 % Default title or use titlepage.tex
 
+\frontmatter
+
 %\maketitle
 \include{004-coverpage}
 \cleardoublepage
@@ -49,12 +51,12 @@
 % TOC & lists
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\pagenumbering{Roman}
+% \pagenumbering{Roman}
 
 %\setcounter{tocdepth}{2}
 \tableofcontents \clearpage \null \cleardoublepage
 
-\pagenumbering{arabic}
+% \pagenumbering{arabic}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % SECTIONS
@@ -67,6 +69,8 @@
 \setlength{\headheight}{14.5pt}
 \pagestyle{fancy}
 
+\mainmatter
+
 % Unsupervised Learning through Advanced Multivariate Analysis
 \input{part1/index}
 % Non-parametric regression models
@@ -78,6 +82,8 @@
 
 \nocite{*}
 
+\backmatter
+
 \begingroup
 \let\cleardoublepage\relax
 \let\clearpage\relax
@@ -87,5 +93,7 @@
 
 \printindex\pagebreak
 \printbibliography
+
+\cleardoublepage\newpage\thispagestyle{empty}\null
 
 \end{document}

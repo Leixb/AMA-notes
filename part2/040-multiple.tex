@@ -41,7 +41,7 @@ well suited for variable $j$-th.
 
 \subsection{Explanatory variables at each local linear model}
 
-To fit a degree $q$ polynomail depending on $p$-variables, all possible terms with the form:
+To fit a degree $q$ polynomial depending on $p$-variables, all possible terms with the form:
 \begin{equation*}
     \beta_{s_1, \ldots, s_p} \prod_{j=1}^p \left(
         x_{ij} - t_j
@@ -196,14 +196,14 @@ following sections.
 \pagebreak
 \section{Additive Models}
 
-\begin{definition}{Additive Model}{additive-model}
+\begin{definition}{Additive Model}{additive-model}\index{additive model}
     \begin{equation*}
         y_i = \alpha + \sum_{j=1}^p g_j(x_{ij}) + \epsilon_i
     \end{equation*}
     where $\mathds E(\epsilon_i) = 0$, $\text{Var}(\epsilon_i) = \sigma^2$ and
     $\mathds E(g_j(X_{j})) = 0$.
 
-    Functions $g_j$ are called \emph{additive components} and must be estimated
+    Functions $g_j$ are called \iemph{additive components} and must be estimated
     non-parametrically because no parametric model is specified for them.
 
     \tcblower
@@ -252,7 +252,7 @@ where:
     y_i^{(k)} = y_i - \alpha - \sum_{j \neq k} g_j(x_{ij})
 \end{equation*}
 
-This reasoning leads to the \emph{backfitting} algorithm to estimate
+This reasoning leads to the \iemph{backfitting} algorithm to estimate
 the additive model.
 
 \begin{algorithm}{Backfitting algorithm}{backfitting}
@@ -302,7 +302,7 @@ The smoothing parameters $\lambda_1,\dots,\lambda_p$ are estimated using cross-v
 
 \section{Generalized Additive Models}
 
-\begin{definition}{Generalized additive models (GAM)}{GAM}
+\begin{definition}{Generalized additive models (GAM)}{GAM}\index{generalized additive model}\index{GAM}
     Additive models can be generalized similarly to generalized linear models
     (as seen in \ref{def:gnprm})
 

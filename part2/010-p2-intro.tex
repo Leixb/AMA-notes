@@ -72,12 +72,12 @@ This provides good results, but its not satisfactory, we apply to improvements:
 		as $|x_i - t|$ increases.
 \end{description}
 
-\begin{definition}{datum}{}
+\begin{definition}{datum}{}\index{datum}
 	A datum is a pair $(x_i,\, y_i)$ where $x_i$ is the value of the independent
 	variable and $y_i$ is the value of the dependent variable.
 \end{definition}
 
-\subsubsection{Local linear fitting}
+\subsubsection{Local linear fitting}\index{local regression}
 Weights are assigned by a \iemph{kernel function} $K$: usually a
 symmetric unimodal density function centered at $0$.
 
@@ -265,7 +265,7 @@ An estimator of $\sigma^2$ in non-parametric estimation is:
 
 \subsection{Kernel functions}
 
-\begin{definition}{Kernel functions}{kernel-functions}
+\begin{definition}{Kernel functions}{kernel-functions}\index{kernel functions}
 	Density functions with zero mean.
 	\tcblower
 	We can also rescale them so that they have zero mean and
@@ -386,7 +386,7 @@ interval where the explanatory variable $x$ takes its values.
 	\end{equation*}
 \end{question}
 
-\begin{definition}{Integrated Mean Squared Error (IMSE)}{IMSE}
+\begin{definition}{Integrated Mean Squared Error (IMSE)}{IMSE}\index{IMSE}
 	\begin{align*}
 		\text{IMSE}_{m}(\hat m) & = \int_a^b \text{MSE}_{m(t)}(\hat m(t)) \, dt
 		= \int_a^b \mathds{E}\bigl[(\hat m(t) - m(t))^2\bigr] \, dt                  \\
@@ -517,7 +517,7 @@ IMSE (\ref{def:IMSE}) to choose the bandwidth $h$ as shown in~\cref{fig:IMSE}.
 	with the same distribution that generates the independent variable values $x_i$.
 	\tcblower
 	\begin{note}
-		It coincides with IMSE by \iemph{Fubini's Theorem}.
+        It coincides with IMSE by \iemph{Fubini's Theorem}.\index{Fubini's Theorem}
 	\end{note}
 \end{definition}
 
@@ -575,7 +575,7 @@ alternatives based in a train, test (and validation) split of the data.
 	\item Generalized cross-validation (Only for linear estimators)
 \end{itemize}
 
-\begin{definition}{Validation set}{}
+\begin{definition}{Validation set}{}\index{validation set}
 	When the available data is large enough, we can randomly split it into
 	3 sets:
 	\begin{enumerate}
@@ -595,7 +595,7 @@ alternatives based in a train, test (and validation) split of the data.
 	$\hat m$ is the estimator with bandwidth $h$ using the training set.
 \end{definition}
 
-\begin{definition}{Leave-one-out cross-validation (LOOCV)}{LOOCV}
+\begin{definition}{Leave-one-out cross-validation (LOOCV)}{LOOCV}\index{LOOCV}\index{leave-one-out cross-validation}
 	\begin{enumerate}
 		\item For each observation $(x_i,\, Y_i)$ of the training set, we fit the model
 		      using the remaining observations.
@@ -620,7 +620,7 @@ alternatives based in a train, test (and validation) split of the data.
 	\end{note}
 \end{definition}
 
-\begin{definition}{$K$-fold cross-validation}{}
+\begin{definition}{$K$-fold cross-validation}{}\index{$K$-fold cross-validation}
 	Instead of taking one observation, we split the training set into $K$ subsets
 	and remove whole subsets at each iteration.
 
@@ -631,7 +631,7 @@ alternatives based in a train, test (and validation) split of the data.
 	Usually we use $K=5$ or $K=10$.
 \end{definition}
 
-\begin{definition}{Generalized cross-validation (GCV)}{GCV}
+\begin{definition}{Generalized cross-validation (GCV)}{GCV}\index{GCV}\index{generalized cross-validation}
 	For linear smoothers, a modification can be done in the measure
 	of $\text{PMSE}_\text{CV}$.
 

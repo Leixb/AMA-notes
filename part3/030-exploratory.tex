@@ -17,7 +17,7 @@
 
 \newcommand{\X}{{\boldsymbol{\chi}}}
 \newcommand{\Y}{{\boldsymbol{\gamma}}}
-Given two \emph{functional random variables} $\X$ and $\Y$:
+Given two \iemph{functional random variables} $\X$ and $\Y$:
 \begin{align*}
 	\mu(t)        & = \mathds E(\X(t)) \tag{Mean function}                                                                                                       \\
 	\sigma^2(t)   & = \text{Var}(\X(t)) = \mathds E\left[
@@ -48,22 +48,22 @@ from $(\X,\,\Y)$, the \emph{natural estimators} of their main parameters are:
 		\hat \sigma^2(t) = \frac{1}{n-1} \sum_{i=1}^n \left( \chi_i(t) - \bar \chi(t) \right)^2 \tag{variance}
 	\end{equation*}
 \end{definition}
-\begin{definition}{Covariance}{}
+\begin{definition}{Covariance}{}\index{covariance}
 	\begin{equation*}
 		\hat c(t,\,u) = \frac{1}{n-1} \sum_{i=1}^n \left( \chi_i(t) - \bar \chi(t) \right) \left( \gamma_i(u) - \bar \gamma(u) \right) \tag{covariance}
 	\end{equation*}
 \end{definition}
-\begin{definition}{Correlation}{}
+\begin{definition}{Correlation}{}\index{correlation}
 	\begin{equation*}
 		\hat r(t,\,u) = \frac{\hat c(t,\,u)}{\sqrt{\hat \sigma^2(t)\,\hat \sigma^2(u)}} \tag{correlation}
 	\end{equation*}
 \end{definition}
-\begin{definition}{Cross-covariance}{}
+\begin{definition}{Cross-covariance}{}\index{cross-covariance}
 	\begin{equation*}
 		\hat C_c(t,\,u) = \frac{1}{n-1} \sum_{i=1}^n \left( \chi_i(t) - \bar \chi(t) \right) \left( \gamma_i(u) - \bar \gamma(u) \right) \tag{cross-covariance}
 	\end{equation*}
 \end{definition}
-\begin{definition}{Cross-correlation}{}
+\begin{definition}{Cross-correlation}{}\index{cross-correlation}
 	\begin{equation*}
 		\hat r_c(t,\,u) = \frac{\hat C_c(t,\,u)}{\sqrt{\hat \sigma_\chi^2(t)\,\hat \sigma_\gamma^2(u)}} \tag{cross-correlation}
 	\end{equation*}
@@ -72,7 +72,7 @@ from $(\X,\,\Y)$, the \emph{natural estimators} of their main parameters are:
 
 % \section{Location and dispersion statistics}
 \pagebreak
-\section{Depth measurements}
+\section{Depth measurements}\index{depth measurements}
 
 \begin{definition}{$\alpha$-trimmed mean}
     We remove from the data set the $\alpha/2$ lowest data
@@ -101,7 +101,7 @@ from $(\X,\,\Y)$, the \emph{natural estimators} of their main parameters are:
 
 \subsection{Depth measure for univariate data}
 
-\begin{definition}{Median depth}{}
+\begin{definition}{Median depth}{}\index{depth measurements!median}
 
 Given a univariate data set $x_1,\, \dots,\, x_n$, let
 \begin{equation*}
@@ -139,7 +139,7 @@ Different depth notions have been proposed for multivariate data:
 
 \subsubsection{Functional Depths based on univariate depth measures}
 
-\begin{definition}{Fraiman-Muñiz Integrated Functional Depth}{}
+\begin{definition}{Fraiman-Muñiz Integrated Functional Depth}{}\index{FM}
 
 Let $\chi_1,\, \dots,\, \chi_n$ be a functional data set defined over
 $T = [a,\,b]$.
@@ -148,7 +148,7 @@ For a fixed $t \in T$, $\chi_1(t),\, \dots,\, \chi_n(t)$ is a univariate sample,
 and associated to it there is a univariate depth measure $D(x)$
 
 Let $D(\chi_i(t))$ be univariate depth measure of $\chi_i$ at $t$.
-The \emph{Fraiman-Muñiz} (FM) integrated functional depth measure of
+The \iemph{Fraiman-Muñiz} (FM) integrated functional depth measure of
 $\chi_i$ is defined as:
 \begin{equation*}
     D(\chi_i) = \int_a^b D(\chi_i(t)) \, dt \tag{FM depth}
@@ -163,7 +163,7 @@ $\chi_i$ is defined as:
 \end{note}
 \end{definition}
 
-\subsubsection{Modal Depth}
+\subsubsection{Modal Depth}\index{modal depth}
 
 \begin{question*}{
     Given a functional data $x_i$, how densely surrounded is it by other data in the 
@@ -187,7 +187,7 @@ $\chi_i$ is defined as:
     the distances between the data points $d(x_j,\,x_k),\;j\neq k$.
 \end{definition}
 
-\subsection{From functional depth to descriptive tools}
+\subsection{From functional depth to descriptive tools}\index{trimmed mean/variance}
 
 \begin{definition}{Functional Descriptive Tools}{}
     \begin{itemize}

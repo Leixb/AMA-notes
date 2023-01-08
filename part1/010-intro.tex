@@ -39,7 +39,7 @@
 
 \end{definition}
 
-\begin{example}{Problems in unsupervised learning}{}
+\begin{example}{Problems in unsupervised learning}{}\index{unsupervised learning!problems}
 	\tcbline
 	\begin{description}
 		\item[Density estimation] Learn the distribution of the data.
@@ -58,7 +58,7 @@
 Let's assume that $\mathbf{X} = X$ is a one-dimensional continuous random variable.
 
 \begin{definition}{Density function}{}
-	A function $f$ is a density function of $X$ if $\forall a < b \in \mathds{R}$:
+    A function $f$ is a \iemph{density function} of $X$ if $\forall a < b \in \mathds{R}$:
 	\begin{equation*}
 		P(a < X \leq b) = \int_a^b f(x) \, dx
 	\end{equation*}
@@ -91,7 +91,7 @@ It is a very simple non-parametric density estimator.
 	\begin{equation*}
 		\widehat{f}_H(x) = \sum_{j=1}^m \frac{p_j}{b_j - b_{j-1}} I_{B_j}(x)
 	\end{equation*}
-	where $I$ is the indicator function.
+    where $I$ is the \iemph{indicator function}.
 \end{definition}
 
 The appearance of the histogram strongly depends on the choice of the bin width $b$,
@@ -151,17 +151,17 @@ as we can see in \cref{fig:histogram_bins}.
 	\label{fig:histogram_bins}
 \end{figure}
 
-\begin{definition}{Bias}{bias}
+\begin{definition}{Bias}{bias}\index{bias}
 	The bias of an estimator is the difference between the expected value of the
 	estimator and the true value of the parameter being estimated.
 \end{definition}
 
-\begin{definition}{Variance}{variance}
+\begin{definition}{Variance}{variance}\index{variance}
 	The variance of an estimator is the expected value of the squared deviation of the
 	estimator from its expected value.
 \end{definition}
 
-\subsection{Kernel density estimator}
+\subsection{Kernel density estimator}\index{KDE}
 
 Let's now introduce the \iemph{kernel density estimator}, a non-parametric
 density estimator that outperforms the histogram.
@@ -198,7 +198,7 @@ The kernel density estimator provides two improvements over the histogram:
 	\item Smoothing
 \end{itemize}
 
-\subsubsection{Localization (Moving histogram)}
+\subsubsection{Localization (Moving histogram)}\index{localization}\index{moving histogram}
 \begin{prop}{The histogram estimates better at the center of the bin}{}
 	It can be proven that the histogram estimates better the density at the center of the
 	bin than at the edges.
@@ -220,7 +220,7 @@ The kernel density estimator provides two improvements over the histogram:
 \end{prop}
 
 \clearpage
-\subsubsection{Smoothing (Moving average)}
+\subsubsection{Smoothing (Moving average)}\index{smoothing}\index{moving average}
 \begin{prop}{$\widehat{f}_U(x)$ is not smooth}{}
 	Since it is discontinuous and piecewise constant.
 \end{prop}
@@ -243,11 +243,11 @@ The kernel density estimator provides two improvements over the histogram:
 \end{definition}
 
 \begin{definition}{Unimodal}{unimodal}
-	A function $f$ is unimodal if it has \emph{only one maximum}.
+    A function $f$ is \iemph{unimodal} if it has \emph{only one maximum}.
 \end{definition}
 
-\begin{definition}{Symmetric}{symmetric}
-	A function $f$ is symmetric around a point $x_0$ if $f(x) = f(x_0 - (x - x_0)) \quad \forall x$.
+\begin{definition}{Symmetric}{symmetric}\index{symmetric function}
+    A function $f$ is \emph{symmetric} around a point $x_0$ if $f(x) = f(x_0 - (x - x_0)) \quad \forall x$.
 \end{definition}
 
 \begin{example}{Kernel density estimator}{}
@@ -317,7 +317,7 @@ The kernel density estimator provides two improvements over the histogram:
 There is extensive literature on the topic of bandwidth selection, but we will
 focus only on maximum likelihood cross-validation.
 
-\begin{definition}{Maximum likelihood cross-validation}{mlcv}
+\begin{definition}{Maximum likelihood cross-validation}{mlcv}\index{maximum likelihood cross-validation}
 	(for bandwidth selection)
 
 	For a given bandwidth $h$, the likelihood of observation $x_i$ is evaluated
@@ -357,7 +357,7 @@ where:
 	K_p & : \mathbb{R}^p \to \mathbb{R} \text{ \iemph{kernel function} in } p \text{-dimensions}
 \end{align*}
 
-\begin{definition}{Non-singular matrix}{non-singular}
+\begin{definition}{Non-singular matrix}{non-singular}\index{non-singular matrix}
 	A matrix $A$ is non-singular if $A^{-1}$ exists.
 \end{definition}
 
@@ -467,7 +467,7 @@ We observe $n$ independent observations $(x_1,\,y_1),\dots,(x_n,\,y_n)$ from $(X
 	 & = \prod_{i=1}^n f(x_i;\, \theta_1)^{y_i} f(x_i;\, \theta_0)^{1-y_i} p^{y_i} (1-p)^{1-y_i}
 \end{align*}
 
-The log-likelihood function is:
+The \iemph{log-likelihood} function is:
 \begin{align*}
 	\span \ell(p,\theta_0,\theta_1;\,\boldsymbol{x},\boldsymbol{y})
 	= \log L(p,\theta_0,\theta_1;\,\boldsymbol{x},\boldsymbol{y})       \\
@@ -479,7 +479,7 @@ The log-likelihood function is:
 	+ \sum_{i:y_i=0} \log f(x_i;\,\theta_0)
 \end{align*}
 
-\subparagraph{Maximum likelihood estimation}
+\subparagraph{Maximum likelihood estimation} \index{maximum likelihood estimation}\index{mle}
 \begin{equation*}
 	\hat{p}^{ML} = \sum_{i=1}^n \frac{y_i}{n}
 \end{equation*}
@@ -690,7 +690,7 @@ when using an uniform kernel on $\mathds{R}^p$ and bandwidth of $\varepsilon$.
 
 \end{definition}
 
-\begin{algorithm}{DBSCAN}{}
+\begin{algorithm}{DBSCAN}{}\index{DBSCAN}
 	\begin{algorithmic}[1]
 		\Procedure{DBSCAN}{$\varepsilon$, minPts}
 		\State Mark each point $\boldsymbol{x}_i$ as either core, border or noise

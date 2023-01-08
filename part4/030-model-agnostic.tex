@@ -60,7 +60,7 @@ This way the new interpretation method will be either reinforced
 (when its classical counterpart is a sensible measure) or called into
 question (when the opposite happens).
 
-\section[Global measures]{Global measures of variable relevance}
+\section[Global measures]{Global measures of variable relevance}\index{global measures}
 
 Let us consider the prediction problem involving the random
 vector $(X,\,Z,\,Y),\;X\in\mathds{R}^p,\,Z\in\mathds{R},\,Y\in\mathds{R}$,
@@ -160,7 +160,7 @@ alternative to LOCO:
 \emph{to randomly permute the values of the variable $Z$ in the test sample}
 (the out-of-bag dataset in RF).
 
-\begin{algorithm}{Variable importance by random permutations}{}
+\begin{algorithm}{Variable importance by random permutations}{}\index{random permutations}
 	\begin{enumerate}
 		\item Fit the model with the training sample using all the original
 		      explanatory variables, $X$ and $Z$.
@@ -663,7 +663,7 @@ Four desirable properties:
 
 \end{itemize}
 
-\begin{theorem}{}{}
+\begin{theorem}{}{}\index{Shapley value}
 	The only distribution satisfying the four axioms above is the Shapley value of the game,
 	defined as follows for the $j$-th player:
 	\begin{equation*}
@@ -1094,12 +1094,12 @@ framework with quadratic loss, no penalty ($\Omega(g) = 0 \forall g \in \mathcal
 using the Shapley kernel as proximity function.
 
 \begin{definition}{Shapley kernel}{}
-    \begin{equation*}
-        \pi_x (h_x(z)) = \frac{d - 1}{\binom{d}{|z|}|z|(d - |z|)}
-    \end{equation*}
-    \tcblower
-    The \iemph{Shapley kernel} gives infinite weight to $z = 0_d$ and to $z = 1_d$,
-    enforcing \emph{local accuracy}
+	\begin{equation*}
+		\pi_x (h_x(z)) = \frac{d - 1}{\binom{d}{|z|}|z|(d - |z|)}
+	\end{equation*}
+	\tcblower
+	The \iemph{Shapley kernel} gives infinite weight to $z = 0_d$ and to $z = 1_d$,
+	enforcing \emph{local accuracy}
 \end{definition}
 
 With these choices, LIME reduces to a weighted least squares problem that can be solved efficiently.
@@ -1107,7 +1107,7 @@ With these choices, LIME reduces to a weighted least squares problem that can be
 This way of computing SHAP is known as \iemph{Kernel SHAP}.
 
 
-\subsection{Break down plots}
+\subsection{Break down plots}\index{break down plots}
 
 % TODO: cite
 Staniak and Biecek (2018) introduce the break-down plots, as a
@@ -1118,11 +1118,131 @@ They propose to decompose the difference $f(x) − \mathds E(f (X))$ as the
 sum of $p$ terms, each accounting for the contribution of one of the $p$
 coordinates of $x$, but their proposal is much more straightforward:
 \begin{equation*}
-    f(x) = \mathds E(f(X)) + \sum_{j = 1}^p \mathds E \left[
+	f(x) = \mathds E(f(X)) + \sum_{j = 1}^p \mathds E \left[
+	f(x_1,\ldots,x_j,X_{j+1},\ldots,X_p)
+	\right] - \mathds E \left[
+	f(x_1,\ldots,x_{j-1},X_{j},\ldots,X_p)
+	\right]
+\end{equation*}
+where the second therm in the sum is just $\mathds E(f(X))$ for $j=1$.
+
+The break-down contribution of the $j$-th coordinate of $x$ to the
+value of $f(x)$ is then defined as:
+\begin{equation*}
+    \psi_j = \mathds E \left[
         f(x_1,\ldots,x_j,X_{j+1},\ldots,X_p)
     \right] - \mathds E \left[
         f(x_1,\ldots,x_{j-1},X_{j},\ldots,X_p)
     \right]
 \end{equation*}
+and can be easily estimated as:
+\begin{equation*}
+    \hat \psi_j = \frac{1}{n} \sum_{i=1}^n \left\{
+        f(x_1,\ldots,x_j,x_{i,\,j+1},\ldots,x_{i,\,p})
+        -
+        f(x_1,\ldots,x_{j-1},x_{i,\,j},\ldots,x_{i,\,p})
+    \right\}
+\end{equation*}
+
+They propose to represent the estimated break-down contributions
+in a \emph{break-down plot}, a horizontal bar chart (or \iemph{waterfall plot})
+with indices $j$ as ordinates (\emph{y-axis}) and the estimated
+break-down contributions $\hat \psi_j$ as abscissas (\emph{x-axis}).
+
+\begin{note}
+    A clear downside of this proposal is that it depends on the order of the explanatory
+    variables when interactions between them are present in the prediction
+    function. That is, when $f(x)$ is not additive.
+\end{note}
+
+A proposal is to adopt a greedy strategy and either a step-down or step-up
+approach. An alternative is to average the $\hat \psi_j$ values across all
+possible orderings, leading to Shapley values.
+
+A different proposal are the so called \emph{break-down plots for interactions}
+which are able to capture local interactions between explanatory variables and to
+visualize them by waterfall plots (Gosiewska et al., 2020). % TODO: cite
 
 \subsection{ICE: Individual conditional expectation, or ceteris paribus chart}
+\index{ICE}\index{Individual conditional expectation}\index{ceteris paribus chart}
+\index{local graphical IML}
+
+\begin{definition}{Individual conditional expectation (ICE)}{}
+    introduced by Goldstein et al. (2015) % TODO: cite
+    is a \emph{refinement of the PDP}. Which shows the relationship between a
+    specific explanatory variable and the response at the \emph{individual level}.
+    (while the PDP does so in an aggregated way).
+\end{definition}
+
+Given the prediction function $f(x),\,x \in \mathbb R^p$, the ICE of the $i$-th
+observed case $(x_i,\,y_i)$ with respect to the $j$-th explanatory variables
+is the plot of the function:
+\begin{equation*}
+    f_j^{(i)}(z) = f(x_{i(-j)},\,z) \quad \forall z \in [x_{\min,\,j},\,x_{\max,\,j}]
+\end{equation*}
+
+It is usual to mark the point of interest $(x_{ij},\,f(x_i))$ on the ICE plot.
+
+\begin{note}
+    This ICE plot shows how the prediction for the $i$-th case
+    is changing when the value of the $j$-th predictor $X_j$ is changing
+    from the observed value $x_{ij}$ to any other possible value
+    $z$ of $X_j$, assuming that other things $x_{i(-j)}$ hold constant,
+    or \emph{ceteris paribus} in Latin.
+\end{note}
+
+From the definitions of PDP and ICE plots, it follows that the 
+partial dependence profile function $\hat f_j(z)$ represented by the PDP
+is the average over all the $n$ data of the individual conditional profiles
+$f_j^{(i)}(z)$ represented by the ICE plots.
+
+A useful graphical representation of the prediction function $f(x)$
+consists of drawing in gray color the $n$ ICE profiles $f_j^{(i)}(z)$
+at the same plot, and then superimpose in black color their average,
+the PDP.
+
+The ability of decomposing the global PDP into individual ICE curves
+is a nice property that is not shared by the ALE plot:
+there are no individual ALE curves. % TODO Cite Molnar 2019
+
+Biecek and Burzykowski (2021) % TODO: cite
+suggest to complement ICE plots with additional exploratory plots.
+
+Firs, for a given ICE profile $f_j^{(i)}(z)$ (or \emph{ceteris paribus} profile using their terminology),
+they define its \iemph{oscillation} as $\mathds E \left[ \left| f_j^{(i)}(X_j) - f(x) \right|\right]$
+and propose to estimate it.
+
+In case of a prediction function $f$ with a large number of explanatory variables $p$,
+they recommend to represent the ICE plots with \emph{largest oscillation values}.
+
+Additionally, they propose two \iemph{local agnostic plots}:
+\begin{itemize}
+    \item \emph{Local-fidelity plot}: compares the distribution of neighboring
+        residuals with that of all the residuals.
+    \item \emph{Local-stability plot}: represents in a joint graph the ICE plot
+        for the case of interest $x_i$ and those corresponding to neighboring cases.
+\end{itemize}
+
+\section{Software}
+% TODO: cite packages
+
+\subsection{Model-specific}
+
+Libraries for random forests and CART, usually include tools for interpretation
+of the fitted models.
+
+\paragraph{Random forests in R:}
+\begin{itemize}
+    \item \texttt{randomForest}
+    \item \texttt{randomForestSRC}
+    \item \texttt{randomForestExplainer}
+\end{itemize}
+
+\paragraph{Neural networks} In the case of neural networks, the packages are less worried about
+interpretation, so we have to resort to specific packages for that purpose:
+\texttt{validann}, \texttt{NeuralNetTools} and \texttt{NeuralSens}
+
+\subsection{Model-agnostic}
+
+For model agnostic methods, we have \texttt{iml}, \texttt{lime} and
+\texttt{DALEX}.

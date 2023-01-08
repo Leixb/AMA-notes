@@ -28,6 +28,7 @@ Multidimensional scaling (\emph{MDS}) are two examples of dimensionality reducti
 
 \pagebreak
 \section[Functional PCA]{Functional Principal Component Analysis (FPCA)}
+\index{Functional PCA}\index{FPCA}
 
 Consider the random function $\boldsymbol \chi : \mathcal T = [a, b] \to \mathds R$,
 with $\mathds E [\boldsymbol \chi] = \mu(t),\, \forall t \in \mathcal T$ and
@@ -128,7 +129,7 @@ minimizing:
 
 The sampling (or empirical) version of the previous
 results is obtained when replacing the covariance function of $\boldsymbol \chi$
-by the \emph{empirical covariance function}.
+by the \iemph{empirical covariance function}.
 
 \begin{definition}{Empirical covariance function}{}
 
@@ -212,7 +213,7 @@ by the \emph{empirical covariance function}.
     \end{equation*}
 
     The eigensystem of $\hat M$ is used for approximating that of the sampling covariance operator $\hat C$.
-\end{algorithm}
+\end{algorithm}\index{eigensystem}
 
 \begin{algorithm}{Numerical computation of sampling FPCA}{}Using B-spline basis
     (Ramsey and Silverman 2005)
@@ -270,7 +271,7 @@ by the \emph{empirical covariance function}.
     and the problem reduces to the \emph{diagonalization of $\Phi^{-1/2} \hat \Psi \Phi^{-1/2}$}.
 \end{algorithm}
 
-\begin{definition}{Sparse functional data}{}
+\begin{definition}{Sparse functional data}{}\index{sparse functional data}
 
     The observations are
     \begin{equation*}
@@ -290,7 +291,7 @@ by the \emph{empirical covariance function}.
 \sectionmark{MDS}%
 \section{Multidimensional Scaling for functional data}%
 
-\begin{recap}{MDS}{}
+\begin{recap}{MDS}{}\index{Functional MDS}
 MDS is a dimensionality reduction technique based on \emph{inter-individuals distances}.
 
 Let $d_{ij} \geq 0$ be the dissimilarity between individuals $i$ and $j$.
@@ -320,7 +321,7 @@ Relation between PCA and MDS:
     % Distance: $d(x,\,y) = 0 \iff x = y$ and $d(x,\,y) \leq d(x,\,z) + d(z,\,y)$.
     % Semi-metric: $d(x,\,x) = 0$ and $d(x,\,y) \leq d(x,\,z) + d(z,\,y)$.
     %
-    When working with functions, \emph{semi-metrics} (def~\ref{def:metric}) are used (i.e. two
+    When working with functions, \iemph{semi-metrics} (def~\ref{def:metric}) are used (i.e. two
     functions that are different in only one point are essentially the same)
 \end{definition}
 

@@ -2,7 +2,7 @@
 \chapter{Interpretability methods for specific models}
 \chaptermark{IML specific}
 
-\begin{definition}{model-specific methods}{}
+\begin{definition}{model-specific methods}{}\index{model-specific IML}
 	Interpretability methods developed for a particular prediction method.
 
 	They allow model exploration, validation or visualization.
@@ -19,7 +19,7 @@
 	Barredo-Arriet et al. (2020).
 \end{definition}
 
-\section{Random forests}
+\section{Random forests}\index{random forests}\index{CART}
 
 Random forests are combinations of more simpler models:
 classification and regression trees (CART).
@@ -117,7 +117,7 @@ They are conceptually simple, yet powerful.
 
 \end{example}
 
-\subsubsection{Regression trees}
+\subsubsection{Regression trees}\index{regression trees}
 
 Our data set consists of $p$ inputs and a response, for each of $n$ observations:
 $(\boldsymbol{x}_i,\,y_i),\, i=1,\dots,n$ with $\boldsymbol{x}_i=(x_{i1},\dots,x_{ip})^T$.
@@ -178,7 +178,7 @@ Instead, a greedy strategy is adopted:
 	\end{equation*}
 \end{definition}
 
-\subsubsection{Classification trees}
+\subsubsection{Classification trees}\index{classification trees}
 
 Assume now that the target is a classification outcome taking values $1,\dots,K$.
 
@@ -202,7 +202,7 @@ suitable for classification. Instead, we use one of the following alternatives:
 	                                                              & \sum_{k=1}^K \hat{p}_{mk} \log \hat{p}_{mk} \tag{cross-entropy or deviance}
 \end{align}
 
-\begin{note}
+\begin{note}\index{Gini index}
 	Both the Gini index and the cross-entropy are lower for the splits producing pure nodes, that are probably
 	preferable.
 
@@ -238,7 +238,7 @@ are averaged.
 
 It is hopped to reduce variance without increase in bias.
 
-The first random ingredient: take a \emph{bootstrap sample}, choosing with
+The first random ingredient: take a \iemph{bootstrap sample}, choosing with
 replacement $n$ random elements from the original data set:
 \begin{equation*}
 	\{
@@ -279,8 +279,7 @@ with cross-validation being performed along the way.
 
 Once the OOB error stabilizes, the training can be stopped.
 
-\subsection{Variable Importance based on node impurity measures}
-
+\subsection{Variable Importance based on node impurity measures}\index{impurity measure}\index{split-criterion}
 
 Let $T$ be a tree found in the fitting process of a CART, and let
 $|T|$ be the number of terminal nodes in $T$.
@@ -294,8 +293,8 @@ $|T|$ be the number of terminal nodes in $T$.
 Assume that the $j$-th variable is used to split the node $R_r$ of $T$ into
 two child-nodes, say $R_{r'}$ and $R_{r''}$, this way producing a new tree $T'$.
 
-The \iemph{improvement in the impurity measure} (also known as
-\iemph{improvement in the split-criterion}) is:
+The \emph{improvement in the impurity measure} (also known as
+\emph{improvement in the split-criterion}) is:
 \begin{equation*}
 	C(T) - C(T') = N_r Q_r - \left(N_{r'} Q_{r'} + N_{r''} Q_{r''} \right)
 \end{equation*}
@@ -436,7 +435,7 @@ to measure the decrease in accuracy.
 	\end{equation*}
 \end{example}
 
-\subsection{Interpretability in Neural Networks}
+\subsection{Interpretability in Neural Networks}\index{neural networks}
 
 A useful tool for interpretability in neural networks is to look at the
 \emph{derivatives of the prediction function}:
@@ -486,7 +485,7 @@ For explanation of NN decision, \iemph{sensitivity analysis} and
 \begin{definition}{Simple Taylor decomposition}{}
     the NN function is approached at a given data point $\boldsymbol x$ by the \emph{first
     order Taylor expansion} which is then interpreted as any linear estimator, providing
-    an explanation of how the NN function varies around $\boldsymbol x$.
+    an explanation of how the NN function varies around $\boldsymbol x$.\index{Taylor expansion}
 \end{definition}
 
 \begin{note}

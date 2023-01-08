@@ -1,5 +1,5 @@
 %! TEX root = ../000-main.tex
-\chapter{Spline smoothing}
+\chapter{Spline smoothing}\index{spline smoothing}
 
 \section{Penalized least squares non-parametric regression}
 
@@ -13,7 +13,7 @@ an \iemph{optimization problem}. This leads
 to a new family of non-parametric regression estimators.
 
 Let's start with the Least Squares (LS) problem:
-\begin{problem}{Least Squares (LS)}{LS}
+\begin{problem}{Least Squares (LS)}{LS}\index{Least Squares}\index{LS}
     \begin{equation*}
         \min_{\tilde m : \mathbb{R} \to \mathbb{R}}
             \sum_{i=1}^n \left(y_i - \tilde m(x_i)\right)^2
@@ -28,7 +28,7 @@ But, in general, an interpolating function $\tilde m$ is not
 smooth enough as a function of $x$. If we want an optimal
 solution being a smooth function, we must include in the
 optimization problem a penalty term for the lack of smoothness:
-\begin{problem}{Penalized Least Squares}{PLS}
+\begin{problem}{Penalized Least Squares}{PLS}\index{Penalized Least Squares}\index{PLS}
     \begin{equation*}
         \min_{\tilde m \in \mathcal M}
         \left\{
@@ -44,7 +44,7 @@ optimization problem a penalty term for the lack of smoothness:
 
 A common choice when data $x_i$ are in the interval $[a,b] \subseteq \mathbb{R}$ is
 the second order Sobolev space in $[a,b]$:
-\begin{definition}{Second order Sobolev space}{} in $[a, b]$
+\begin{definition}{Second order Sobolev space}{} in $[a, b]$ \index{Sobolev space}
     \begin{equation*}
         W_2^2[a,\,b] = \left\{
             m : [a,\,b] \to \mathbb{R} \,\middle|\,
@@ -83,7 +83,7 @@ the second order Sobolev space in $[a,b]$:
             have a smooth link at $t_j$.
     \end{itemize}
     \tcblower
-    \begin{note}{Cubic spline}{}
+    \begin{note}{Cubic spline}{}\index{cubic spline}
         The most commonly used spline functions are those with degree $p=3$ (\iemph{cubic splines}).
     \end{note}
 \end{definition}
@@ -120,7 +120,7 @@ the second order Sobolev space in $[a,b]$:
 \end{prop}
 
 \begin{definition}{Vector Space}{}
-    A \emph{vector space} is a set $V$ with two binary operations:
+    A \iemph{vector space} is a set $V$ with two binary operations:
     \begin{itemize}
         \item A binary operation $\oplus : V \times V \to V$ called \emph{addition}
             such that:
@@ -130,7 +130,7 @@ the second order Sobolev space in $[a,b]$:
                 \item $\forall v,w,z \in V,\; (v \oplus w) \oplus z = v \oplus (w \oplus z)$
             \end{itemize}
         \item A binary operation $\otimes : \mathbb{R} \times V \to V$ called
-            \emph{scalar multiplication} such that:
+            \iemph{scalar multiplication} such that:
             \begin{itemize}
                 \item $\forall v \in V,\; 1 \otimes v = v$
                 \item $\forall v \in V,\; \forall \alpha,\beta \in \mathbb{R},\;
@@ -143,7 +143,7 @@ the second order Sobolev space in $[a,b]$:
     \end{itemize}
 \end{definition}
 
-\begin{definition}{Basis of a vector space}{}
+\begin{definition}{Basis of a vector space}{}\index{basis of a vector space}
     A \emph{basis} of a vector space $V$ is a set of vectors $\{v_1,\ldots,v_n\}$
     such that:
     \begin{itemize}
@@ -233,7 +233,7 @@ we can apply all we know about linear smoothers:
 \end{itemize}
 
 \pagebreak
-\section{B-splines}
+\section{B-splines}\index{B-splines}
 
 We now introduce a basis for $S[p;\,a=t_0,t_1,\ldots,t_{k+1}=b]$ that is
 both numerically and computationally convenient.
@@ -309,7 +309,7 @@ as a linear combination of the basis of B-splines:
     \end{note}
 \end{problem}
 
-\begin{definition*}{Band matrix}{}
+\begin{definition*}{Band matrix}{}\index{Band matrix}
     A sparse matrix whose non-zero entries are confined to a diagonal band,
     comprising the main diagonal and zero or more diagonals on either side.
 \end{definition*}
